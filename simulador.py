@@ -7,13 +7,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import random 
+import random
 import os
 
 
 # In[2]:
 
-    
+
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
@@ -40,7 +40,7 @@ params_total = len(params)/4
 
 
 #students quantities per parameter
-bast_qtd = 5 
+bast_qtd = 5
 avst_qtd = 3
 aast_qtd = 8
 
@@ -51,68 +51,15 @@ subjects = ["EB101", "SI100", "SI120", "SI201", "SI250"]
 
 turmas = [1,2,1,2,3]
 
-subjects_with_turmas = []
 
-sub = 0
-turm = 0
 
-while(sub < len(subjects)):
-    if turmas[sub] == 1:
-        subjects_with_turmas.append(subjects[sub])
-    else:
-        turm = 0
-        strturma = 65
-        while (turm < turmas[sub]):
-            subjects_with_turmas.append(subjects[sub] + ' '+chr(strturma))
-            strturma = strturma + 1
-            turm = turm + 1
-    sub = sub+1    
+
 
 students = []
 
 prereqs = ['SI100', 'SI250']
 
 
-new_prereqs = []
-
-newer_prereqs = []
-
-laco = 1
-
-while (laco < len(prereqs)):
-    subject_to_have_new_prereq = prereqs[laco]
-    index_holder_to_match_turmas = subjects.index(subject_to_have_new_prereq)
-    if turmas[index_holder_to_match_turmas] == 1:
-        new_prereqs.append(prereqs[laco-1])
-        new_prereqs.append(prereqs[laco])
-    else:
-        x = 1
-        turm = 65
-        while (x < turmas[index_holder_to_match_turmas]):
-            new_prereqs.append(prereqs[laco-1] + ' '+chr(turm))
-            new_prereqs.append(prereqs[laco])
-            turm = turm+1
-            x = x +1
-    laco = laco + 2
-
-
-laco2 = 1
-
-while(laco2 < len(new_prereqs)):
-    sub_with_prereq = new_prereqs[laco]
-    index_holder_to_match_turmas = subjects.index(subject_to_have_new_prereq)
-    if turmas[index_holder_to_match_turmas] == 1:
-        newer_prereqs.append(new_prereqs[laco2-1])
-        newer_prereqs.append(new_prereqs[laco2])
-    else:
-        x = 0
-        turm = 65
-        while (x < turmas[index_holder_to_match_turmas]):
-            newer_prereqs.append(new_prereqs[laco2-1])
-            newer_prereqs.append(new_prereqs[laco2]  + ' ' + chr(turm))
-            turm = turm+1
-            x = x+1
-    laco2 = laco2 + 2
 
 
 
@@ -134,6 +81,66 @@ grade = []
 cut = 5
 
 def new_simulation():
+
+    sub = 0
+    turm = 0
+    subjects_with_turmas = []
+    
+    while(sub < len(subjects)):
+        print("teste")
+        if turmas[sub] == 1:
+            subjects_with_turmas.append(subjects[sub])
+        else:
+            turm = 0
+            strturma = 65
+            while (turm < turmas[sub]):
+                subjects_with_turmas.append(subjects[sub] + ' '+chr(strturma))
+                strturma = strturma + 1
+                turm = turm + 1
+        sub = sub+1
+
+    new_prereqs = []
+
+    newer_prereqs = []
+
+    laco = 1
+
+    while (laco < len(prereqs)):
+        subject_to_have_new_prereq = prereqs[laco]
+        index_holder_to_match_turmas = subjects.index(subject_to_have_new_prereq)
+        if turmas[index_holder_to_match_turmas] == 1:
+            new_prereqs.append(prereqs[laco-1])
+            new_prereqs.append(prereqs[laco])
+        else:
+            x = 1
+            turm = 65
+            while (x < turmas[index_holder_to_match_turmas]):
+                new_prereqs.append(prereqs[laco-1] + ' '+chr(turm))
+                new_prereqs.append(prereqs[laco])
+                turm = turm+1
+                x = x +1
+        laco = laco + 2
+
+
+    laco2 = 1
+
+    while(laco2 < len(new_prereqs)):
+        sub_with_prereq = new_prereqs[laco]
+        index_holder_to_match_turmas = subjects.index(subject_to_have_new_prereq)
+        if turmas[index_holder_to_match_turmas] == 1:
+            newer_prereqs.append(new_prereqs[laco2-1])
+            newer_prereqs.append(new_prereqs[laco2])
+        else:
+            x = 0
+            turm = 65
+            while (x < turmas[index_holder_to_match_turmas]):
+                newer_prereqs.append(new_prereqs[laco2-1])
+                newer_prereqs.append(new_prereqs[laco2]  + ' ' + chr(turm))
+                turm = turm+1
+                x = x+1
+        laco2 = laco2 + 2
+
+
     print(chr(65))
     grade.clear()
     students.clear()
@@ -147,14 +154,14 @@ def new_simulation():
     #creating students and grades
 #counter for students ids creation
     i = 0
-    j = 2 
+    j = 2
 
     while(i < st_total):
         newstudent = random.randint(100000,199999)
         #excluding duplicates
         if newstudent not in students:
             students.append(newstudent)
-            i = i+1    
+            i = i+1
     #now grades
     while(j<len(params_sort)):
         a = 0
@@ -163,31 +170,47 @@ def new_simulation():
             newgradeline = []
             grade.append(newgradeline)
             while(b < len(subjects_with_turmas)):
-                
+
                 gen_grade = round(random.uniform(params_sort[j-2],params_sort[j-1]),2)
                 newgradeline.append(gen_grade)
                 b = b +1
             a = a +1
-        j = j + 3  
+        j = j + 3
 
-    
+
     k = 0
     l = 0
-    m = 0
-    ## applying prereqs
-    #discovering which subject is prereq for which subject
+    c = 0
+    ## applying turmas
     print(grade[15][1])
     grade[15][1] = 0
-#checking for repeated turmas and 0 all
-    k = 0
-    x = 0
-    j = 65
+    already_sorted = []
+    l = 0
+    c = 0
+    turmas_sorteadas = []
+    while(l<len(students)):
+        c = 0
+        already_sorted = []
+        while(c<len(subjects_with_turmas)):
+            index_to_match = subjects.index(subjects_with_turmas[c][:5])
+            turmas_sorteadas = []
+            if turmas[index_to_match]>1 and subjects[index_to_match] not in already_sorted:
+                    j = 0
+                    turmas_sorteadas = random.sample(range(0,turmas[index_to_match]),turmas[index_to_match]-1)
+                    while(j<len(turmas_sorteadas)):
+                        grade[l][c+turmas_sorteadas[j]] = 'Fez em outra turma'
+                        j = j +1
+                    already_sorted.append(subjects[index_to_match])
+                    print("adicionados")
+                    print(already_sorted)
+                    c = c +1
+            else:
+                c = c+1
+        print("fim da linha")
+        l = l+1
 
-
-
-
-        
-
+#applyin prereqs
+#discovering which subject is prereq for which subject
 
 # In[4]:
 #generating table
@@ -198,16 +221,16 @@ def new_simulation():
     simulation = pd.DataFrame (scrambled(grade),index=students, columns=subjects_with_turmas)
 
     try:
-        f = open("test.csv")
-        os.remove("test.csv")
+        f = open("simulacao.csv")
+        os.remove("simulacao.csv")
     except IOError:
-        simulation.to_csv(r'test.csv')
-        simulation.to_html(r'test.html')
+        simulation.to_csv(r'simulacao.csv')
+        simulation.to_html(r'simulacao.html')
         print(grade)
     finally:
         f.close()
-        simulation.to_csv(r'test.csv')
-        simulation.to_html(r'test.html')
+        simulation.to_csv(r'simulacao.csv')
+        simulation.to_html(r'simulacao.html')
         #print(grade)
         #print(grade[0][0])
 
@@ -217,7 +240,7 @@ while(menu_keep == 0):
     cls()
     menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Exportar parâmetros\n 5. Importar parâmetros\n 6. Sair\n\nEntrada do usuário: ")
     if menu1 == '1':
-        #os.remove("test.csv")   
+        #os.remove("test.csv")
         print('New simulation')
         new_simulation()
         try:
@@ -234,13 +257,13 @@ while(menu_keep == 0):
             while(p<len(params)/4):
                 while(q < len(params)):
                     print("Parametro: " + str(params[q]))
-                    q = q +1 
+                    q = q +1
                     print("Mínimo: " + str(params[q]))
                     q = q +1
                     print("Máximo: " + str(params[q]))
                     q = q+1
                     print("Qtde de alunos: " + str(params[q])+"\n\n")
-                    q = q+1    
+                    q = q+1
                 p = p + 1
             print("Disciplinas: ")
             print(subjects)
@@ -257,13 +280,13 @@ while(menu_keep == 0):
                 while(p<len(params)/4):
                     while(q < len(params)):
                         print("Parametro: " + str(params[q]))
-                        q = q +1 
+                        q = q +1
                         print("Mínimo: " + str(params[q]))
                         q = q +1
                         print("Máximo: " + str(params[q]))
                         q = q+1
                         print("Qtde de alunos: " + str(params[q])+"\n\n")
-                        q = q+1    
+                        q = q+1
                     p = p + 1
                 new_param_name = input("Insira o nome da nova faixa: ")
                 if new_param_name not in params:
@@ -284,13 +307,13 @@ while(menu_keep == 0):
                 while(p<len(params)/4):
                     while(q < len(params)):
                         print("Parametro: " + str(params[q]))
-                        q = q +1 
+                        q = q +1
                         print("Mínimo: " + str(params[q]))
                         q = q +1
                         print("Máximo: " + str(params[q]))
                         q = q+1
                         print("Qtde de alunos: " + str(params[q])+"\n\n")
-                        q = q+1    
+                        q = q+1
                     p = p + 1
                 removed_param_name = input("Insira o nome da faixa a ser removida.\n\nEntrada do usuário: ")
                 rm_index = [i for i, x in enumerate(params) if x == str(removed_param_name)]
@@ -309,13 +332,13 @@ while(menu_keep == 0):
                 while(p<len(params)/4):
                     while(q < len(params)):
                         print("Parametro: " + str(params[q]))
-                        q = q +1 
+                        q = q +1
                         print("Mínimo: " + str(params[q]))
                         q = q +1
                         print("Máximo: " + str(params[q]))
                         q = q+1
                         print("Qtde de alunos: " + str(params[q])+"\n\n")
-                        q = q+1    
+                        q = q+1
                     p = p + 1
                 altered_param_name = input("Insira o nome da faixa a ser alterada: ")
                 rm_index = [i for i, x in enumerate(params) if x == str(altered_param_name)]
@@ -338,7 +361,7 @@ while(menu_keep == 0):
                 try:
                     input("Parâmetro alterado com sucesso!")
                 except SyntaxError:
-                    pass  
+                    pass
 
 
 
@@ -359,6 +382,8 @@ while(menu_keep == 0):
             subject_added = input("Insira o nome da disciplina à ser adicionada: ")
             if subject_added not in subjects:
                 subjects.append(subject_added)
+                qtde_turmas = int(input("Insira a qtde de turmas para esta disciplina"))
+                turmas.append(qtde_turmas)
                 print("Disciplina adicionada com sucesso.")
         if menu2 == '3':
             print("\n\nDisciplinas cadastradas:\n")
@@ -423,7 +448,7 @@ while(menu_keep == 0):
             try:
                 input("Requisito(s) para xxxx removidos. Pressione qualquer tecla para continuar.")
             except SyntaxError:
-                pass   
+                pass
     elif menu1 == '4':
         cls()
         params_sort = [x for x in params if not isinstance(x, str)]
@@ -442,16 +467,16 @@ while(menu_keep == 0):
         f.write("\nDisciplinas: %s" % subjects)
         f.write("\nParâmetros: %s" % params)
         f.write("\nPré-requisitos %s" % prereqs)
-        f.flush() 
+        f.flush()
         f.close()
         try:
             input("Parametros foram exportados como 'config.txt'. Pressione qualquer tecla para continuar.")
         except SyntaxError:
-            pass    
+            pass
     elif menu1 == '5':
         try:
             input("Adicione o arquivo de configuração 'custom_config.txt' e pressione qualquer tecla para continuar.")
         except SyntaxError:
-            pass          
+            pass
     elif menu1 == '6':
         menu_keep = menu_keep + 1
