@@ -301,6 +301,7 @@ while(menu_keep == 0):
     cls()
     menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar parâmetros\n 5. Sair\n\nEntrada do usuário: ")
     if menu1 == '1':
+        cls()
         #os.remove("test.csv")
         new_simulation()
         try:
