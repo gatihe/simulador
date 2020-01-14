@@ -243,15 +243,14 @@ def new_simulation():
 
                     #iteration to set 'Faltam prereqs' on subjects that have only 'Faltam prereqs' on its prereqs grades
                     i = 0
-                    while(i<len(to_be_checked_prereqs)):
                         #it will alert if there are only texts in the array
-                        is_there_int = 0
-                        if isinstance(grade[l][to_be_checked_prereqs[i]], str) == False:
+                    is_there_int=0
+                    for i in to_be_checked_prereqs:
+                        if isinstance(grade[l][i], str) == False:
                             is_there_int = 1
-                        i = i + 1
                     if is_there_int == 0:
                         for x in to_cancel_due_to_prereq:
-                            grade[l][x] = 'Faltam prereqs'
+                            grade[l][x] = 'Faltam prereqs 2'
 
                     #identifyin indexes of possible pre-requisites with its turmas on the table
                     i = 0
