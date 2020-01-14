@@ -1,5 +1,0 @@
-Qtde de alunos: 30
-Qtde de faixas: 3
-Disciplinas: ['Disciplina 1', 'Disciplina 2', 'Disciplina 3', 'Disciplina 4', 'Disciplina 5']
-Parâmetros: ['Below Average', 0, 5, 10, 'Above Average', 5, 7, 10, 'Average', 7, 10, 10]
-Pré-requisitos ['Disciplina 1', 'Disciplina 2', 'Disciplina 3', 'Disciplina 4', 'Disciplina 5', 'Disciplina 2', 'Disciplina 2', 'Disciplina 3', 'Disciplina 4', 'Disciplina 2']
