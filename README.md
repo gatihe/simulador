@@ -10,8 +10,10 @@ Este projeto é um Trabalho de Conclusão de Curso para o curso de Sistemas de I
 #### Instruções:
 - Faça o download e extração do repositório
 - Na raiz do diretório extraído, rode o arquivo `simulador.py`
+#### Observações:
 - Todas as funcionalidades estão ativas e funcionando corretamente, *apenas cuidado pois o tratamento de erros para inputs manuais ainda não está totalmente implementado*.
 - Para importar as configurações de forma mais eficiente o arquivo `config.xml` pode servir de auxílio.
+- A simulação gera dois arquivos (html e csv). *Somente com a finalidade de evidenciar o funcionamento do sistema*, os campos preenchidos com 'Fez em outra turma' e 'Faltam prereqs' servem para apontar que as funções de aplicação de pré-requisitos e de disperção de alunos em turmas está funcionando corretamente.
 ---
 ### Mais informações
 #### Activity backlog:
