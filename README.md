@@ -1,6 +1,7 @@
 # Gerador de notas para disciplinas
 
 Este projeto é um Trabalho de Conclusão de Curso para o curso de Sistemas de Informação da Faculdade de Tecnologia da Unicamp. Consiste na criação de um simulador de notas e projeção de cumprimento do currículo escolar de estudantes, baseado nos cursos existentes na Unicamp em 2020.
+
 ---
 ### Instalação
 #### Requisitos:
