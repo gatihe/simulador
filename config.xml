@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<all_configs>
+	<subjects>
+		<subject>
+			<id>EB101</id>
+			<subject_name>Cálculo I</subject_name>
+			<classes_no>1</classes_no>
+			<pre_reqs></pre_reqs>
+		</subject>
+		<subject>
+			<id>SI100</id>
+			<subject_name>Algoritmos e Programação de Computadores I</subject_name>
+			<classes_no>2</classes_no>
+			<pre_reqs></pre_reqs>
+		</subject>
+		<subject>
+			<id>SI120</id>
+			<subject_name>Lógica Matemática</subject_name>
+			<classes_no>1</classes_no>
+			<pre_reqs></pre_reqs>
+		</subject>
+		<subject>
+			<id>SI201</id>
+			<subject_name>Estrutura de Dados I</subject_name>
+			<classes_no>2</classes_no>
+			<pre_reqs></pre_reqs>
+		</subject>
+		<subject>
+			<id>SI250</id>
+			<subject_name>Economia e Finanças</subject_name>
+			<classes_no>3</classes_no>
+			<pre_reqs>SI100</pre_reqs>
+			<pre_reqs>SI120</pre_reqs>
+		</subject>
+	</subjects>
+	<parameters>
+		<parameter>
+			<parameter_name>Below Average</parameter_name>
+			<min_grade>0</min_grade>
+			<max_grade>5</max_grade>
+		</parameter>
+		<parameter>
+			<parameter_name>Average</parameter_name>
+			<min_grade>5</min_grade>
+			<max_grade>7</max_grade>
+		</parameter>
+		<parameter>
+			<parameter_name>Above Average</parameter_name>
+			<min_grade>7</min_grade>
+			<max_grade>10</max_grade>
+		</parameter>
+	</parameters>
+</all_configs>

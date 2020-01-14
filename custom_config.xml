@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<all_configs>
+	<disciplinas>
+		<disciplina id = "EB101" nome_disciplina ="Cálculo I" qtde_turmas = "1" pre_requisitos = ""></disciplina>
+		<disciplina id="SI100" nome_disciplina = "Algoritmos e Programação de Computadores I" qtde_turmas="2" pre_requisitos = ""></disciplina>
+		<disciplina id="SI120" nome_disciplina="Lógica Matemática" qtde_turmas="1" pre_requisitos =""></disciplina>
+		<disciplina id="SI201" nome_disciplina = "Estrutura de Dados I" qtde_turmas="2" pre_requisitos =""></disciplina>
+		<disciplina id="SI250" nome_disciplina="Economia e Finanças" qtde_turmas="3" pre_requisitos="SI100"></disciplina>
+	</disciplinas>
+	<parametros>
+		<parametro>
+			<nome_parametro>Below Average</nome_parametro>
+			<nota_minima>0</nota_minima>
+			<nota_maxima>5</nota_maxima>
+		</parametro>
+		<parametro>
+			<nome_parametro>Average</nome_parametro>
+			<nota_minima>5</nota_minima>
+			<nota_maxima>7</nota_maxima>
+		</parametro>
+		<parametro>
+			<nome_parametro>Above Average</nome_parametro>
+			<nota_minima>7</nota_minima>
+			<nota_maxima>10</nota_maxima>
+		</parametro>
+	</parametros>
+</all_configs>
+</xml>

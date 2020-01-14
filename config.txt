@@ -1,0 +1,5 @@
+Qtde de alunos: 30
+Qtde de faixas: 3
+Disciplinas: ['EB101', 'SI100', 'SI120', 'SI201', 'SI250']
+Parâmetros: ['Below Average', 0, 5, 10, 'Above Average', 5, 7, 10, 'Average', 7, 10, 10]
+Pré-requisitos ['SI100', 'SI250']

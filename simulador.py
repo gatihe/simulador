@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import random
 import os
+from xml.dom import minidom
+import xml.etree.ElementTree as ET
 
 
 # In[2]:
@@ -33,7 +35,7 @@ params_total = len(params)/4
 
 
 
-
+outra_turma = 'Fez em outra turma'
 
 
 
@@ -70,6 +72,52 @@ def scrambled(orig):
     random.shuffle(dest)
     return dest
 
+def getting_subjects_config_from_file():
+    tree = ET.parse('config.xml')
+    root = tree.getroot()
+    parsed_subjects = []
+    for config_param in root.findall('subjects'):
+        for subject in config_param.findall('subject'):
+            for id in subject.findall('id'):
+                parsed_subjects.append(id.text)
+    #for x in root[0]: # access each subject
+        #parsed_subjects.append(x[0].text) # every x is an element. 0 refers to the first element.
+    print(parsed_subjects)
+    return parsed_subjects
+
+def getting_turmas_config_from_file():
+    tree = ET.parse('config.xml')
+    root = tree.getroot()
+    parsed_turmas = []
+    for config_param in root.findall('subjects'):
+        for subject in config_param.findall('subject'): # access each subject
+            individual_qtde_turmas = subject.findall('classes_no')
+            for x in individual_qtde_turmas:
+                parsed_turmas.append(int(x.text))
+    print(parsed_turmas)
+    return parsed_turmas
+
+def getting_prereqs_config_from_file():
+    tree = ET.parse('config.xml')
+    root = tree.getroot()
+    new_root = ('/disciplinas/')
+    parsed_prereqs = []
+    for config_param in root.findall('subjects'):
+        for subject in config_param.findall('subject'):
+            individual_parsed_prereq = subject.findall('pre_reqs')
+            individual_parsed_subject_id = subject.findall('id')
+            for x in individual_parsed_prereq:
+                    if x.text is not None:
+                        #prereq to add is equal to pre_reqs tag's text inside the current subject being parsed
+                        parsed_prereqs.append(x.text)
+                        #subject[0].text is equal to subject id
+                        parsed_prereqs.append(individual_parsed_subject_id[0].text)
+
+        print(parsed_prereqs)
+
+    #print(parsed_prereqs)
+    return parsed_prereqs
+
 
 #counters and variable for grades creation
 a = 0
@@ -85,9 +133,8 @@ def new_simulation():
     sub = 0
     turm = 0
     subjects_with_turmas = []
-    
+
     while(sub < len(subjects)):
-        print("teste")
         if turmas[sub] == 1:
             subjects_with_turmas.append(subjects[sub])
         else:
@@ -99,49 +146,8 @@ def new_simulation():
                 turm = turm + 1
         sub = sub+1
 
-    new_prereqs = []
-
-    newer_prereqs = []
-
-    laco = 1
-
-    while (laco < len(prereqs)):
-        subject_to_have_new_prereq = prereqs[laco]
-        index_holder_to_match_turmas = subjects.index(subject_to_have_new_prereq)
-        if turmas[index_holder_to_match_turmas] == 1:
-            new_prereqs.append(prereqs[laco-1])
-            new_prereqs.append(prereqs[laco])
-        else:
-            x = 1
-            turm = 65
-            while (x < turmas[index_holder_to_match_turmas]):
-                new_prereqs.append(prereqs[laco-1] + ' '+chr(turm))
-                new_prereqs.append(prereqs[laco])
-                turm = turm+1
-                x = x +1
-        laco = laco + 2
 
 
-    laco2 = 1
-
-    while(laco2 < len(new_prereqs)):
-        sub_with_prereq = new_prereqs[laco]
-        index_holder_to_match_turmas = subjects.index(subject_to_have_new_prereq)
-        if turmas[index_holder_to_match_turmas] == 1:
-            newer_prereqs.append(new_prereqs[laco2-1])
-            newer_prereqs.append(new_prereqs[laco2])
-        else:
-            x = 0
-            turm = 65
-            while (x < turmas[index_holder_to_match_turmas]):
-                newer_prereqs.append(new_prereqs[laco2-1])
-                newer_prereqs.append(new_prereqs[laco2]  + ' ' + chr(turm))
-                turm = turm+1
-                x = x+1
-        laco2 = laco2 + 2
-
-
-    print(chr(65))
     grade.clear()
     students.clear()
     params_sort = [x for x in params if not isinstance(x, str)]
@@ -170,7 +176,6 @@ def new_simulation():
             newgradeline = []
             grade.append(newgradeline)
             while(b < len(subjects_with_turmas)):
-
                 gen_grade = round(random.uniform(params_sort[j-2],params_sort[j-1]),2)
                 newgradeline.append(gen_grade)
                 b = b +1
@@ -182,7 +187,6 @@ def new_simulation():
     l = 0
     c = 0
     ## applying turmas
-    print(grade[15][1])
     grade[15][1] = 0
     already_sorted = []
     l = 0
@@ -198,26 +202,50 @@ def new_simulation():
                     j = 0
                     turmas_sorteadas = random.sample(range(0,turmas[index_to_match]),turmas[index_to_match]-1)
                     while(j<len(turmas_sorteadas)):
-                        grade[l][c+turmas_sorteadas[j]] = 'Fez em outra turma'
+                        grade[l][c+turmas_sorteadas[j]] = outra_turma
                         j = j +1
                     already_sorted.append(subjects[index_to_match])
-                    print("adicionados")
-                    print(already_sorted)
                     c = c +1
             else:
                 c = c+1
-        print("fim da linha")
         l = l+1
 
 #applyin prereqs
 #discovering which subject is prereq for which subject
-
+    l = 0
+    while(l < len(students)):
+        to_be_checked_prereqs = []
+        to_cancel_due_to_prereq =[]
+        laco3 = 1
+        while (laco3<len(prereqs)):
+            for disciplina_com_prereq in subjects_with_turmas:
+                if prereqs[laco3] in disciplina_com_prereq:
+                    current_prereqs_on_table = []
+                    #print("Disciplina tem pre-req, vamos descobrir qual disciplina é:")
+                    #print(prereqs[laco3-1])
+                    #descobrindo atraves de iteracão quais índices de prereqs
+                    to_be_checked_prereqs = [i for i in range(len(subjects_with_turmas)) if prereqs[laco3-1] in subjects_with_turmas[i]]
+                    #armazenando disciplinas que teriam que ser anuladas caso prereqs não sejam atendidos
+                    to_cancel_due_to_prereq = [i for i in range(len(subjects_with_turmas)) if prereqs[laco3] in subjects_with_turmas[i]]
+                    #identifyin indexes of possible pre-requisites with its turmas on the table
+                    i = 0
+                    while(i<len(to_be_checked_prereqs)):
+                        if isinstance(grade[l][to_be_checked_prereqs[i]], str) == False and grade[l][to_be_checked_prereqs[i]] < cut:
+                            sera_cancelado = 0
+                            while(sera_cancelado<len(to_cancel_due_to_prereq)):
+                                grade[l][to_cancel_due_to_prereq[sera_cancelado]] = 'Faltam prereqs'
+                                sera_cancelado = sera_cancelado + 1
+                            #print('achamos algo')
+                        i = i + 1
+            laco3 = laco3 +2
+        l = l+1
+    print(to_be_checked_prereqs)
 # In[4]:
 #generating table
     #grade[0][1]=None
 
     print(subjects_with_turmas)
-    print(new_prereqs)
+    print(prereqs)
     simulation = pd.DataFrame (scrambled(grade),index=students, columns=subjects_with_turmas)
 
     try:
@@ -235,7 +263,7 @@ def new_simulation():
         #print(grade[0][0])
 
 
-
+#TODO: PREVENT USER INPUT ERRORS TO ALL ITEMS
 while(menu_keep == 0):
     cls()
     menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Exportar parâmetros\n 5. Importar parâmetros\n 6. Sair\n\nEntrada do usuário: ")
@@ -475,6 +503,9 @@ while(menu_keep == 0):
             pass
     elif menu1 == '5':
         try:
+            subjects = getting_subjects_config_from_file()
+            turmas = getting_turmas_config_from_file()
+            prereqs = getting_prereqs_config_from_file()
             input("Adicione o arquivo de configuração 'custom_config.txt' e pressione qualquer tecla para continuar.")
         except SyntaxError:
             pass
