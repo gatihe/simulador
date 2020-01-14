@@ -4,7 +4,7 @@ Este projeto é um Trabalho de Conclusão de Curso para o curso de Sistemas de I
 
 
 
-###Mais informações:
+### Mais informações:
 #### Activity backlog:
  - Configurar prevenção de erro de usuários
  - Encontrar e alterar melhor termo para disciplinas não cursadas por falta de requisitos
