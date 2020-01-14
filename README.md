@@ -9,7 +9,8 @@ Este projeto é um Trabalho de Conclusão de Curso para o curso de Sistemas de I
 - [Pandas](https://pandas.pydata.org/)
 #### Instruções:
 - Faça o download e extração do repositório
-- Rode no terminal o arquivo
+- Na raiz do diretório extraído, rode o arquivo `simulador.py`
+ * item
 ---
 ### Mais informações
 #### Activity backlog:
