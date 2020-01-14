@@ -22,7 +22,7 @@ aast_param = [7,10] #aa prefix for above average student
 
 #defining parameters 2
 menu_keep = 0
-params = ["Below Average", 0, 5, 10, "Above Average", 5, 7, 10, "Average", 7, 10, 10]
+params = ["Below Average", 0, 5, 10, "Average", 5, 7, 10, "Above Average", 7, 10, 10]
 params_total = len(params)/4
 
 

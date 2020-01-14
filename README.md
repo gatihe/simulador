@@ -10,7 +10,8 @@ Este projeto é um Trabalho de Conclusão de Curso para o curso de Sistemas de I
 #### Instruções:
 - Faça o download e extração do repositório
 - Na raiz do diretório extraído, rode o arquivo `simulador.py`
- * item
+- Todas as funcionalidades estão ativas e funcionando corretamente, *apenas cuidado pois o tratamento de erros para inputs manuais ainda não está totalmente implementado*.
+- Para importar as configurações de forma mais eficiente o arquivo `config.xml` pode servir de auxílio.
 ---
 ### Mais informações
 #### Activity backlog:
