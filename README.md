@@ -13,7 +13,7 @@ Este projeto é um Trabalho de Conclusão de Curso para o curso de Sistemas de I
 #### Observações:
 - Todas as funcionalidades estão ativas e funcionando corretamente, **apenas cuidado pois o tratamento de erros para inputs manuais ainda não está totalmente implementado**.
 - Para importar as configurações de forma mais eficiente o arquivo `config.xml` pode servir de auxílio.
-- A simulação gera dois arquivos (html e csv). **Somente com a finalidade de evidenciar o funcionamento do sistema**, os campos preenchidos com 'Fez em outra turma' e 'Faltam prereqs' servem para apontar que as funções de aplicação de pré-requisitos e de disperção de alunos em turmas está funcionando corretamente.
+- A simulação gera dois arquivos (html e csv). **Somente com a finalidade de evidenciar o funcionamento do sistema**, os campos preenchidos com 'Fez em outra turma' e 'Faltam prereqs' servem para apontar que as funções de aplicação de pré-requisitos e de disperção de alunos em turmas estão se comportando da forma esperada.
 ---
 ### Mais informações
 #### Activity backlog:
