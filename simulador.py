@@ -38,16 +38,6 @@ params_total = len(params)/4
 outra_turma = 'Fez em outra turma'
 
 
-
-
-
-#students quantities per parameter
-bast_qtd = 5
-avst_qtd = 3
-aast_qtd = 8
-
-
-
 #Defining Subjects
 subjects = ["EB101", "SI100", "SI120", "SI201", "SI250"]
 
@@ -243,9 +233,26 @@ def new_simulation():
                     #print("Disciplina tem pre-req, vamos descobrir qual disciplina é:")
                     #print(prereqs[laco3-1])
                     #descobrindo atraves de iteracão quais índices de prereqs
+                    print('descobrindo to_be_checked_prereqs: ')
                     to_be_checked_prereqs = [i for i in range(len(subjects_with_turmas)) if prereqs[laco3-1] in subjects_with_turmas[i]]
+                    print(to_be_checked_prereqs)
                     #armazenando disciplinas que teriam que ser anuladas caso prereqs não sejam atendidos
+                    print('descobrindo to_cancel_due_to_prereq: ')
                     to_cancel_due_to_prereq = [i for i in range(len(subjects_with_turmas)) if prereqs[laco3] in subjects_with_turmas[i]]
+                    print(to_cancel_due_to_prereq)
+
+                    #iteration to set 'Faltam prereqs' on subjects that have only 'Faltam prereqs' on its prereqs grades
+                    i = 0
+                    while(i<len(to_be_checked_prereqs)):
+                        #it will alert if there are only texts in the array
+                        is_there_int = 0
+                        if isinstance(grade[l][to_be_checked_prereqs[i]], str) == False:
+                            is_there_int = 1
+                        i = i + 1
+                    if is_there_int == 0:
+                        for x in to_cancel_due_to_prereq:
+                            grade[l][x] = 'Faltam prereqs'
+
                     #identifyin indexes of possible pre-requisites with its turmas on the table
                     i = 0
                     while(i<len(to_be_checked_prereqs)):
@@ -255,6 +262,8 @@ def new_simulation():
                                 grade[l][to_cancel_due_to_prereq[sera_cancelado]] = 'Faltam prereqs'
                                 sera_cancelado = sera_cancelado + 1
                             #print('achamos algo')
+                            #adicionar logica que se houverem x(qtde de materias com turmas de prereq) em texto, alterar nota para faltam prereqs
+                        #if isinstance(grade[l][to_be_checked_prereqs[i]], str) == False
                         i = i + 1
             laco3 = laco3 +2
         l = l+1
@@ -285,7 +294,7 @@ def new_simulation():
 #TODO: PREVENT USER INPUT ERRORS TO ALL ITEMS
 while(menu_keep == 0):
     cls()
-    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Exportar parâmetros\n 5. Importar parâmetros\n 6. Sair\n\nEntrada do usuário: ")
+    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar parâmetros\n 5. Sair\n\nEntrada do usuário: ")
     if menu1 == '1':
         #os.remove("test.csv")
         print('New simulation')
@@ -394,15 +403,15 @@ while(menu_keep == 0):
                     paramidex = rm_index[0]
                     params[paramidex] = param_new_name
                 param_new_min = int(input("\n\nInsira a nova nota mínima para o parâmetro ou -1 para mante-la.\n\nEntrada do usuário: "),10)
-                if param_new_min != '-1':
+                if param_new_min != -1:
                     paramidex = rm_index[0]
                     params[paramidex + 1] = param_new_min
                 param_new_max = int(input("\n\nInsira a nova nota máxima para o parâmetro ou -1 para mante-la.\n\nEntrada do usuário: "),10)
-                if param_new_max != '-1':
+                if param_new_max != -1:
                     paramidex = rm_index[0]
                     params[paramidex + 2] = param_new_max
                 param_new_std = int(input("\n\nInsira a nova qtde de alunos para o parâmetro ou -1 para mante-la.\n\nEntrada do usuário: "),10)
-                if param_new_std != '-1':
+                if param_new_std != -1:
                     paramidex = rm_index[0]
                     params[paramidex + 3] = param_new_std
                 try:
@@ -446,7 +455,7 @@ while(menu_keep == 0):
             except SyntaxError:
                 pass
         if menu2 == '4':
-            subject_to_remove_prereqs = input('Insira a disciplina á remover os pré-requisitos: ')
+            subject_to_remove_prereqs = input('Insira a disciplina á listar os pré-requisitos: ')
 
             first_occurrence = prereqs.index(subject_to_remove_prereqs)
 
@@ -497,30 +506,6 @@ while(menu_keep == 0):
             except SyntaxError:
                 pass
     elif menu1 == '4':
-        cls()
-        params_sort = [x for x in params if not isinstance(x, str)]
-        st_total = 0
-        st = 3
-        while(st < len(params)):
-            total = params[st]
-            st_total = st_total + total
-            st = st + 4
-        params_total = len(params)/4
-        f = open('config.txt', 'w').close()
-        f= open("config.txt","w+")
-        f=open("config.txt", "a+")
-        f.write("Qtde de alunos: %d" % st_total)
-        f.write("\nQtde de faixas: %d" % params_total)
-        f.write("\nDisciplinas: %s" % subjects)
-        f.write("\nParâmetros: %s" % params)
-        f.write("\nPré-requisitos %s" % prereqs)
-        f.flush()
-        f.close()
-        try:
-            input("Parametros foram exportados como 'config.txt'. Pressione qualquer tecla para continuar.")
-        except SyntaxError:
-            pass
-    elif menu1 == '5':
         try:
             subjects = getting_subjects_config_from_file()
             turmas = getting_turmas_config_from_file()
@@ -529,5 +514,5 @@ while(menu_keep == 0):
             input("Adicione o arquivo de configuração 'custom_config.txt' e pressione qualquer tecla para continuar.")
         except SyntaxError:
             pass
-    elif menu1 == '6':
+    elif menu1 == '5':
         menu_keep = menu_keep + 1
