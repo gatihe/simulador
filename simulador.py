@@ -100,7 +100,6 @@ def getting_turmas_config_from_file():
 def getting_prereqs_config_from_file():
     tree = ET.parse('config.xml')
     root = tree.getroot()
-    new_root = ('/disciplinas/')
     parsed_prereqs = []
     for config_param in root.findall('subjects'):
         for subject in config_param.findall('subject'):
@@ -117,6 +116,26 @@ def getting_prereqs_config_from_file():
 
     #print(parsed_prereqs)
     return parsed_prereqs
+
+def getting_params_config_from_file():
+    tree = ET.parse('config.xml')
+    root = tree.getroot()
+    parsed_params = []
+    for config_param in root.findall('parameters'):
+        for parameter in config_param.findall('parameter'):
+            individual_parameter_name = parameter.findall('parameter_name')
+            parsed_params.append(individual_parameter_name[0].text)
+            individual_parameter_min_grade = parameter.findall('min_grade')
+            parsed_params.append(int(individual_parameter_min_grade[0].text))
+            individual_parameter_max_grade = parameter.findall('max_grade')
+            parsed_params.append(int(individual_parameter_max_grade[0].text))
+            individual_parameter_qtde_alunos = parameter.findall('qtde')
+            parsed_params.append(int(individual_parameter_qtde_alunos[0].text))
+    print(parsed_params)
+    return parsed_params
+
+
+
 
 
 #counters and variable for grades creation
@@ -506,6 +525,7 @@ while(menu_keep == 0):
             subjects = getting_subjects_config_from_file()
             turmas = getting_turmas_config_from_file()
             prereqs = getting_prereqs_config_from_file()
+            params = getting_params_config_from_file()
             input("Adicione o arquivo de configuração 'custom_config.txt' e pressione qualquer tecla para continuar.")
         except SyntaxError:
             pass

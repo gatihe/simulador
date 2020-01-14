@@ -38,16 +38,19 @@
 			<parameter_name>Below Average</parameter_name>
 			<min_grade>0</min_grade>
 			<max_grade>5</max_grade>
+			<qtde>10</qtde>
 		</parameter>
 		<parameter>
 			<parameter_name>Average</parameter_name>
 			<min_grade>5</min_grade>
 			<max_grade>7</max_grade>
+			<qtde>10</qtde>
 		</parameter>
 		<parameter>
 			<parameter_name>Above Average</parameter_name>
 			<min_grade>7</min_grade>
 			<max_grade>10</max_grade>
+			<qtde>10</qtde>
 		</parameter>
 	</parameters>
 </all_configs>
