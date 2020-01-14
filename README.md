@@ -16,7 +16,7 @@ Este projeto é um Trabalho de Conclusão de Curso para o curso de Sistemas de I
 - A simulação gera dois arquivos (html e csv). **Somente com a finalidade de evidenciar o funcionamento do sistema**, os campos preenchidos com 'Fez em outra turma' e 'Faltam prereqs' servem para apontar que as funções de aplicação de pré-requisitos e de disperção de alunos em turmas estão se comportando da forma esperada.
 ---
 ### Mais informações
-#### Activity backlog:
+#### Backlog:
  - Configurar prevenção de erro de usuários
  - Encontrar e alterar melhor termo para disciplinas não cursadas por falta de requisitos
  - Encontrar e alterar melhor termo para turmas não cursadas
