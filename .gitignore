@@ -1,0 +1,5 @@
+# generated CSV and HTML files#
+###############################
+*.csv
+*.html
+/resources

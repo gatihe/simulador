@@ -1,11 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
 import random
 import os
@@ -294,9 +287,7 @@ def new_simulation():
         f = open("simulacao.csv")
         os.remove("simulacao.csv")
     except IOError:
-        simulation.to_csv(r'simulacao.csv')
-        simulation.to_html(r'simulacao.html')
-        print(grade)
+        f = open("simulacao.csv", "+w")
     finally:
         f.close()
         simulation.to_csv(r'simulacao.csv')
@@ -313,7 +304,7 @@ while(menu_keep == 0):
         #os.remove("test.csv")
         new_simulation()
         try:
-            input("Simulação exportada como test.csv. Pressione qualquer tecla para continuar.")
+            input("Simulação exportada como 'simulacao.csv' e 'simulacao.html'. Pressione qualquer tecla para continuar.")
         except SyntaxError:
             menu_keep = menu_keep + 1
             pass
