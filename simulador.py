@@ -3,6 +3,7 @@ import random
 import os
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
+from input_handling import *
 
 
 # In[2]:
@@ -10,9 +11,6 @@ import xml.etree.ElementTree as ET
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
-
-
-print("teste")
 
 #defining parameters
 bast_param = [0,5] #ba prefix for below average student
@@ -42,12 +40,6 @@ turmas = [1,2,1,2,3]
 students = []
 
 prereqs = ['SI100', 'SI250']
-
-
-
-
-
-
 
 def scrambled(orig):
     dest = orig[:]
@@ -299,6 +291,7 @@ def new_simulation():
 while(menu_keep == 0):
     cls()
     menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar parâmetros\n 5. Sair\n\nEntrada do usuário: ")
+    check_input_in_scope(1,5,menu1)
     if menu1 == '1':
         cls()
         #os.remove("test.csv")
@@ -312,80 +305,31 @@ while(menu_keep == 0):
     elif menu1 == '2':
         cls()
         menu2 = input("1. Listar parametros atuais \n2. Configuração de parametros\n3. Fazer upload de parametros\n4. Voltar\n\nEntrada do usuário: ")
+        check_input_in_scope(1,4,menu2)
         if menu2 == '1':
             cls()
             listar_parametros()
             ask_for_input_to_Continue()
         elif menu2 == '2':
             cls()
-            param_to_config = input("1. Adicionar parâmetro\n2. Remover parâmetro\n3. Alterar parâmetro\nEntrada do usuário: ")
+            param_to_config = input("1. Adicionar parâmetro\n2. Remover parâmetro\n3. Alterar parâmetro\n\nEntrada do usuário: ")
+            check_input_in_scope(1,3,param_to_config)
             if param_to_config == '1':
                 cls()
                 listar_parametros()
-                new_param_name = input("Insira o nome do novo parâmetro ou pressione ENTER para cancelar.\nEntrada do usuário: ")
-                if new_param_name is None:
-                    pass
-                if new_param_name not in params and new_param_name is not '':
-                    params.append(new_param_name)
-                    new_param_min = int(input("Mínimo: "), 10)
-                    params.append(new_param_min)
-                    new_param_max = int(input("Máximo: "), 10)
-                    params.append(new_param_max)
-                    new_param_qtd = int(input("Qtde de Alunos: "), 10)
-                    params.append(new_param_qtd)
-                    cls()
-                    print("Novo parâmetro adicionado com sucesso!\n")
-                else:
-                    cls()
-                    print("Operação cancelada.\n")
+                params = set_new_parameter(params)
                 listar_parametros()
                 ask_for_input_to_Continue()
-
             elif param_to_config == '2':
                 cls()
                 listar_parametros()
-                removed_param_name = input("Insira o nome do parâmetro a ser removido ou ENTER para cancelar.\nEntrada do usuário: ")
-                if removed_param_name is not '':
-                    rm_index = [i for i, x in enumerate(params) if x == str(removed_param_name)]
-                    print(rm_index[0])
-                    params.pop(rm_index[0]+3)
-                    params.pop(rm_index[0]+2)
-                    params.pop(rm_index[0]+1)
-                    params.pop(rm_index[0])
-                    cls()
-                    print("Parâmetro removido com sucesso! \n")
-                else:
-                    cls()
-                    print("Operação cancelada.\n")
+                params = del_parameter(params)
                 listar_parametros()
                 ask_for_input_to_Continue()
             elif param_to_config == '3':
                 cls()
                 listar_parametros()
-                altered_param_name = input("Insira o nome da faixa a ser alterada ou ENTER para cancelar.\nEntrada do usuário: ")
-                if altered_param_name is not '':
-                    rm_index = [i for i, x in enumerate(params) if x == str(altered_param_name)]
-                    param_new_name = input("Parametro encontrado. \n\nInsira o novo nome para o parâmetro ou N para manter o nome.\nEntrada do usuário: ")
-                    if param_new_name != 'N' and param_new_name != 'n':
-                        paramidex = rm_index[0]
-                        params[paramidex] = param_new_name
-                    param_new_min = int(input("\n\nInsira a nova nota mínima para o parâmetro ou -1 para mante-la.\nEntrada do usuário: "),10)
-                    if param_new_min != -1:
-                        paramidex = rm_index[0]
-                        params[paramidex + 1] = param_new_min
-                    param_new_max = int(input("\n\nInsira a nova nota máxima para o parâmetro ou -1 para mante-la.\nEntrada do usuário: "),10)
-                    if param_new_max != -1:
-                        paramidex = rm_index[0]
-                        params[paramidex + 2] = param_new_max
-                    param_new_std = int(input("\n\nInsira a nova qtde de alunos para o parâmetro ou -1 para mante-la.\nEntrada do usuário: "),10)
-                    if param_new_std != -1:
-                        paramidex = rm_index[0]
-                        params[paramidex + 3] = param_new_std
-                    cls()
-                    print("Parâmetro alterado com sucesso.")
-                else:
-                    cls()
-                    print("Operação cancelada.")
+                params = change_parameter(params)
                 listar_parametros()
                 ask_for_input_to_Continue()
         elif menu2 == '3':
@@ -396,7 +340,8 @@ while(menu_keep == 0):
 
     elif menu1 == '3':
         cls()
-        menu2 = input("1. Listar disicplinas\n2. Adicionar disciplinas\n3. Remover disciplinas\n4. Alterar turmas\n5. Listar Pré-Requisitos\n6. Adicionar Pré-Requisito\n7. Remover Pré-Requisito\n\nEntrada do usuário: ")
+        menu2 = input("1. Listar disicplinas\n2. Adicionar disciplinas\n3. Remover disciplinas\n4. Alterar turmas\n5. Listar Pré-Requisitos\n6. Adicionar Pré-Requisito\n7. Remover Pré-Requisito\n8. Voltar\n\nEntrada do usuário: ")
+        check_input_in_scope(1,8,menu2)
         if menu2 == '1':
             cls()
             listar_disciplinas()
@@ -495,7 +440,7 @@ while(menu_keep == 0):
             #remove last occurrence
             #keep removing while there is an ocurrence not removed
             subject_to_remove_prereqs = input('Insira a disciplina á remover os pré-requisitos ou ENTER para cancelar.\nEntrada do usuário: ')
-            if subject_to_remove_prereqs is not '':
+            if subject_to_remove_prereqsew   is not '':
                 subject_occurrences = [ i for i in range(len(prereqs)) if prereqs[i] == subject_to_remove_prereqs and i%2 != 0]
                 x = len(subject_occurrences)-1
                 while(x>-1):
