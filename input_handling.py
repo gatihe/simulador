@@ -23,8 +23,32 @@ class DuplicateParameter(Error):
 class InvalidParameter(Error):
     pass
 
+class InvalidSubjectCode(Error):
+    pass
+
 
 ####Check for error functions:
+def set_new_subject(subjects, turmas):
+    try:
+        new_subject = input("O código da disciplina deve seguir o seguinte padrão. ABXXX sendo AB duas letras quaisquer e XXX 3 números quaisquer. \nInsira o código da disciplina à ser adicionada ou Enter para cancelar.\nEntrada do usuário: ")
+        if len(new_subject) != 5:
+            raise InvalidSubjectCode
+        new_subject = new_subject.upper()
+        print(new_subject)
+        int(new_subject[-3:])
+        if new_subject not in subjects and new_subject is not '':
+            no_turmas = int(input("Insira a quantidade de turmas para esta disciplina. \nEntrada do usuário: "))
+            subjects.append(new_subject)
+            turmas.append(abs(no_turmas))
+            print("Disciplina adicionada com sucesso.")
+        elif new_subject in subjects:
+            print("Disciplina já cadastrada.")
+    except ValueError:
+        print("Valor inválido. Operação cancelada.")
+    except InvalidSubjectCode:
+        print("Código de disciplina inválido. Operação cancelada.")
+    return subjects, turmas
+
 def set_new_parameter(params):
     try:
         new_param_name = input("Insira o nome do novo parâmetro ou ENTER para cancelar.\n\n Entrada do usuário: ")

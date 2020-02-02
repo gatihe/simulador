@@ -348,16 +348,7 @@ while(menu_keep == 0):
             ask_for_input_to_Continue()
         if menu2 == '2':
             cls()
-            subject_added = input("Insira o nome da disciplina à ser adicionada ou ENTER para cancelar.\nEntrada do usuário: ")
-            if subject_added not in subjects and subject_added is not '':
-                subjects.append(subject_added)
-                qtde_turmas = int(input("\n\nInsira a quantidade de turmas para esta disciplina.\nEntrada do usuário: "))
-                turmas.append(qtde_turmas)
-                cls()
-                print("Disciplina adicionada com sucesso.")
-            else:
-                cls()
-                print("Operação cancelada.")
+            subjects, turmas = set_new_subject(subjects, turmas)
             listar_disciplinas()
             ask_for_input_to_Continue()
         if menu2 == '3':
