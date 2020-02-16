@@ -26,8 +26,50 @@ class InvalidParameter(Error):
 class InvalidSubjectCode(Error):
     pass
 
+class NotASubject(Error):
+    pass
 
+class NoPrereqs(Error):
+    pass
 ####Check for error functions:
+def list_prereqs(prereqs, subjects):
+    try:
+        subject_to_list_prereqs = input('Insira a disciplina á listar os pré-requisitos ou ENTER para cancelar. \nEntrada do usuário: ')
+        subject_to_list_prereqs = subject_to_list_prereqs.upper()
+        if subject_to_list_prereqs is not '':
+            if subject_to_list_prereqs not in subjects:
+                raise NotASubject
+            if subject_to_list_prereqs not in prereqs:
+                raise NoPrereqs
+            cls()
+            print("prereqs")
+            print(prereqs)
+            first_occurrence = prereqs.index(subject_to_list_prereqs)
+            subject_occurrences = [ i for i in range(len(prereqs)) if prereqs[i] == subject_to_list_prereqs and i%2 != 0]
+            x = len(subject_occurrences)-1
+            individual_prereqs = []
+            while(x>-1):
+                individual_prereqs.append(prereqs[subject_occurrences[x]-1])
+                x = x -1
+            if len(individual_prereqs) != 0:
+                print("Pré-requisitos para disciplina "+subject_to_list_prereqs+":\n")
+                for i in individual_prereqs:
+                    print(i)
+                    print("\nPré-requisitos listados com sucesso.")
+                    return individual_prereqs
+            else:
+                print("Não há pre-requisitos para a disciplina")
+        else:
+                cls()
+                print("Operação cancelada.")
+
+    except ValueError:
+        print("Insira um valor válido.")
+    except NotASubject:
+        print("Disciplina não existe")
+    except NoPrereqs:
+        print("Não há pré-requisitos para a disciplina")
+
 def edit_turmas(subjects, turmas):
     try:
         subject_to_edit_turmas = input("\n Insira o código da disciplina à alterar as turmas ou ENTER para cancelar.\nEntrada do usuário: ")

@@ -363,26 +363,8 @@ while(menu_keep == 0):
         if menu2 == '5':
             cls()
             listar_disciplinas()
-            subject_to_list_prereqs = input('Insira a disciplina á listar os pré-requisitos ou ENTER para cancelar. \nEntrada do usuário: ')
-            if subject_to_list_prereqs is not '':
-                cls()
-                print("Pré-requisitos para disciplina "+subject_to_list_prereqs+":\n")
-                first_occurrence = prereqs.index(subject_to_list_prereqs)
-                subject_occurrences = [ i for i in range(len(prereqs)) if prereqs[i] == subject_to_list_prereqs and i%2 != 0]
-                x = len(subject_occurrences)-1
-                individual_prereqs = []
-                while(x>-1):
-                    individual_prereqs.append(prereqs[subject_occurrences[x]-1])
-                    x = x -1
-                for i in individual_prereqs:
-                    print(i)
-                print("\nPré-requisitos listados com sucesso.")
-            else:
-                cls()
-                print("Operação cancelada.")
+            prereqs_to_list = list_prereqs(prereqs, subjects)
             ask_for_input_to_Continue()
-
-
         if menu2 == '6':
             cls()
             listar_disciplinas()
