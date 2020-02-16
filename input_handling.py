@@ -28,6 +28,39 @@ class InvalidSubjectCode(Error):
 
 
 ####Check for error functions:
+def edit_turmas(subjects, turmas):
+    try:
+        subject_to_edit_turmas = input("\n Insira o código da disciplina à alterar as turmas ou ENTER para cancelar.\nEntrada do usuário: ")
+        if subject_to_edit_turmas is not '':
+            if subject_to_edit_turmas in subjects:
+                index_to_edit_turmas = subjects.index(subject_to_edit_turmas)
+                new_turmas_qtt = int(input("\n Insira a nova quantidade de turmas para a disciplina: "))
+                turmas[index_to_edit_turmas] = new_turmas_qtt
+                print("Quantidade de turmas alterada com sucesso. Nova quantidade de turmas para "+str(subject_to_edit_turmas)+": "+str(turmas[index_to_edit_turmas]))
+            else:
+                print("Disciplina não encontrada.")
+    except ValueError:
+        print("Valor inválido. Operação cancelada.")
+    return subjects, turmas
+
+def del_subject(subjects, turmas):
+    try:
+        subject_removed = input("\nInsira o código da disciplina a ser removida ou ENTER para cancelar.\nEntrada do usuário: ")
+        if subject_removed is not '':
+            if subject_removed in subjects:
+                subject_index = subjects.index(subject_removed)
+                turmas.pop(subject_index)
+                subjects.remove(subject_removed)
+                print("\n\nDisciplina removida com sucesso.")
+            else:
+                print("Erro. Disciplina não encontrada.")
+        else:
+            cls()
+            print("Operação cancelada.")
+    except ValueError:
+        print("Operação inválida.")
+    return subjects, turmas
+
 def set_new_subject(subjects, turmas):
     try:
         new_subject = input("O código da disciplina deve seguir o seguinte padrão. ABXXX sendo AB duas letras quaisquer e XXX 3 números quaisquer. \nInsira o código da disciplina à ser adicionada ou Enter para cancelar.\nEntrada do usuário: ")

@@ -336,8 +336,6 @@ while(menu_keep == 0):
              params = getting_params_config_from_file()
              print("\nImportação realizada com sucesso. Os parâmetros foram atualizados.")
              ask_for_input_to_Continue()
-
-
     elif menu1 == '3':
         cls()
         menu2 = input("1. Listar disicplinas\n2. Adicionar disciplinas\n3. Remover disciplinas\n4. Alterar turmas\n5. Listar Pré-Requisitos\n6. Adicionar Pré-Requisito\n7. Remover Pré-Requisito\n8. Voltar\n\nEntrada do usuário: ")
@@ -354,30 +352,13 @@ while(menu_keep == 0):
         if menu2 == '3':
             cls()
             listar_disciplinas()
-            subject_removed = input("\nInsira o código da disciplina a ser removida ou ENTER para cancelar.\nEntrada do usuário: ")
-            if subject_removed is not '':
-                if subject_removed in subjects:
-                    subjects.remove(subject_removed)
-                    print("\n\nDisciplina removida com sucesso.")
-                else:
-                    print("Erro. Disciplina não encontrada.")
-            else:
-                cls()
-                print("Operação cancelada.")
+            subjects, turmas = del_subject(subjects, turmas)
             listar_disciplinas()
             ask_for_input_to_Continue()
         if menu2 == '4':
             cls()
             listar_disciplinas()
-            subject_to_edit_turmas = input("\n Insira o código da disciplina à alterar as turmas ou ENTER para cancelar.\nEntrada do usuário: ")
-            if subject_to_edit_turmas is not '':
-                if subject_to_edit_turmas in subjects:
-                    index_to_edit_turmas = subjects.index(subject_to_edit_turmas)
-                    new_turmas_qtt = int(input("\n Insira a nova quantidade de turmas para a disciplina: "))
-                    turmas[index_to_edit_turmas] = new_turmas_qtt
-                    print("Quantidade de turmas alterada com sucesso. Nova quantidade de turmas para "+str(subject_to_edit_turmas)+": "+str(turmas[index_to_edit_turmas]))
-                else:
-                    print("Disciplina não encontrada.")
+            subjects, turmas = edit_turmas(subjects, turmas)
             ask_for_input_to_Continue()
         if menu2 == '5':
             cls()
