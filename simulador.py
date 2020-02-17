@@ -368,23 +368,7 @@ while(menu_keep == 0):
         if menu2 == '6':
             cls()
             listar_disciplinas()
-            subject_to_add_prereq = input("Insira o nome da disciplina a qual deseja adicionar o pré-requisito ou ENTER para cancelar.\nEntrada do usuário: ")
-            if subject_to_add_prereq is not '':
-                subject_new_prereq = input("Insira o novo pré-requisito para a disciplina ou ENTER para cancelar. \nEntrada do usuário: ")
-                if subject_new_prereq is not '':
-                    prereqs.append(subject_new_prereq)
-                    prereqs.append(subject_to_add_prereq)
-                    cls()
-                    #TODO: Implementar list_prereqs_for_subject()
-                    print("Pré-requisito adicionado com sucesso.")
-                else:
-                    cls()
-                    print("Operação cancelada.")
-                    subject_new_prereq = ''
-                    pass
-            else:
-                cls()
-                print("Operação cancelada.")
+            prereqs = add_prereqs(subjects, prereqs)
             ask_for_input_to_Continue()
         if menu2 == '7':
             cls()

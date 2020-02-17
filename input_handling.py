@@ -32,6 +32,35 @@ class NotASubject(Error):
 class NoPrereqs(Error):
     pass
 ####Check for error functions:
+def add_prereqs(subjects, prereqs):
+    try:
+        subject_to_add_prereq = input("Insira o nome da disciplina a qual deseja adicionar o pré-requisito ou ENTER para cancelar.\nEntrada do usuário: ")
+        if subject_to_add_prereq is not '':
+            if subject_to_add_prereq not in subjects:
+                raise NotASubject
+            subject_new_prereq = input("Insira o novo pré-requisito para a disciplina ou ENTER para cancelar. \nEntrada do usuário: ")
+            if subject_new_prereq is not '':
+                if subject_new_prereq not in subjects:
+                    raise NotASubject
+                prereqs.append(subject_new_prereq)
+                prereqs.append(subject_to_add_prereq)
+                cls()
+                #TODO: Implementar list_prereqs_for_subject()
+                print("Pré-requisito adicionado com sucesso.")
+            else:
+                cls()
+                print("Operação cancelada.")
+                subject_new_prereq = ''
+                pass
+        else:
+            cls()
+            print("Operação cancelada.")
+    except NotASubject:
+        print("Disciplina não existe")
+    except ValueError:
+        print("Disciplina inválida")
+    return prereqs
+
 def list_prereqs(prereqs, subjects):
     try:
         subject_to_list_prereqs = input('Insira a disciplina á listar os pré-requisitos ou ENTER para cancelar. \nEntrada do usuário: ')
@@ -42,8 +71,6 @@ def list_prereqs(prereqs, subjects):
             if subject_to_list_prereqs not in prereqs:
                 raise NoPrereqs
             cls()
-            print("prereqs")
-            print(prereqs)
             first_occurrence = prereqs.index(subject_to_list_prereqs)
             subject_occurrences = [ i for i in range(len(prereqs)) if prereqs[i] == subject_to_list_prereqs and i%2 != 0]
             x = len(subject_occurrences)-1
@@ -55,8 +82,8 @@ def list_prereqs(prereqs, subjects):
                 print("Pré-requisitos para disciplina "+subject_to_list_prereqs+":\n")
                 for i in individual_prereqs:
                     print(i)
-                    print("\nPré-requisitos listados com sucesso.")
-                    return individual_prereqs
+                print("\nPré-requisitos listados com sucesso.")
+                return individual_prereqs
             else:
                 print("Não há pre-requisitos para a disciplina")
         else:
