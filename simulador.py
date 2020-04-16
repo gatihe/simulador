@@ -1,6 +1,7 @@
 import pandas as pd
 import random
 import os
+import time
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from input_handling import *
@@ -16,6 +17,8 @@ def cls():
 bast_param = [0,5] #ba prefix for below average student
 avst_param = [5,7] #av prefix for average student
 aast_param = [7,10] #aa prefix for above average student
+
+semoffers = []
 
 
 #defining parameters 2
@@ -39,7 +42,7 @@ turmas = [1,2,1,2,3]
 
 students = []
 
-prereqs = ['SI100', 'SI250']
+prereqs = ["SI100", "SI250"]
 
 def scrambled(orig):
     dest = orig[:]
@@ -73,7 +76,27 @@ def getting_turmas_config_from_file(filename):
                 parsed_turmas.append(int(x.text))
     return parsed_turmas
 
+def getting_credits_config_from_file(filename):
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    parsed_credits = []
+    for config_param in root.findall('subjects'):
+        for subject in config_param.findall('subject'): # access each subject
+            individual_qtde_credits = subject.findall('credits')
+            for x in individual_qtde_credits:
+                parsed_credits.append(int(x.text))
+    return parsed_credits
 
+def getting_semoffer_config_from_file(filename):
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    parsed_semoffers = []
+    for config_param in root.findall('subjects'):
+        for subject in config_param.findall('subject'): # access each subject
+            individual_semoffer = subject.findall('sem_offer')
+            for x in individual_semoffer:
+                parsed_semoffers.append(int(x.text))
+    return parsed_semoffers
 
 def getting_prereqs_config_from_file(filename):
     tree = ET.parse(filename)
@@ -101,9 +124,9 @@ def getting_params_config_from_file(filename):
             individual_parameter_name = parameter.findall('parameter_name')
             parsed_params.append(individual_parameter_name[0].text)
             individual_parameter_min_grade = parameter.findall('min_grade')
-            parsed_params.append(int(individual_parameter_min_grade[0].text))
+            parsed_params.append(float(individual_parameter_min_grade[0].text))
             individual_parameter_max_grade = parameter.findall('max_grade')
-            parsed_params.append(int(individual_parameter_max_grade[0].text))
+            parsed_params.append(float(individual_parameter_max_grade[0].text))
             individual_parameter_qtde_alunos = parameter.findall('qtde')
             parsed_params.append(int(individual_parameter_qtde_alunos[0].text))
     return parsed_params
@@ -148,9 +171,61 @@ grade = []
 
 #cut is the min grade to be aproved
 cut = 5
+even_semester = []
+odd_semester = []
+
+def check_for_prereq(subject_to_check, prereqs_list):
+    cont1 = 0
+    prereqs_for_subject = []
+    while (cont1 < len(prereqs_list)):
+        if prereqs_list[cont1] == subject_to_check and cont1 % 2 != 0:
+            prereqs_for_subject.append(prereqs_list[cont1 - 1])
+        cont1 = cont1 + 1
+    return prereqs_for_subject
+
+def arrange_semesters(subjects, semoffers, even_semester, odd_semester):
+    i = 0
+    j = 0
+    for i, j in zip(semoffers, subjects):
+        if i % 2 == 0:
+            even_semester.append(j)
+        if i % 2 != 0:
+            odd_semester.append(j)
+    return
+
+
+def sort_turmas(subjects, turmas):
+    sub = 0
+    run_turma = 0
+    subs_with_turmas = []
+    while (sub < len(subjects)):
+        subs_with_turmas.append('Turma')
+        subs_with_turmas.append(subjects[sub])
+        sub = sub +1
+    return subs_with_turmas
+
+def check_prereqs_are_ok(disciplinas, already_passed): #if 1 ok if 0 not ok
+    counter = 0
+    ok_or_not = 1
+    while(counter<len(disciplinas)):
+        if disciplinas[counter] not in already_passed:
+            ok_or_not = 0
+    return ok_or_not
 
 def new_simulation():
-
+    arrange_semesters(subjects, semoffers, even_semester, odd_semester)
+    max_years = 6
+#intercalando semestres pra criar grade de ofertas
+    all_subs = []
+    i = 0
+    while (i < 6):
+        for odd_sem in odd_semester:
+            all_subs.append(odd_sem)
+        for even_sem in even_semester:
+            all_subs.append(even_sem)
+        i = i+1
+    #print(all_subs)
+    subss = sort_turmas(all_subs, turmas)
     sub = 0
     turm = 0
     subjects_with_turmas = []
@@ -196,84 +271,163 @@ def new_simulation():
             b = 0
             newgradeline = []
             grade.append(newgradeline)
-            while(b < len(subjects_with_turmas)):
-                gen_grade = round(random.uniform(params_sort[j-2],params_sort[j-1]),2)
+            while(b < len(subss)):
+                #gen_grade = round(random.uniform(params_sort[j-2],params_sort[j-1]),2)
+                gen_grade = -1
                 newgradeline.append(gen_grade)
                 b = b +1
             a = a +1
         j = j + 3
 
 
+
+
+    m = 0
+    subj_credits = []
+    subj_credits.clear()
+    while(m<len(subjects)):
+        subj_credits.append(subjects[m])
+        subj_credits.append(credits[m])
+        m = m+1
+
     k = 0
     l = 0
     c = 0
-    ## applying turmas
-    already_sorted = []
+
+#emptying values and sorting turmas
+    l = 0
+
+
+
+    while(l < len(students)):
+        c = 0
+        while (c < len(subss)):
+            if c % 2 != 0:
+                turminha = subjects.index(subss[c])
+                sorteio_de_turma = 0
+                turma_sorteada = random.randint(0,turmas[turminha]-1)
+                turma_sorteada = turma_sorteada + 65
+                grade[l][c-1] = chr(turma_sorteada)
+            c = c + 1
+        l = l+1
+
+    #identificar o que é um semestre na linha, manter primeiros
+    #applying prereqs
     l = 0
     c = 0
-    turmas_sorteadas = []
+    creditos_do_semestre = 0
+    max_creditos = 28
+    grades_to_handle = []
+    already_passed = []
+    handled_grades = []
+    pendentes = []
+    qtde_de_disciplinas_semestre_par = len(even_semester)
+    qtde_de_disciplinas_semestre_impar = len(odd_semester)
+    qtde_itens_na_disciplina = 6 #nome, turma, nota, creditos, semestre de oferta, liberado
+    creditos_atuais = 0
+    semestre_atual = []
+    tempo_max_integralizacao = 12
+    line = []
+
     while(l<len(students)):
-        c = 0
-        already_sorted = []
-        while(c<len(subjects_with_turmas)):
-            index_to_match = subjects.index(subjects_with_turmas[c][:5])
-            turmas_sorteadas = []
-            if turmas[index_to_match]>1 and subjects[index_to_match] not in already_sorted:
-                    j = 0
-                    turmas_sorteadas = random.sample(range(0,turmas[index_to_match]),turmas[index_to_match]-1)
-                    while(j<len(turmas_sorteadas)):
-                        grade[l][c+turmas_sorteadas[j]] = outra_turma
-                        j = j +1
-                    already_sorted.append(subjects[index_to_match])
-                    c = c +1
+        index_inicial_do_semestre = 0
+        index_final_do_semestre = -1
+        inicio_semestre = 0
+        contador_de_semestre = 1
+        line.clear()
+        pendentes.clear()
+        c = 1
+        already_passed.clear()
+        sc_index = 0
+        grades_to_handle.clear()
+        while(c<len(subss)):
+            pendentes.append(subss[c]) #nome
+            pendentes.append(grade[l][c-1]) #turma
+            pendentes.append(grade[l][c]) #nota
+            sc_index = subj_credits.index(subss[c]) ##creditos
+            pendentes.append(subj_credits[sc_index+1]) ##creditos
+            if subss[c] in even_semester:
+                pendentes.append(2) #semestre de oferta, 1 impar, 2 par
             else:
-                c = c+1
+                pendentes.append(1)
+            pendentes.append(1) #liberado para fazer ou não: 0 não (setup inicial), 1 sim
+            c = c +2
+        ####\/ \/ \/ \/ VETOR PARA CONFIGURAR TUDO ESTA CRIADO, MAGICA ACONTECE LOGO ABAIXO \/ \/ \/ \/ CONFIRA:
+        ## TRATAR VETOR PENDENTES
+        j = 0
+        instancias_eb101 = [i for i,d in enumerate(pendentes) if d=='EB101']
+        instancias_eb102 = [i for i,d in enumerate(pendentes) if d=='EB102']
+        while(contador_de_semestre<=tempo_max_integralizacao):
+            index_inicial_do_semestre = index_final_do_semestre + 1
+            if contador_de_semestre % 2 == 0:
+                index_final_do_semestre = index_final_do_semestre + (qtde_de_disciplinas_semestre_par * qtde_itens_na_disciplina)
+            if contador_de_semestre % 2 != 0:
+                index_final_do_semestre = index_final_do_semestre + (qtde_de_disciplinas_semestre_impar * qtde_itens_na_disciplina)
+
+            #percorrer pendentes inclusas no semestre do contador do semestre
+            inicio_semestre = index_inicial_do_semestre
+            fim_semestre = index_final_do_semestre
+            semestre_atual.clear()
+            #dividindo ofertas por semestre
+            while(inicio_semestre<=fim_semestre):
+                semestre_atual.append(pendentes[inicio_semestre])
+                inicio_semestre = inicio_semestre + 1
+            #bloqueando disciplinas que faltam prereqs ou que o aluno ja foi aprovado
+            cont_sub = 0
+            #somente bloqueando as que já foram feitas
+            while(cont_sub<len(semestre_atual)):
+                if semestre_atual[cont_sub] in already_passed:
+                    semestre_atual[cont_sub + 5] = 0
+                cont_sub = cont_sub +6
+            #somente bloquando as que tem prereq nao cumprido
+            cont_sub = 0
+            while(cont_sub<len(semestre_atual)):
+                individual_prereqs = check_for_prereq(semestre_atual[cont_sub], prereqs)
+                if (len(individual_prereqs)>0):
+                    novo_contador = 0
+                    while(novo_contador<len(individual_prereqs)):
+                        if individual_prereqs[novo_contador] not in already_passed:
+                            semestre_atual[cont_sub+5] = 0
+                        novo_contador = novo_contador + 1
+                cont_sub = cont_sub + 6
+
+            creditos_atuais = 0
+            cont_sub = 0
+            while(cont_sub<(len(semestre_atual))):
+                test_creditos = 0
+                if creditos_atuais + semestre_atual[cont_sub+3] <= max_creditos and semestre_atual[cont_sub+5] == 1:
+                    creditos_atuais = creditos_atuais+semestre_atual[cont_sub+3]
+                    #sorteando nota
+                    semestre_atual[cont_sub+2] = round(random.uniform(5,10))
+                    if semestre_atual[cont_sub+2] >= 5:
+                        already_passed.append(semestre_atual[cont_sub])
+                        semestre_atual[cont_sub+5] = 0
+                cont_sub = cont_sub + 6
+
+
+
+            count_line = 0
+            while (count_line<len(semestre_atual)):
+                line.append(semestre_atual[count_line + 1])
+                line.append(semestre_atual[count_line + 2])
+                count_line = count_line + 6
+
+
+
+            contador_de_semestre = contador_de_semestre + 1
+
+        ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
+        grade[l] = line
+        print(len(already_passed))
+        print('de')
+        print(len(subjects))
         l = l+1
 
-#applyin prereqs
-#discovering which subject is prereq for which subject
-    l = 0
-    while(l < len(students)):
-        to_be_checked_prereqs = []
-        to_cancel_due_to_prereq =[]
-        laco3 = 1
-        while (laco3<len(prereqs)):
-            for disciplina_com_prereq in subjects_with_turmas:
-                if prereqs[laco3] in disciplina_com_prereq:
-                    current_prereqs_on_table = []
-                    #print("Disciplina tem pre-req, vamos descobrir qual disciplina é:")
-                    #print(prereqs[laco3-1])
-                    #descobrindo atraves de iteracão quais índices de prereqs
-                    to_be_checked_prereqs = [i for i in range(len(subjects_with_turmas)) if prereqs[laco3-1] in subjects_with_turmas[i]]
-                    #armazenando disciplinas que teriam que ser anuladas caso prereqs não sejam atendidos
-                    to_cancel_due_to_prereq = [i for i in range(len(subjects_with_turmas)) if prereqs[laco3] in subjects_with_turmas[i]]
-                    #iteration to set 'Faltam prereqs' on subjects that have only 'Faltam prereqs' on its prereqs grades
-                    i = 0
-                        #it will alert if there are only texts in the array
-                    is_there_int=0
-                    for i in to_be_checked_prereqs:
-                        if isinstance(grade[l][i], str) == False:
-                            is_there_int = 1
-                    if is_there_int == 0:
-                        for x in to_cancel_due_to_prereq:
-                            grade[l][x] = 'Faltam prereqs 1'
 
-                    #identifyin indexes of possible pre-requisites with its turmas on the table
-                    i = 0
-                    while(i<len(to_be_checked_prereqs)):
-                        if isinstance(grade[l][to_be_checked_prereqs[i]], str) == False and grade[l][to_be_checked_prereqs[i]] < cut:
-                            sera_cancelado = 0
-                            while(sera_cancelado<len(to_cancel_due_to_prereq)):
-                                grade[l][to_cancel_due_to_prereq[sera_cancelado]] = 'Faltam prereqs'
-                                sera_cancelado = sera_cancelado + 1
-                            #adicionar logica que se houverem x(qtde de materias com turmas de prereq) em texto, alterar nota para faltam prereqs
-                        #if isinstance(grade[l][to_be_checked_prereqs[i]], str) == False
-                        i = i + 1
-            laco3 = laco3 +2
-        l = l+1
-
-    simulation = pd.DataFrame (scrambled(grade),index=students, columns=subjects_with_turmas)
-
+    simulation = pd.DataFrame (grade,index=students, columns=subss)
+    timestr = time.strftime('%Y%m%d-%H%M%S')
+    simulationcsv = timestr+'.csv'
+    simulationhtml = timestr+'.csv'
     try:
         f = open("simulacao.csv")
         os.remove("simulacao.csv")
@@ -283,9 +437,6 @@ def new_simulation():
         f.close()
         simulation.to_csv(r'simulacao.csv')
         simulation.to_html(r'simulacao.html')
-        #print(grade)
-        #print(grade[0][0])
-
 
 #TODO: PREVENT USER INPUT ERRORS TO ALL ITEMS
 while(menu_keep == 0):
@@ -399,6 +550,9 @@ while(menu_keep == 0):
                 turmas = getting_turmas_config_from_file(filename)
                 prereqs = getting_prereqs_config_from_file(filename)
                 params = getting_params_config_from_file(filename)
+                semoffers = getting_semoffer_config_from_file(filename)
+                credits = getting_credits_config_from_file(filename)
+                print(semoffers)
                 cls()
                 print("Configuração importada com sucesso.")
             except SyntaxError:
