@@ -103,24 +103,24 @@
 			<pre_reqs></pre_reqs>
 		</subject>
 		<subject>
+			<id>SI305</id>
+			<subject_name>Análise de Sistemas de Informação I</subject_name>
+			<credits>4</credits>
+			<sem_offer>2</sem_offer>
+			<classes_no>1</classes_no>
+			<pre_reqs>SI100</pre_reqs>
+		</subject>
+		<subject>
 			<id>ST266</id>
 			<subject_name>Engenharia de Software I</subject_name>
 			<credits>2</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>1</classes_no>
-			<pre_reqs></pre_reqs>
+			<pre_reqs>SI100</pre_reqs>
 		</subject>
 		<subject>
 			<id>ST468</id>
 			<subject_name>Cálculo Numérico</subject_name>
-			<credits>4</credits>
-			<sem_offer>2</sem_offer>
-			<classes_no>1</classes_no>
-			<pre_reqs></pre_reqs>
-		</subject>
-		<subject>
-			<id>SI305</id>
-			<subject_name>Análise de Sistemas de Informação I</subject_name>
 			<credits>4</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>1</classes_no>
@@ -153,14 +153,14 @@
 		<subject>
 			<id>SI404</id>
 			<subject_name>Introdução à Interfaces Humano-Computador</subject_name>
-			<credits>4</credits>
+			<credits>2</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
-			<pre_reqs></pre_reqs>
+			<pre_reqs>ST266</pre_reqs>
 		</subject>
 		<subject>
 			<id>ST211</id>
-			<subject_name>Introdução à Interfaces Humano-Computador</subject_name>
+			<subject_name>Estatística</subject_name>
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
@@ -172,7 +172,7 @@
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
-			<pre_reqs></pre_reqs>
+			<pre_reqs>SI100</pre_reqs>
 		</subject>
 		<subject>
 			<id>ST568</id>
@@ -196,7 +196,7 @@
 			<credits>4</credits>
 			<sem_offer>4</sem_offer>
 			<classes_no>1</classes_no>
-			<pre_reqs></pre_reqs>
+			<pre_reqs>SI100</pre_reqs>
 		</subject>
 		<subject>
 			<id>SI400</id>
@@ -281,7 +281,7 @@
 		<subject>
 			<id>SI704</id>
 			<subject_name>Seminários II</subject_name>
-			<credits>4</credits>
+			<credits>2</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
 			<pre_reqs></pre_reqs>
@@ -305,7 +305,7 @@
 		<subject>
 			<id>SI801</id>
 			<subject_name>Introdução a Auditoria e Segurança de Sistemas</subject_name>
-			<credits>4</credits>
+			<credits>2</credits>
 			<sem_offer>6</sem_offer>
 			<classes_no>1</classes_no>
 			<pre_reqs>SI101</pre_reqs>
@@ -340,7 +340,7 @@
 			<credits>6</credits>
 			<sem_offer>8</sem_offer>
 			<classes_no>1</classes_no>
-			<pre_reqs></pre_reqs>
+			<pre_reqs>SI912</pre_reqs>
 		</subject>
 		<subject>
 			<id>SI918</id>
@@ -354,21 +354,21 @@
 	<parameters>
 		<parameter>
 			<parameter_name>Average</parameter_name>
-			<min_grade>0.1</min_grade>
-			<max_grade>8</max_grade>
-			<qtde>1</qtde>
+			<min_grade>4.5</min_grade>
+			<max_grade>7</max_grade>
+			<qtde>10</qtde>
 		</parameter>
 		<parameter>
 		  <parameter_name>Below Average</parameter_name>
-		  <min_grade>0</min_grade>
-		  <max_grade>5</max_grade>
-		  <qtde>0</qtde>
+		  <min_grade>0.1</min_grade>
+		  <max_grade>7</max_grade>
+		  <qtde>10</qtde>
 		</parameter>
 		<parameter>
 		  <parameter_name>Above Average</parameter_name>
-		  <min_grade>7</min_grade>
+		  <min_grade>5</min_grade>
 		  <max_grade>10</max_grade>
-		  <qtde>0</qtde>
+		  <qtde>10</qtde>
 		</parameter>
 	</parameters>
 </all_configs>
