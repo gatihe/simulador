@@ -442,13 +442,17 @@ def new_simulation():
                 cont_sub = 0
                 while(cont_sub<(len(semestre_atual))):
                     test_creditos = 0
+                    freq_instance = 100
                     if creditos_atuais + semestre_atual[cont_sub+3] <= max_creditos and semestre_atual[cont_sub+5] == 1:
                         creditos_atuais = creditos_atuais+semestre_atual[cont_sub+3]
                         #sorteando nota
                         # print('parametros agora:')
                         # print(outrovetordeteste[contest])
                         # print(outrovetordeteste[contest+1])
+                        freq_instance = freq_instance - round(random.uniform(0,100),2)
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
+                        if freq_instance < 65:
+                            semestre_atual[cont_sub+2] = 0
                         if semestre_atual[cont_sub+2] >= 5:
                             already_passed.append(semestre_atual[cont_sub])
                             semestre_atual[cont_sub+5] = 0
