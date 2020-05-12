@@ -1,0 +1,20 @@
+<all_configs>
+  <parameters>
+    <parameter>
+      <parameter_name>Average</parameter_name>
+      <min_grade>6</min_grade>
+      <max_grade>8</max_grade>
+      <qtde>1</qtde>
+    </parameter>
+  </parameters>
+  <hard_pass>
+    <sub_id></sub_id>
+    <sub_id></sub_id>
+    <sub_id></sub_id>
+    <sub_id></sub_id>
+    <sub_id></sub_id>
+    <sub_id></sub_id>
+    <sub_id></sub_id>
+    <sub_id></sub_id>
+  </hard_pass>
+</all_configs>
