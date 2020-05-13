@@ -144,7 +144,7 @@
 			<pre_reqs>TT350</pre_reqs>
 		</subject>
 		<subject>
-			<id>SI404</id>
+			<id>Estatística</id>
 			<subject_name>Introdução à Interfaces Humano-Computador</subject_name>
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
@@ -344,12 +344,4 @@
 			<pre_reqs></pre_reqs>
 		</subject>
 	</subjects>
-	<parameters>
-		<parameter>
-			<parameter_name>Average</parameter_name>
-			<min_grade>6</min_grade>
-			<max_grade>8</max_grade>
-			<qtde>10</qtde>
-		</parameter>
-	</parameters>
 </all_configs>

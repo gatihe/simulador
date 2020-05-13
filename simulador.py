@@ -20,11 +20,13 @@ aast_param = [7,10] #aa prefix for above average student
 
 semoffers = []
 cat_info = []
-
+hard_passes = []
+easy_passes = []
 #defining parameters 2
 menu_keep = 0
 params = ["Below Average", 0, 5, 10, "Average", 5, 7, 10, "Above Average", 7, 10, 10]
 params_total = len(params)/4
+factors = []
 
 
 
@@ -141,6 +143,32 @@ def getting_prereqs_config_from_file(filename):
     #print(parsed_prereqs)
     return parsed_prereqs
 
+def getting_hard_pass_from_file(filename):
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    parsed_hard_pass = []
+    for config_param in root.findall('subj_dificulty'):
+        for hp in config_param.findall('hard_pass'):
+            individual_hp = hp.findall('sub_id')
+            for x in individual_hp:
+                    if x.text is not None:
+                        #prereq to add is equal to pre_reqs tag's text inside the current subject being parsed
+                        parsed_hard_pass.append(x.text)
+    return parsed_hard_pass
+
+def getting_easy_pass_from_file(filename):
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    parsed_easy_pass = []
+    for config_param in root.findall('subj_dificulty'):
+        for hp in config_param.findall('easy_pass'):
+            individual_ep = hp.findall('sub_id')
+            for x in individual_ep:
+                    if x.text is not None:
+                        #prereq to add is equal to pre_reqs tag's text inside the current subject being parsed
+                        parsed_easy_pass.append(x.text)
+    return parsed_easy_pass
+
 def getting_params_config_from_file(filename):
     tree = ET.parse(filename)
     root = tree.getroot()
@@ -157,6 +185,16 @@ def getting_params_config_from_file(filename):
             parsed_params.append(int(individual_parameter_qtde_alunos[0].text))
     return parsed_params
 
+def getting_factors_config_from_file(filename):
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    parsed_factors = []
+    for config_factor in root.findall('factors'):
+        easy_pass_factor = config_factor.findall('easy_pass_factor')
+        parsed_factors.append(float(easy_pass_factor[0].text))
+        hard_pass_factor = config_factor.findall('hard_pass_factor')
+        parsed_factors.append(float(hard_pass_factor[0].text))
+    return parsed_factors
 
 def listar_parametros():
     p = 0
@@ -454,6 +492,12 @@ def new_simulation():
                         freq_instance = round(freq_instance - random.uniform(0,40),2)
                         semestre_atual[cont_sub+6] = freq_instance
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
+                        if semestre_atual[cont_sub] in hard_passes:
+                            semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] - random.uniform(0,factors[1]),2)
+                            print('hardpass bro')
+                        if semestre_atual[cont_sub] in easy_passes:
+                            semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] + random.uniform(0,factors[1]),2)
+                            print('easypass bro')
                         if freq_instance < 65:
                             semestre_atual[cont_sub+2] = 0
                         if semestre_atual[cont_sub+2] >= 5:
@@ -473,7 +517,8 @@ def new_simulation():
                 contador_de_semestre = contador_de_semestre + 1
             ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
             l = l+1
-        print(line)
+        print(hard_passes)
+        print(easy_passes)
         maluco = 0
         while(maluco<len(line)):
             tpds.append(line[maluco])
@@ -518,8 +563,8 @@ def new_simulation():
 #TODO: PREVENT USER INPUT ERRORS TO ALL ITEMS
 while(menu_keep == 0):
     cls()
-    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar parâmetros\n 5. Sair\n\nEntrada do usuário: ")
-    check_input_in_scope(1,5,menu1)
+    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar parâmetros\n 5. Importar configuracoes adicionais\n 6. Sair\n\nEntrada do usuário: ")
+    check_input_in_scope(1,6,menu1)
     if menu1 == '1':
         cls()
         #os.remove("test.csv")
@@ -634,7 +679,7 @@ while(menu_keep == 0):
               export.to_html(r'export_disciplinas.html')
     elif menu1 == '4':
         cls()
-        filename = input("Insira o nome do arquivo XML à importar configurações ou ENTER para cancelar.\nEntrada do usuário: ")
+        filename = input("Insira o nome do arquivo XML à importar catalogo ou ENTER para cancelar.\nEntrada do usuário: ")
         if filename is not '':
             try:
                 f=open(filename)
@@ -658,4 +703,27 @@ while(menu_keep == 0):
             print("Operação cancelada.")
         ask_for_input_to_Continue()
     elif menu1 == '5':
+        cls()
+        filename1 = input("Insira o nome do arquivo XML à importar configurações adicionais ou ENTER para cancelar.\nEntrada do usuário: ")
+        if filename1 is not '':
+            try:
+                f=open(filename1)
+                params = getting_params_config_from_file(filename1)
+                factors = getting_factors_config_from_file(filename1)
+                hard_passes = getting_hard_pass_from_file(filename1)
+                easy_passes = getting_easy_pass_from_file(filename1)
+
+                cls()
+            except SyntaxError:
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                pass
+            except IOError:
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                pass
+
+        else:
+            cls()
+            print("Operação cancelada.")
+        ask_for_input_to_Continue()
+    elif menu1 == '6':
         menu_keep = menu_keep + 1

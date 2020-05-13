@@ -4,17 +4,22 @@
       <parameter_name>Average</parameter_name>
       <min_grade>6</min_grade>
       <max_grade>8</max_grade>
-      <qtde>1</qtde>
+      <qtde>10</qtde>
     </parameter>
   </parameters>
-  <hard_pass>
-    <sub_id></sub_id>
-    <sub_id></sub_id>
-    <sub_id></sub_id>
-    <sub_id></sub_id>
-    <sub_id></sub_id>
-    <sub_id></sub_id>
-    <sub_id></sub_id>
-    <sub_id></sub_id>
-  </hard_pass>
+  <factors>
+    <easy_pass_factor>2</easy_pass_factor>
+    <hard_pass_factor>2</hard_pass_factor>
+  </factors>
+  <subj_dificulty>
+    <hard_pass>
+      <sub_id>SI120</sub_id>
+      <sub_id>ST767</sub_id>
+      <sub_id>SI702</sub_id>
+    </hard_pass>
+    <easy_pass>
+      <sub_id>SI101</sub_id>
+      <sub_id>SI701</sub_id>
+    </easy_pass>
+  </subj_dificulty>
 </all_configs>
