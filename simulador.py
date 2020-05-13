@@ -230,6 +230,7 @@ def sort_turmas(subjects, turmas):
     while (sub < len(subjects)):
         subs_with_turmas.append('Turma')
         subs_with_turmas.append(subjects[sub])
+        subs_with_turmas.append('Freq')
         sub = sub +1
     return subs_with_turmas
 
@@ -333,7 +334,7 @@ def new_simulation():
     while(l < len(students)):
         c = 0
         while (c < len(subss)):
-            if c % 2 != 0:
+            if subss[c] in subjects:
                 turminha = subjects.index(subss[c])
                 sorteio_de_turma = 0
                 turma_sorteada = random.randint(0,turmas[turminha]-1)
@@ -354,7 +355,7 @@ def new_simulation():
     pendentes = []
     qtde_de_disciplinas_semestre_par = len(even_semester)
     qtde_de_disciplinas_semestre_impar = len(odd_semester)
-    qtde_itens_na_disciplina = 6 #nome, turma, nota, creditos, semestre de oferta, liberado
+    qtde_itens_na_disciplina = 7 #nome, turma, nota, creditos, semestre de oferta, liberado
     creditos_atuais = 0
     semestre_atual = []
     tempo_max_integralizacao = 12
@@ -398,7 +399,8 @@ def new_simulation():
                 else:
                     pendentes.append(1)
                 pendentes.append(1) #liberado para fazer ou não: 0 não (setup inicial), 1 sim
-                c = c +2
+                pendentes.append(-1) #freq
+                c = c +3
             ####\/ \/ \/ \/ VETOR PARA CONFIGURAR TUDO ESTA CRIADO, MAGICA ACONTECE LOGO ABAIXO \/ \/ \/ \/ CONFIRA:
             ## TRATAR VETOR PENDENTES
             j = 0
@@ -425,7 +427,7 @@ def new_simulation():
                 while(cont_sub<len(semestre_atual)):
                     if semestre_atual[cont_sub] in already_passed:
                         semestre_atual[cont_sub + 5] = 0
-                    cont_sub = cont_sub +6
+                    cont_sub = cont_sub +7
                 #somente bloquando as que tem prereq nao cumprido
                 cont_sub = 0
                 while(cont_sub<len(semestre_atual)):
@@ -436,28 +438,28 @@ def new_simulation():
                             if individual_prereqs[novo_contador] not in already_passed:
                                 semestre_atual[cont_sub+5] = 0
                             novo_contador = novo_contador + 1
-                    cont_sub = cont_sub + 6
+                    cont_sub = cont_sub + 7
 
                 creditos_atuais = 0
                 cont_sub = 0
                 while(cont_sub<(len(semestre_atual))):
                     test_creditos = 0
                     freq_instance = 100
-                    if creditos_atuais + semestre_atual[cont_sub+3] <= max_creditos and semestre_atual[cont_sub+5] == 1:
+                    if creditos_atuais + semestre_atual[cont_sub+3] < max_creditos and semestre_atual[cont_sub+5] == 1:
                         creditos_atuais = creditos_atuais+semestre_atual[cont_sub+3]
                         #sorteando nota
                         # print('parametros agora:')
                         # print(outrovetordeteste[contest])
                         # print(outrovetordeteste[contest+1])
-                        freq_instance = freq_instance - round(random.uniform(0,100),2)
+                        freq_instance = round(freq_instance - random.uniform(0,40),2)
+                        semestre_atual[cont_sub+6] = freq_instance
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
                         if freq_instance < 65:
                             semestre_atual[cont_sub+2] = 0
                         if semestre_atual[cont_sub+2] >= 5:
                             already_passed.append(semestre_atual[cont_sub])
                             semestre_atual[cont_sub+5] = 0
-                    cont_sub = cont_sub + 6
-
+                    cont_sub = cont_sub + 7
 
                 count_line = 0
                 while (count_line<len(semestre_atual)):
@@ -465,13 +467,13 @@ def new_simulation():
                     alldata.append(semestre_atual[count_line + 1])
                     line.append(semestre_atual[count_line + 2])
                     alldata.append(semestre_atual[count_line + 2])
-                    count_line = count_line + 6
-
-
+                    line.append(semestre_atual[count_line+6])
+                    count_line = count_line + 7
 
                 contador_de_semestre = contador_de_semestre + 1
             ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
             l = l+1
+        print(line)
         maluco = 0
         while(maluco<len(line)):
             tpds.append(line[maluco])
@@ -486,7 +488,7 @@ def new_simulation():
         if tpds[jua] == -1:
             tpds[jua] = '--'
             tpds[jua-1] = '--'
-        jua = jua + 2
+        jua = jua + 1
 
 
     #repassando tudo
