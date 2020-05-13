@@ -494,10 +494,8 @@ def new_simulation():
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
                         if semestre_atual[cont_sub] in hard_passes:
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] - random.uniform(0,factors[1]),2)
-                            print('hardpass bro')
                         if semestre_atual[cont_sub] in easy_passes:
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] + random.uniform(0,factors[1]),2)
-                            print('easypass bro')
                         if freq_instance < 65:
                             semestre_atual[cont_sub+2] = 0
                         if semestre_atual[cont_sub+2] >= 5:
