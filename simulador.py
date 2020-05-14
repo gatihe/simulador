@@ -89,6 +89,31 @@ def export_subjects(subjects,credits, cat_info):
         j = j+1
     return tpds
 
+def export_subjects(subjects,credits, cat_info):
+    tpds = []
+    j = 0
+    while(j<len(subjects)):
+        info_line = []
+        tpds.append(info_line)
+        info_line.append(subjects[j])
+        info_line.append(cat_info[1])
+        info_line.append(credits[j])
+        info_line.append('N')
+        j = j+1
+    return tpds
+
+def export_student_data(grades):
+    return stdata
+
+def calc_desvio_padrao():
+    return desvio_padrao
+
+def calc_cr():
+    return cr
+
+def calc_cp():
+    return cp
+
     #for x in root[0]: # access each subject
         #parsed_subjects.append(x[0].text) # every x is an element. 0 refers to the first element.
 
