@@ -111,8 +111,16 @@ def calc_desvio_padrao():
 def calc_cr():
     return cr
 
-def calc_cp():
-    return cp
+def calc_stdinfo(subjects, students, gradeslc, subss):
+    j = 0
+    stdinfo = []
+    while j < len(students):
+        i = 0
+        while i < len(subss):
+
+            i = i+1
+        j = j+1
+    return stdinfo
 
     #for x in root[0]: # access each subject
         #parsed_subjects.append(x[0].text) # every x is an element. 0 refers to the first element.
@@ -438,9 +446,13 @@ def new_simulation():
         aui = aui + 3
 
     contest = 0
+    #ra_somacreditos_disc = []
     while(contest<len(outrovetordeteste)):
         l = 0
         while(l<len(students)):
+            #ra_somacreditos_disc.clear()
+            #ra_somacreditos_disc.append(students[l]) #adicionando o ra do aluno ao vetor
+            #ra_somacreditos_disc.append(0) # ra_somacreditos_disc[1] armazena a soma de creditos totais feitos
             index_inicial_do_semestre = 0
             index_final_do_semestre = -1
             inicio_semestre = 0
@@ -514,6 +526,8 @@ def new_simulation():
                         # print('parametros agora:')
                         # print(outrovetordeteste[contest])
                         # print(outrovetordeteste[contest+1])
+                        #criar vetor [ra, somacreditos, disciplina, nota, disciplina, nota, disciplina, nota
+                        #ra_somacreditos_disc.append(semestre_atual[cont_sub])
                         freq_instance = round(freq_instance - random.uniform(0,40),2)
                         semestre_atual[cont_sub+6] = freq_instance
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
@@ -526,9 +540,12 @@ def new_simulation():
                         if semestre_atual[cont_sub+2] >= 5:
                             already_passed.append(semestre_atual[cont_sub])
                             semestre_atual[cont_sub+5] = 0
+
+                        #ra_somacreditos_disc.append(semestre_atual[cont_sub+2])
                     cont_sub = cont_sub + 7
 
                 count_line = 0
+                    #print(ra_somacreditos_disc)
                 while (count_line<len(semestre_atual)):
                     line.append(semestre_atual[count_line + 1])
                     alldata.append(semestre_atual[count_line + 1])
@@ -539,9 +556,8 @@ def new_simulation():
 
                 contador_de_semestre = contador_de_semestre + 1
             ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
+
             l = l+1
-        print(hard_passes)
-        print(easy_passes)
         maluco = 0
         while(maluco<len(line)):
             tpds.append(line[maluco])
@@ -568,8 +584,60 @@ def new_simulation():
         position = position + lensub
         l = l+1
 
+    students_data = []
+    ind_student_data = []
+    l = 0
+    # while (l<len(students)):
+    #     c = 1
+    #     ind_student_data = []
+    #     ind_student_data.append(students[l])
+    #     ind_student_data.append(0)
+    #     while (c<len(subss)):
+    #         if grade[l][c] != '--':
+    #             ind_student_data.append(subss[c])
+    #             ind_student_data.append(grade[l][c])
+    #         c = c +3
+    #     students_data.append(ind_student_data)
+    #     #print(ind_student_data)
+    #     l = l +1
+    # #print(students_data)
+
 
     simulation = pd.DataFrame (scrambled(grade),index=students, columns=subss)
+    simulation_array = simulation.values.tolist()
+    while (l<len(students)):
+        c = 1
+        ind_student_data = []
+        ind_student_data.append(students[l])
+        ind_student_data.append(0)
+        novo_index_inicial_do_semestre = 0
+        novo_index_final_do_semestre = -1
+        novo_contador_de_semestre = 1
+        inicio_semestre = 0
+        fim_semestre = 0
+        while (novo_contador_de_semestre<=tempo_max_integralizacao):
+            novo_index_inicial_do_semestre = novo_index_final_do_semestre + 1
+            if novo_contador_de_semestre % 2 == 0:
+                novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_par * 3) #3 = TURMA, NOTA, FREQ
+            if novo_contador_de_semestre % 2 != 0:
+                novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_impar * 3)
+            inicio_semestre = novo_index_inicial_do_semestre
+            fim_semestre = novo_index_final_do_semestre
+            print(fim_semestre)
+            while (inicio_semestre <= fim_semestre ):
+                if simulation_array[l][inicio_semestre] != '--':
+                    ind_student_data.append(subss[inicio_semestre+1])
+                    ind_student_data.append(simulation_array[l][inicio_semestre+1])
+                    ind_student_data.append(simulation_array[l][inicio_semestre+2])
+                    ind_student_data.append(novo_contador_de_semestre)
+                    ind_student_data.append(credits[subjects.index(subss[inicio_semestre+1])])
+                inicio_semestre = inicio_semestre + 3
+            novo_contador_de_semestre = novo_contador_de_semestre + 1
+        students_data.append(ind_student_data)
+        l = l +1
+
+        print(students_data)
+
     timestr = time.strftime('%Y%m%d-%H%M%S')
     simulationcsv = timestr+'.csv'
     simulationhtml = timestr+'.csv'
