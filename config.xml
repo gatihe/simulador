@@ -1,10 +1,25 @@
 <all_configs>
+  <generic_info>
+    <ano_ingresso>2021</ano_ingresso>
+  </generic_info>
   <parameters>
     <parameter>
       <parameter_name>Average</parameter_name>
       <min_grade>6</min_grade>
       <max_grade>8</max_grade>
-      <qtde>2</qtde>
+      <qtde>10</qtde>
+    </parameter>
+    <parameter>
+      <parameter_name>Above Average</parameter_name>
+      <min_grade>7</min_grade>
+      <max_grade>10</max_grade>
+      <qtde>10</qtde>
+    </parameter>
+    <parameter>
+      <parameter_name>Below Average</parameter_name>
+      <min_grade>0</min_grade>
+      <max_grade>7</max_grade>
+      <qtde>10</qtde>
     </parameter>
   </parameters>
   <factors>

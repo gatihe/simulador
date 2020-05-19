@@ -229,6 +229,15 @@ def getting_factors_config_from_file(filename):
         parsed_factors.append(float(hard_pass_factor[0].text))
     return parsed_factors
 
+def getting_generic_info_from_file(filename):
+        tree = ET.parse(filename)
+        root = tree.getroot()
+        parsed_info = []
+        for generic_info in root.findall('generic_info'):
+            ano_ingresso = generic_info.findall('ano_ingresso')
+            parsed_info.append(int(ano_ingresso[0].text))
+        return parsed_info
+
 def listar_parametros():
     p = 0
     q = 0
@@ -623,7 +632,6 @@ def new_simulation():
                 novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_impar * 3)
             inicio_semestre = novo_index_inicial_do_semestre
             fim_semestre = novo_index_final_do_semestre
-            print(fim_semestre)
             while (inicio_semestre <= fim_semestre ):
                 if simulation_array[l][inicio_semestre] != '--':
                     ind_student_data.append(subss[inicio_semestre+1])
@@ -636,7 +644,105 @@ def new_simulation():
         students_data.append(ind_student_data)
         l = l +1
 
-        print(students_data)
+
+        #EXPORT STUDENT INFO
+        #RA, ANOING, PINGR (2), DANOCAT, CURSO, ANO_INGRESSO, ANO_CATALOGO, CR, CP, CP_FUTURO, POSICAO_ALUNO_NA_TURMA, COEFICIENTE_RENDIMENTO_PADRAO, COEFICIENTE_RENDIMENTO_MEDIO, DESVIO_PADRAO_TURMA, TOTAL_ALUNOS_TURMA
+    print(students_data)
+    info_std = []
+    individual_info_std = []
+    l = 0
+    while(l<len(students_data)):
+        creditos_cursados = 0
+        individual_info_std = []
+        m = 0
+        total_creditos_curso = 0
+        while (m<len(credits)):
+            total_creditos_curso = total_creditos_curso + credits[m]
+            m = m +1
+        print(total_creditos_curso)
+        j = 2
+        individual_info_std.append(students_data[l][j-2]) #RA                  (0)
+        individual_info_std.append(generic_config_info[0]) #ANOING             (1)
+        individual_info_std.append(2) #PINGR POR ENQUANTO SERA 2               (2)
+        individual_info_std.append(cat_info[1]) #DANOCAT = ANOCATALOGO         (3)
+        individual_info_std.append(cat_info[0]) #numero do CURSO               (4)
+        individual_info_std.append(generic_config_info[0]) #ANOING             (5)
+        individual_info_std.append(cat_info[1]) #ANO_CATALOGO = ANOCATALOGO    (6)
+        individual_info_std.append(0) #CR - VAI SER CALCULADO DEPOIS           (7)
+        individual_info_std.append(0) #CP - VAI SER CALCULADO DEPOIS           (8)
+        individual_info_std.append(0) #CP FUTURO - VAI SER CALCULADO DEPOIS    (9)
+        individual_info_std.append(0) #POSICAO_ALUNO_NA_TURMA CALCULADO DEPOIS (10)
+        individual_info_std.append(0) #CR PADRAO - VAI SER CALCULADO DEPOIS    (11)
+        individual_info_std.append(0) #CR MEDIO - VAI SER CALCULADO DEPOIS    (12)
+        individual_info_std.append(0) #DESVIO_PADRAO_TURMA                     (13)
+        individual_info_std.append(len(students))  #TOTAL_ALUNOS_TURMA         (14)
+        while(j<len(students_data[l])):
+            if students_data[l][j+1] >= 5 and students_data[l][j+2] >= 65:
+                creditos_cursados = creditos_cursados + students_data[l][j+4]
+            j = j+5
+        individual_info_std[8] = round(creditos_cursados/total_creditos_curso,3)
+        individual_info_std[9] = round(creditos_cursados/total_creditos_curso,3)
+        info_std.append(individual_info_std)
+        print(creditos_cursados)
+        l = l+1
+    std_info_export = pd.DataFrame (info_std,index=students, columns=['RA', 'ANOING', 'PINGR', 'DANOCAT', 'CURSO', 'ANO_INGRESSO', 'ANO_CATALOGO', 'CR', 'CP', 'CP_FUTURO', 'POSICAO_ALUNO_NA_TURMA', 'COEFICIENTE_RENDIMENTO_PADRAO', 'COEFICIENTE_RENDIMENTO_MEDIO', 'DESVIO_PADRAO_TURMA', 'TOTAL_ALUNOS_TURMA'])
+    try:
+        f = open("std_info_export.csv")
+        os.remove("std_info_export.csv")
+    except IOError:
+        f = open("std_info_export.csv", "+w")
+    finally:
+        f.close()
+        std_info_export.to_csv(r'std_info_export.csv')
+        std_info_export.to_html(r'std_info_export.html',index = False)
+
+
+    #EXPORT STUDENTS RECORDS
+    all_records = []
+    individual_grade_on_record = []
+    j = 0
+    while(j< len(students_data)):
+      m = 2
+      while(m<len(students_data[j])):
+        individual_grade_on_record = []
+        individual_grade_on_record.append(students_data[j][0]) #0
+        individual_grade_on_record.append(generic_config_info[0]+(students_data[j][m+3]/2)) #1
+        individual_grade_on_record.append(students_data[j][m+3])#2
+        individual_grade_on_record.append(students_data[j][m])#3
+        individual_grade_on_record.append(students_data[j][m+1])#4
+        individual_grade_on_record.append(students_data[j][m+2])#5
+        if students_data[j][m+1] >= 5 and students_data[j][m+2] >= 65:
+            individual_grade_on_record.append(4)#6
+        if students_data[j][m+1] < 5 and students_data[j][m+2] >= 65:
+            individual_grade_on_record.append(5)#6
+        if students_data[j][m+2] < 65:
+            individual_grade_on_record.append(6)#6
+        if individual_grade_on_record[6] == 4:
+            individual_grade_on_record.append("APROVADO POR NOTA/CONCEITO E FREQ")
+        if individual_grade_on_record[6] == 5:
+            individual_grade_on_record.append("REPROVADO POR NOTA/CONCEITO")
+        if individual_grade_on_record[6] == 6:
+            individual_grade_on_record.append("REPROVADO POR FREQUENCIA")
+        individual_grade_on_record.append(1)
+        individual_grade_on_record.append(students_data[j][m+4])
+        individual_grade_on_record.append('REGULAR')
+        all_records.append(individual_grade_on_record)
+        m = m+5
+      j = j+1
+
+
+    print(all_records)
+    std_records = pd.DataFrame (all_records, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO', 'DESCRICAO_SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA'])
+    try:
+        f = open("std_records.csv")
+        os.remove("std_records.csv")
+    except IOError:
+        f = open("std_records", "+w")
+    finally:
+        f.close()
+        std_records.to_csv(r'std_records.csv')
+        std_records.to_html(r'std_records.html', index = False)
+
 
     timestr = time.strftime('%Y%m%d-%H%M%S')
     simulationcsv = timestr+'.csv'
@@ -654,7 +760,7 @@ def new_simulation():
 #TODO: PREVENT USER INPUT ERRORS TO ALL ITEMS
 while(menu_keep == 0):
     cls()
-    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar parâmetros\n 5. Importar configuracoes adicionais\n 6. Sair\n\nEntrada do usuário: ")
+    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar catalogo\n 5. Importar configuracoes adicionais\n 6. Sair\n\nEntrada do usuário: ")
     check_input_in_scope(1,6,menu1)
     if menu1 == '1':
         cls()
@@ -803,6 +909,7 @@ while(menu_keep == 0):
                 factors = getting_factors_config_from_file(filename1)
                 hard_passes = getting_hard_pass_from_file(filename1)
                 easy_passes = getting_easy_pass_from_file(filename1)
+                generic_config_info = getting_generic_info_from_file(filename1)
 
                 cls()
             except SyntaxError:
