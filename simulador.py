@@ -309,6 +309,23 @@ def ask_for_input_to_Continue():
         pass
     return
 
+def sortear_casos_esporadicos(subjects,subss):
+    qtde_casos = random.randint(0,5)
+    counter = 0
+    while(counter<0):
+        ####sortear uma disciplina
+        no_disciplina_sorteada = random.randint(0,len(subjects))
+        disciplina_sorteada = subjects[no_disciplina_sorteada]
+        indices = [i for i, x in enumerate(subss) if x == disciplina_sorteada]
+        print(disciplina_sorteada)
+        print(indices)
+        ####checar se é par ou impar
+        ### sortear numero par (entre 0 e tempo max de integralizacao) que nao foi sorteado, se for par
+        ### sortear numero impar que nao foi sorteado se for impar
+
+        counter = counter + 1
+    return
+
 #counters and variable for grades creation
 a = 0
 b = 0
@@ -394,7 +411,7 @@ def new_simulation():
                 turm = turm + 1
         sub = sub+1
 
-
+    print(random.randint(0,5))
 
     grade.clear()
     students.clear()
@@ -566,6 +583,7 @@ def new_simulation():
 
                 creditos_atuais = 0
                 cont_sub = 0
+                sortear_casos_esporadicos(subjects,subss)
                 while(cont_sub<(len(semestre_atual))):
                     test_creditos = 0
                     freq_instance = 100
@@ -578,6 +596,8 @@ def new_simulation():
                         #criar vetor [ra, somacreditos, disciplina, nota, disciplina, nota, disciplina, nota
                         #ra_somacreditos_disc.append(semestre_atual[cont_sub])
                         freq_instance = round(freq_instance - random.uniform(0,40),2)
+                        materia_a_buscar_turmas = subjects.index(semestre_atual[cont_sub])
+                        semestre_atual[cont_sub+1] = chr(int(random.uniform(0,turmas[materia_a_buscar_turmas])+65))
                         semestre_atual[cont_sub+6] = freq_instance
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
                         if semestre_atual[cont_sub] in hard_passes:
@@ -637,7 +657,6 @@ def new_simulation():
         grade[l] = tpds[position:position+len(subss)]
         position = position + lensub
         l = l+1
-
     students_data = []
     ind_student_data = []
     l = 0
