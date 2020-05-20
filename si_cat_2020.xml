@@ -12,7 +12,13 @@
 			<credits>6</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI100</id>
@@ -20,7 +26,13 @@
 			<credits>4</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>2</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI101</id>
@@ -28,7 +40,13 @@
 			<credits>2</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>2</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI102</id>
@@ -36,7 +54,13 @@
 			<credits>2</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>2</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST008</id>
@@ -44,7 +68,13 @@
 			<credits>2</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>2</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>TT106</id>
@@ -52,7 +82,13 @@
 			<credits>4</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>2</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI120</id>
@@ -60,7 +96,13 @@
 			<credits>4</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>TT350</id>
@@ -68,8 +110,19 @@
 			<credits>4</credits>
 			<sem_offer>1</sem_offer>
 			<classes_no>3</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI100</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 			<pre_reqs>SI120</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>2020</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>EB102</id>
@@ -77,7 +130,13 @@
 			<credits>6</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>3</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI200</id>
@@ -85,7 +144,14 @@
 			<credits>4</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI100</pre_reqs>
+			<ano_inicio>2015</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
+
 		</subject>
 		<subject>
 			<id>SI220</id>
@@ -93,7 +159,13 @@
 			<credits>4</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST266</id>
@@ -101,7 +173,13 @@
 			<credits>2</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST468</id>
@@ -109,7 +187,13 @@
 			<credits>4</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI305</id>
@@ -117,7 +201,13 @@
 			<credits>4</credits>
 			<sem_offer>2</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI300</id>
@@ -125,7 +215,13 @@
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI100</pre_reqs>
+			<ano_inicio>2018</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI304</id>
@@ -133,7 +229,13 @@
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>ST266</pre_reqs>
+			<ano_inicio>2014</ano_inicio>
+			<ano_fim>2020</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI350</id>
@@ -141,23 +243,41 @@
 			<credits>2</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>TT350</pre_reqs>
+			<ano_inicio>2014</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
-			<id>Estatística</id>
+			<id>SI404</id>
 			<subject_name>Introdução à Interfaces Humano-Computador</subject_name>
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST211</id>
-			<subject_name>Introdução à Interfaces Humano-Computador</subject_name>
+			<subject_name>Estatística</subject_name>
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST567</id>
@@ -165,7 +285,13 @@
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST568</id>
@@ -173,7 +299,13 @@
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>TT106</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>2018</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>TT304</id>
@@ -181,7 +313,13 @@
 			<credits>4</credits>
 			<sem_offer>3</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>TT106</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>2020</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI201</id>
@@ -189,7 +327,13 @@
 			<credits>4</credits>
 			<sem_offer>4</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI400</id>
@@ -197,7 +341,13 @@
 			<credits>4</credits>
 			<sem_offer>4</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI300</pre_reqs>
+			<ano_inicio>2015</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI401</id>
@@ -205,7 +355,13 @@
 			<credits>4</credits>
 			<sem_offer>4</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI300</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI450</id>
@@ -213,7 +369,13 @@
 			<credits>4</credits>
 			<sem_offer>4</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>TT350</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST767</id>
@@ -221,7 +383,13 @@
 			<credits>4</credits>
 			<sem_offer>4</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>ST567</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>TT050</id>
@@ -229,7 +397,13 @@
 			<credits>4</credits>
 			<sem_offer>4</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>ST211</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI405</id>
@@ -237,7 +411,13 @@
 			<credits>4</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI305</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI700</id>
@@ -245,7 +425,13 @@
 			<credits>4</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI400</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI701</id>
@@ -253,7 +439,13 @@
 			<credits>4</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI702</id>
@@ -261,7 +453,13 @@
 			<credits>4</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI120</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI703</id>
@@ -269,7 +467,13 @@
 			<credits>4</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>TT350</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI704</id>
@@ -277,7 +481,13 @@
 			<credits>4</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>TT060</id>
@@ -285,7 +495,13 @@
 			<credits>4</credits>
 			<sem_offer>5</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>ST266</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI800</id>
@@ -293,7 +509,13 @@
 			<credits>2</credits>
 			<sem_offer>6</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI801</id>
@@ -301,7 +523,13 @@
 			<credits>4</credits>
 			<sem_offer>6</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI101</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>ST562</id>
@@ -309,7 +537,13 @@
 			<credits>4</credits>
 			<sem_offer>6</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs>SI201</pre_reqs>
+			<ano_inicio>2016</ano_inicio>
+			<ano_fim>0</ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito>FORTE</tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida>G</tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI912</id>
@@ -317,7 +551,13 @@
 			<credits>6</credits>
 			<sem_offer>7</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI916</id>
@@ -325,7 +565,13 @@
 			<credits>20</credits>
 			<sem_offer>7</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI913</id>
@@ -333,7 +579,13 @@
 			<credits>6</credits>
 			<sem_offer>8</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 		<subject>
 			<id>SI918</id>
@@ -341,7 +593,13 @@
 			<credits>16</credits>
 			<sem_offer>8</sem_offer>
 			<classes_no>1</classes_no>
+			<tipo_nivel_atividade_mae>G</tipo_nivel_atividade_mae>
 			<pre_reqs></pre_reqs>
+			<ano_inicio></ano_inicio>
+			<ano_fim></ano_fim>
+			<no_cadeia_pre_requisito>0</no_cadeia_pre_requisito>
+			<tipo_pre_requisito></tipo_pre_requisito>
+			<tipo_nivel_atividade_exigida></tipo_nivel_atividade_exigida>
 		</subject>
 	</subjects>
 </all_configs>

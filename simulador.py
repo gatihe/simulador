@@ -2,6 +2,7 @@ import pandas as pd
 import random
 import os
 import time
+import datetime
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from input_handling import *
@@ -22,6 +23,7 @@ semoffers = []
 cat_info = []
 hard_passes = []
 easy_passes = []
+anos_inicio = []
 #defining parameters 2
 menu_keep = 0
 params = ["Below Average", 0, 5, 10, "Average", 5, 7, 10, "Above Average", 7, 10, 10]
@@ -175,6 +177,44 @@ def getting_prereqs_config_from_file(filename):
                         parsed_prereqs.append(individual_parsed_subject_id[0].text)
     #print(parsed_prereqs)
     return parsed_prereqs
+
+def getting_prereq_report_from_file(filename):
+    tree = ET.parse(filename)
+    root = tree.getroot()
+    parsed_anos_inicio = []
+    report_prereqs = []
+    for config_param in root.findall('subjects'):
+        for subject in config_param.findall('subject'):
+
+            individual_parsed_ano_inicio = subject.findall('ano_inicio')
+            individual_parsed_ano_fim = subject.findall('ano_fim')
+            individual_parsed_subject_id = subject.findall('id')
+            individual_parsed_tipo_nivel_ativ_mae = subject.findall('tipo_nivel_atividade_mae')
+            individual_parsed_prerequinho = subject.findall('pre_reqs')
+            individual_parsed_cadeia_prereqs = subject.findall('no_cadeia_pre_requisito')
+            individual_parsed_tipo_prereq = subject.findall('tipo_pre_requisito')
+            individual_parsed_tipo_nivel_atividade_exigida = subject.findall('tipo_nivel_atividade_exigida')
+            for (x,y,z,w,v, u) in zip(individual_parsed_prerequinho, individual_parsed_ano_inicio, individual_parsed_ano_fim, individual_parsed_cadeia_prereqs, individual_parsed_tipo_prereq, individual_parsed_tipo_nivel_atividade_exigida):
+                    if x.text is not None:
+                        parsed_anos_inicio = []
+                        #subject[0].text is equal to subject id
+                        parsed_anos_inicio.append(individual_parsed_tipo_nivel_ativ_mae[0].text)
+                        parsed_anos_inicio.append(individual_parsed_subject_id[0].text)
+                        #prereq to add is equal to ano_inicio tag's text inside the current subject being parsed
+                        parsed_anos_inicio.append(y.text)
+                        if z.text == '0':
+                            parsed_anos_inicio.append('')
+                        else:
+                            parsed_anos_inicio.append(z.text)
+                        parsed_anos_inicio.append(w.text)
+                        parsed_anos_inicio.append(v.text)
+                        parsed_anos_inicio.append(x.text)
+                        parsed_anos_inicio.append(u.text)
+                        report_prereqs.append(parsed_anos_inicio)
+
+    #print(parsed_anos_inicio)
+    return report_prereqs
+
 
 def getting_hard_pass_from_file(filename):
     tree = ET.parse(filename)
@@ -546,6 +586,11 @@ def new_simulation():
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] + random.uniform(0,factors[1]),2)
                         if freq_instance < 65:
                             semestre_atual[cont_sub+2] = 0
+                        #treating < 0 and > 10
+                        if semestre_atual[cont_sub+2] < 0:
+                            semestre_atual[cont_sub+2] = 0
+                        if semestre_atual[cont_sub+2] > 10:
+                            semestre_atual[cont_sub+2] = 10
                         if semestre_atual[cont_sub+2] >= 5:
                             already_passed.append(semestre_atual[cont_sub])
                             semestre_atual[cont_sub+5] = 0
@@ -647,7 +692,7 @@ def new_simulation():
 
         #EXPORT STUDENT INFO
         #RA, ANOING, PINGR (2), DANOCAT, CURSO, ANO_INGRESSO, ANO_CATALOGO, CR, CP, CP_FUTURO, POSICAO_ALUNO_NA_TURMA, COEFICIENTE_RENDIMENTO_PADRAO, COEFICIENTE_RENDIMENTO_MEDIO, DESVIO_PADRAO_TURMA, TOTAL_ALUNOS_TURMA
-    print(students_data)
+    #print(students_data)
     info_std = []
     individual_info_std = []
     l = 0
@@ -659,7 +704,6 @@ def new_simulation():
         while (m<len(credits)):
             total_creditos_curso = total_creditos_curso + credits[m]
             m = m +1
-        print(total_creditos_curso)
         j = 2
         individual_info_std.append(students_data[l][j-2]) #RA                  (0)
         individual_info_std.append(generic_config_info[0]) #ANOING             (1)
@@ -683,7 +727,6 @@ def new_simulation():
         individual_info_std[8] = round(creditos_cursados/total_creditos_curso,3)
         individual_info_std[9] = round(creditos_cursados/total_creditos_curso,3)
         info_std.append(individual_info_std)
-        print(creditos_cursados)
         l = l+1
     std_info_export = pd.DataFrame (info_std,index=students, columns=['RA', 'ANOING', 'PINGR', 'DANOCAT', 'CURSO', 'ANO_INGRESSO', 'ANO_CATALOGO', 'CR', 'CP', 'CP_FUTURO', 'POSICAO_ALUNO_NA_TURMA', 'COEFICIENTE_RENDIMENTO_PADRAO', 'COEFICIENTE_RENDIMENTO_MEDIO', 'DESVIO_PADRAO_TURMA', 'TOTAL_ALUNOS_TURMA'])
     try:
@@ -706,7 +749,7 @@ def new_simulation():
       while(m<len(students_data[j])):
         individual_grade_on_record = []
         individual_grade_on_record.append(students_data[j][0]) #0
-        individual_grade_on_record.append(generic_config_info[0]+(students_data[j][m+3]/2)) #1
+        individual_grade_on_record.append(int(generic_config_info[0]+(students_data[j][m+3]/2))) #1
         individual_grade_on_record.append(students_data[j][m+3])#2
         individual_grade_on_record.append(students_data[j][m])#3
         individual_grade_on_record.append(students_data[j][m+1])#4
@@ -730,9 +773,13 @@ def new_simulation():
         m = m+5
       j = j+1
 
-
-    print(all_records)
     std_records = pd.DataFrame (all_records, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO', 'DESCRICAO_SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA'])
+
+    now = datetime.datetime.now()
+    print(now.minute)
+
+    print(anos_inicio)
+
     try:
         f = open("std_records.csv")
         os.remove("std_records.csv")
@@ -743,6 +790,17 @@ def new_simulation():
         std_records.to_csv(r'std_records.csv')
         std_records.to_html(r'std_records.html', index = False)
 
+
+    prereqs_report_export = pd.DataFrame(prereq_report, columns = ['TIPO_NIVEL_ATIVIDADE_MAE', "DISCIPLINA", "ANO_INICIO", "ANO_FIM", "NO_CADEIA_PRE_REQUISITO", "TIPO_PRE_REQUISITO", "DISCIPLINA_EXIGIDA", "TIPO_NIVEL_ATIVIDADE_EXIGIDA"])
+    try:
+        f = open("prereq_report.csv")
+        os.remove("prereq_report.csv")
+    except IOError:
+        f = open("prereq_report", "+w")
+    finally:
+        f.close()
+        prereqs_report_export.to_csv(r'prereq_report.csv')
+        prereqs_report_export.to_html(r'prereq_report.html', index = False)
 
     timestr = time.strftime('%Y%m%d-%H%M%S')
     simulationcsv = timestr+'.csv'
@@ -864,7 +922,7 @@ while(menu_keep == 0):
             cls()
             print("Disciplinas exportadas como 'export_disciplinas.csv'.")
             ask_for_input_to_Continue()
-            export = pd.DataFrame (opa,index=subjects, columns=['DISCIPLINA','ANO_CATALOGO', 'CREDITOS', 'FORMA_APROVACAO'])
+            export = pd.DataFrame (opa, columns=['DISCIPLINA','ANO_CATALOGO', 'CREDITOS', 'FORMA_APROVACAO'])
             try:
               f = open("export_disciplinas.csv")
               os.remove("export_disciplinas.csv")
@@ -873,7 +931,7 @@ while(menu_keep == 0):
             finally:
               f.close()
               export.to_csv(r'export_disciplinas.csv', index=False)
-              export.to_html(r'export_disciplinas.html')
+              export.to_html(r'export_disciplinas.html',index=False)
     elif menu1 == '4':
         cls()
         filename = input("Insira o nome do arquivo XML à importar catalogo ou ENTER para cancelar.\nEntrada do usuário: ")
@@ -887,6 +945,7 @@ while(menu_keep == 0):
                 semoffers = getting_semoffer_config_from_file(filename)
                 credits = getting_credits_config_from_file(filename)
                 cat_info = getting_catalog_info_from_file(filename)
+                prereq_report = getting_prereq_report_from_file(filename)
                 cls()
             except SyntaxError:
                 print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
