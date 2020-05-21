@@ -7,7 +7,7 @@
       <parameter_name>Average</parameter_name>
       <min_grade>6</min_grade>
       <max_grade>8</max_grade>
-      <qtde>10</qtde>
+      <qtde>2</qtde>
     </parameter>
     <parameter>
       <parameter_name>Above Average</parameter_name>

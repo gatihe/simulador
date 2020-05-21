@@ -13,12 +13,11 @@ from input_handling import *
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
-
 #defining parameters
 bast_param = [0,5] #ba prefix for below average student
 avst_param = [5,7] #av prefix for average student
 aast_param = [7,10] #aa prefix for above average student
-
+sorted_sabotage = [3, 3]
 semoffers = []
 cat_info = []
 hard_passes = []
@@ -42,7 +41,7 @@ turmas = [1,2,1,2,3]
 
 
 
-
+casos_esporadicos_sorteados = [3, 0, 0, 10] #1 semestre, 1a materia, 0 = ruim (descrescimo na nota)
 
 students = []
 
@@ -52,6 +51,37 @@ def scrambled(orig):
     dest = orig[:]
     random.shuffle(dest)
     return dest
+
+def sorteio_de_turmas_dificeis_e_faceis(subjects, tempo_max_integralizacao, even_semester, odd_semester):
+    #define how many subjects
+    vetor_a_ser_retornado = []
+
+
+    #sortear um numero de 0 até 10
+    qtde_ocorrencias = random.randint(0,10)
+    #cont 0 à 10:
+    cont = 0
+
+    while(cont<qtde_ocorrencias):
+        materia_sorteada = subjects[random.randint(0,len(subjects)-1)]
+        vetor_a_ser_retornado.append(materia_sorteada)
+        if materia_sorteada in even_semester:
+            semestre_sorteado = random.randrange(2, tempo_max_integralizacao +1, 2)
+        if materia_sorteada in odd_semester:
+            semestre_sorteado = random.randrange(1, tempo_max_integralizacao +1, 2)
+        vetor_a_ser_retornado.append(semestre_sorteado)
+        vetor_a_ser_retornado.append(random.randint(0,1))
+        cont = cont+1
+        #sortear um num de 0 até len(subjects)
+        #sortear um numero par ou impar
+        #sortear entre 0 e 1
+
+    #decide wheter its good (0) or bad (1)
+
+
+
+    #turmas_sorteadas = ['EB101', 1, 1, 'EB101', 3, 0, 'EB102', 2, 1]
+    return vetor_a_ser_retornado
 
 def getting_subjects_config_from_file(filename):
     parsed_subjects = []
@@ -309,22 +339,7 @@ def ask_for_input_to_Continue():
         pass
     return
 
-def sortear_casos_esporadicos(subjects,subss):
-    qtde_casos = random.randint(0,5)
-    counter = 0
-    while(counter<0):
-        ####sortear uma disciplina
-        no_disciplina_sorteada = random.randint(0,len(subjects))
-        disciplina_sorteada = subjects[no_disciplina_sorteada]
-        indices = [i for i, x in enumerate(subss) if x == disciplina_sorteada]
-        print(disciplina_sorteada)
-        print(indices)
-        ####checar se é par ou impar
-        ### sortear numero par (entre 0 e tempo max de integralizacao) que nao foi sorteado, se for par
-        ### sortear numero impar que nao foi sorteado se for impar
 
-        counter = counter + 1
-    return
 
 #counters and variable for grades creation
 a = 0
@@ -379,6 +394,14 @@ def check_prereqs_are_ok(disciplinas, already_passed): #if 1 ok if 0 not ok
             ok_or_not = 0
     return ok_or_not
 
+def sort_sab_rec(students):
+    sorted_sab_rec = []
+    sort_students = random.randint(1,int(len(students)/3))
+    cont = 0
+    while (cont < sort_students):
+        individual_sorted_student = random.randint(0,len(students)-1)
+    return sorted_sab_rec
+
 def new_simulation():
     arrange_semesters(subjects, semoffers, even_semester, odd_semester)
     max_years = 6
@@ -398,6 +421,7 @@ def new_simulation():
     subss = sort_turmas(all_subs, turmas)
     sub = 0
     turm = 0
+    sab_rec = []
     subjects_with_turmas = []
     while(sub < len(subjects)):
         if turmas[sub] == 1:
@@ -411,7 +435,6 @@ def new_simulation():
                 turm = turm + 1
         sub = sub+1
 
-    print(random.randint(0,5))
 
     grade.clear()
     students.clear()
@@ -448,7 +471,7 @@ def new_simulation():
             a = a +1
         j = j + 3
 
-
+    sort_sub = ['EB101']
 
 
     m = 0
@@ -501,6 +524,11 @@ def new_simulation():
     vetordeteste = [1,5,10,1,0,6]
     outrovetordeteste = []
     tpds = []
+
+
+
+    meuteste1 = sorteio_de_turmas_dificeis_e_faceis(subjects, tempo_max_integralizacao, even_semester, odd_semester)
+    print(meuteste1)
 
     aui = 2
     while(aui < len(params_sort)):
@@ -583,7 +611,6 @@ def new_simulation():
 
                 creditos_atuais = 0
                 cont_sub = 0
-                sortear_casos_esporadicos(subjects,subss)
                 while(cont_sub<(len(semestre_atual))):
                     test_creditos = 0
                     freq_instance = 100
@@ -600,10 +627,30 @@ def new_simulation():
                         semestre_atual[cont_sub+1] = chr(int(random.uniform(0,turmas[materia_a_buscar_turmas])+65))
                         semestre_atual[cont_sub+6] = freq_instance
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
+                        #sorted_sabotage = [3, 3]
+
+
                         if semestre_atual[cont_sub] in hard_passes:
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] - random.uniform(0,factors[1]),2)
                         if semestre_atual[cont_sub] in easy_passes:
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] + random.uniform(0,factors[1]),2)
+
+                        #turmas dificeis esporadicas
+
+                        #ESSE TRECHO VAI PEGAR O VETOR [DISCIPLINA, SEMESTRE, DISCIPLINA, SEMESTRE E alterar a nota em um range de 1 à 3]
+                        ## CASOS ESPORADICOS USANDO FUNCAO sorteio_de_turmas_dificeis_e_faceis()
+                        if semestre_atual[cont_sub] in meuteste1: #[EB101,1, 0, EB101, 3, 1]
+                            instancias_disciplina = [i for i,d in enumerate(meuteste1) if d==semestre_atual[cont_sub]]
+                            print(instancias_disciplina)
+                            continho = 0
+                            while(continho < len(instancias_disciplina)):
+                                if(contador_de_semestre == meuteste1[instancias_disciplina[continho]+1]):
+                                    if meuteste1[instancias_disciplina[continho]+2] == 1:
+                                        semestre_atual[cont_sub + 2] = round(semestre_atual[cont_sub + 2] - random.uniform(1,3),2)
+                                    if meuteste1[instancias_disciplina[continho]+2] == 0:
+                                        semestre_atual[cont_sub +2] = round(semestre_atual[cont_sub + 2] + random.uniform(1,3),2)
+                                continho = continho+1
+
                         if freq_instance < 65:
                             semestre_atual[cont_sub+2] = 0
                         #treating < 0 and > 10
@@ -614,6 +661,8 @@ def new_simulation():
                         if semestre_atual[cont_sub+2] >= 5:
                             already_passed.append(semestre_atual[cont_sub])
                             semestre_atual[cont_sub+5] = 0
+
+
 
                         #ra_somacreditos_disc.append(semestre_atual[cont_sub+2])
                     cont_sub = cont_sub + 7
@@ -627,6 +676,7 @@ def new_simulation():
                     alldata.append(semestre_atual[count_line + 2])
                     line.append(semestre_atual[count_line+6])
                     count_line = count_line + 7
+
 
                 contador_de_semestre = contador_de_semestre + 1
             ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
@@ -795,9 +845,7 @@ def new_simulation():
     std_records = pd.DataFrame (all_records, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO', 'DESCRICAO_SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA'])
 
     now = datetime.datetime.now()
-    print(now.minute)
-
-    print(anos_inicio)
+    #print(now.minute)
 
     try:
         f = open("std_records.csv")
