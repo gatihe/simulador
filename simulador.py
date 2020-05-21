@@ -29,13 +29,13 @@ params = ["Below Average", 0, 5, 10, "Average", 5, 7, 10, "Above Average", 7, 10
 params_total = len(params)/4
 factors = []
 
-
-
 outra_turma = 'Fez em outra turma'
 
 
 #Defining Subjects
 subjects = ["EB101", "SI100", "SI120", "SI201", "SI250"]
+
+credits = [4,4,4,4,4]
 
 turmas = [1,2,1,2,3]
 
@@ -515,7 +515,7 @@ def new_simulation():
     pendentes = []
     qtde_de_disciplinas_semestre_par = len(even_semester)
     qtde_de_disciplinas_semestre_impar = len(odd_semester)
-    qtde_itens_na_disciplina = 7 #nome, turma, nota, creditos, semestre de oferta, liberado
+    qtde_itens_na_disciplina = 8 #nome, turma, nota, creditos, semestre de oferta, liberado
     creditos_atuais = 0
     semestre_atual = []
     tempo_max_integralizacao = 12
@@ -569,6 +569,7 @@ def new_simulation():
                     pendentes.append(1)
                 pendentes.append(1) #liberado para fazer ou não: 0 não (setup inicial), 1 sim
                 pendentes.append(-1) #freq
+                pendentes.append(10) #PARA SORTEAR QUEDA OU ALTA DE RENDIMENTO TEMPORÁRIA
                 c = c +3
             ####\/ \/ \/ \/ VETOR PARA CONFIGURAR TUDO ESTA CRIADO, MAGICA ACONTECE LOGO ABAIXO \/ \/ \/ \/ CONFIRA:
             ## TRATAR VETOR PENDENTES
@@ -596,7 +597,7 @@ def new_simulation():
                 while(cont_sub<len(semestre_atual)):
                     if semestre_atual[cont_sub] in already_passed:
                         semestre_atual[cont_sub + 5] = 0
-                    cont_sub = cont_sub +7
+                    cont_sub = cont_sub +8
                 #somente bloquando as que tem prereq nao cumprido
                 cont_sub = 0
                 while(cont_sub<len(semestre_atual)):
@@ -607,7 +608,7 @@ def new_simulation():
                             if individual_prereqs[novo_contador] not in already_passed:
                                 semestre_atual[cont_sub+5] = 0
                             novo_contador = novo_contador + 1
-                    cont_sub = cont_sub + 7
+                    cont_sub = cont_sub + 8
 
                 creditos_atuais = 0
                 cont_sub = 0
@@ -627,8 +628,6 @@ def new_simulation():
                         semestre_atual[cont_sub+1] = chr(int(random.uniform(0,turmas[materia_a_buscar_turmas])+65))
                         semestre_atual[cont_sub+6] = freq_instance
                         semestre_atual[cont_sub+2] = round(random.uniform(outrovetordeteste[contest],outrovetordeteste[contest+1]),2)
-                        #sorted_sabotage = [3, 3]
-
 
                         if semestre_atual[cont_sub] in hard_passes:
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] - random.uniform(0,factors[1]),2)
@@ -641,7 +640,6 @@ def new_simulation():
                         ## CASOS ESPORADICOS USANDO FUNCAO sorteio_de_turmas_dificeis_e_faceis()
                         if semestre_atual[cont_sub] in meuteste1: #[EB101,1, 0, EB101, 3, 1]
                             instancias_disciplina = [i for i,d in enumerate(meuteste1) if d==semestre_atual[cont_sub]]
-                            print(instancias_disciplina)
                             continho = 0
                             while(continho < len(instancias_disciplina)):
                                 if(contador_de_semestre == meuteste1[instancias_disciplina[continho]+1]):
@@ -665,7 +663,7 @@ def new_simulation():
 
 
                         #ra_somacreditos_disc.append(semestre_atual[cont_sub+2])
-                    cont_sub = cont_sub + 7
+                    cont_sub = cont_sub + 8
 
                 count_line = 0
                     #print(ra_somacreditos_disc)
@@ -675,7 +673,7 @@ def new_simulation():
                     line.append(semestre_atual[count_line + 2])
                     alldata.append(semestre_atual[count_line + 2])
                     line.append(semestre_atual[count_line+6])
-                    count_line = count_line + 7
+                    count_line = count_line + 8
 
 
                 contador_de_semestre = contador_de_semestre + 1
@@ -688,7 +686,6 @@ def new_simulation():
             maluco = maluco +1
         contest = contest + 2
     l = 0
-
 
     #tirando -1 e turmas sem ter feito materia
     jua = 1
@@ -941,13 +938,13 @@ while(menu_keep == 0):
             ask_for_input_to_Continue()
         if menu2 == '2':
             cls()
-            subjects, turmas = set_new_subject(subjects, turmas)
+            subjects, turmas, semoffers, credits = set_new_subject(subjects, turmas, semoffers, credits)
             listar_disciplinas()
             ask_for_input_to_Continue()
         if menu2 == '3':
             cls()
             listar_disciplinas()
-            subjects, turmas = del_subject(subjects, turmas)
+            subjects, turmas, semoffers, credits = del_subject(subjects, turmas, semoffers, credits)
             listar_disciplinas()
             ask_for_input_to_Continue()
         if menu2 == '4':
@@ -1008,7 +1005,6 @@ while(menu_keep == 0):
                 subjects = getting_subjects_config_from_file(filename)
                 turmas = getting_turmas_config_from_file(filename)
                 prereqs = getting_prereqs_config_from_file(filename)
-                params = getting_params_config_from_file(filename)
                 semoffers = getting_semoffer_config_from_file(filename)
                 credits = getting_credits_config_from_file(filename)
                 cat_info = getting_catalog_info_from_file(filename)

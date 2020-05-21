@@ -112,13 +112,15 @@ def edit_turmas(subjects, turmas):
         print("Valor inválido. Operação cancelada.")
     return subjects, turmas
 
-def del_subject(subjects, turmas):
+def del_subject(subjects, turmas, semoffers, credits):
     try:
         subject_removed = input("\nInsira o código da disciplina a ser removida ou ENTER para cancelar.\nEntrada do usuário: ")
         if subject_removed is not '':
             if subject_removed in subjects:
                 subject_index = subjects.index(subject_removed)
                 turmas.pop(subject_index)
+                semoffers.pop(subject_index)
+                credits.pop(subject_index)
                 subjects.remove(subject_removed)
                 print("\n\nDisciplina removida com sucesso.")
             else:
@@ -128,9 +130,9 @@ def del_subject(subjects, turmas):
             print("Operação cancelada.")
     except ValueError:
         print("Operação inválida.")
-    return subjects, turmas
+    return subjects, turmas, semoffers, credits
 
-def set_new_subject(subjects, turmas):
+def set_new_subject(subjects, turmas, semoffers, credits):
     try:
         new_subject = input("O código da disciplina deve seguir o seguinte padrão. ABXXX sendo AB duas letras quaisquer e XXX 3 números quaisquer. \nInsira o código da disciplina à ser adicionada ou Enter para cancelar.\nEntrada do usuário: ")
         if len(new_subject) != 5:
@@ -140,8 +142,12 @@ def set_new_subject(subjects, turmas):
         int(new_subject[-3:])
         if new_subject not in subjects and new_subject is not '':
             no_turmas = int(input("Insira a quantidade de turmas para esta disciplina. \nEntrada do usuário: "))
+            semoffer = int(input("Insira o semestre ideal de oferecimento para esta disciplina. \nEntrada do usuário: "))
+            qtt_credit = int(input("Insira a quantidade de créditos desta disciplina. \nEntrada do usuário: "))
             subjects.append(new_subject)
             turmas.append(abs(no_turmas))
+            semoffers.append(abs(semoffer))
+            credits.append(abs(qtt_credit))
             print("Disciplina adicionada com sucesso.")
         elif new_subject in subjects:
             print("Disciplina já cadastrada.")
@@ -149,7 +155,7 @@ def set_new_subject(subjects, turmas):
         print("Valor inválido. Operação cancelada.")
     except InvalidSubjectCode:
         print("Código de disciplina inválido. Operação cancelada.")
-    return subjects, turmas
+    return subjects, turmas, semoffers, credits
 
 def set_new_parameter(params):
     try:
