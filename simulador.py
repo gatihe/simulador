@@ -755,14 +755,14 @@ def new_simulation():
                         ## CASOS ESPORADICOS USANDO FUNCAO sorteio_de_turmas_dificeis_e_faceis()
                         if semestre_atual[cont_sub] in meuteste1: #[EB101,1, 0, EB101, 3, 1]
                             instancias_disciplina = [i for i,d in enumerate(meuteste1) if d==semestre_atual[cont_sub]]
-                            continho = 0
-                            while(continho < len(instancias_disciplina)):
-                                if(contador_de_semestre == meuteste1[instancias_disciplina[continho]+1]):
-                                    if meuteste1[instancias_disciplina[continho]+2] == 1:
+                            new_counter = 0
+                            while(new_counter < len(instancias_disciplina)):
+                                if(contador_de_semestre == meuteste1[instancias_disciplina[new_counter]+1]):
+                                    if meuteste1[instancias_disciplina[new_counter]+2] == 1:
                                         semestre_atual[cont_sub + 2] = round(semestre_atual[cont_sub + 2] - random.uniform(1,3),2)
-                                    if meuteste1[instancias_disciplina[continho]+2] == 0:
+                                    if meuteste1[instancias_disciplina[new_counter]+2] == 0:
                                         semestre_atual[cont_sub +2] = round(semestre_atual[cont_sub + 2] + random.uniform(1,3),2)
-                                continho = continho+1
+                                new_counter = new_counter+1
 
                         if freq_instance < 65:
                             semestre_atual[cont_sub+2] = 0
@@ -789,10 +789,10 @@ def new_simulation():
             l = l+1
 
         ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
-        maluco = 0
-        while(maluco<len(line)):
-            tpds.append(line[maluco])
-            maluco = maluco +1
+        holder = 0
+        while(holder<len(line)):
+            tpds.append(line[holder])
+            holder = holder +1
         contest = contest + 2
     l = 0
 
