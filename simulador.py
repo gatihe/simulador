@@ -6,9 +6,18 @@ import datetime
 from xml.dom import minidom
 import xml.etree.ElementTree as ET
 from input_handling import *
+import webbrowser
 
 
-# In[2]:
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 
 def cls():
@@ -28,8 +37,12 @@ menu_keep = 0
 params = ["Below Average", 0, 5, 10, "Average", 5, 7, 10, "Above Average", 7, 10, 10]
 params_total = len(params)/4
 factors = []
-
+students_data = []
+tempo_max_integralizacao = 12
 outra_turma = 'Fez em outra turma'
+ja_simulou = 0
+ja_importou = 0
+importou_config = 0
 
 
 #Defining Subjects
@@ -134,8 +147,76 @@ def export_subjects(subjects,credits, cat_info):
         j = j+1
     return tpds
 
-def export_student_data(grades):
-    return stdata
+def export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, simulation_array, subss):
+    l = 0
+    students_data = []
+    while (l<len(students)):
+        c = 1
+        ind_student_data = []
+        ind_student_data.append(students[l])
+        ind_student_data.append(0)
+        novo_index_inicial_do_semestre = 0
+        novo_index_final_do_semestre = -1
+        novo_contador_de_semestre = 1
+        inicio_semestre = 0
+        fim_semestre = 0
+        while (novo_contador_de_semestre<=tempo_max_integralizacao):
+            novo_index_inicial_do_semestre = novo_index_final_do_semestre + 1
+            if novo_contador_de_semestre % 2 == 0:
+                novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_par * 3) #3 = TURMA, NOTA, FREQ
+            if novo_contador_de_semestre % 2 != 0:
+                novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_impar * 3)
+            inicio_semestre = novo_index_inicial_do_semestre
+            fim_semestre = novo_index_final_do_semestre
+            while (inicio_semestre <= fim_semestre ):
+                if simulation_array[l][inicio_semestre] != '--':
+                    ind_student_data.append(subss[inicio_semestre+1])
+                    ind_student_data.append(simulation_array[l][inicio_semestre+1])
+                    ind_student_data.append(simulation_array[l][inicio_semestre+2])
+                    ind_student_data.append(novo_contador_de_semestre)
+                    ind_student_data.append(credits[subjects.index(subss[inicio_semestre+1])])
+                inicio_semestre = inicio_semestre + 3
+            novo_contador_de_semestre = novo_contador_de_semestre + 1
+        students_data.append(ind_student_data)
+        l = l +1
+
+    info_std = []
+    individual_info_std = []
+    l = 0
+    while(l<len(students_data)):
+        creditos_cursados = 0
+        individual_info_std = []
+        m = 0
+        total_creditos_curso = 0
+        while (m<len(credits)):
+            total_creditos_curso = total_creditos_curso + credits[m]
+            m = m +1
+        j = 2
+        individual_info_std.append(students_data[l][j-2]) #RA                  (0)
+        individual_info_std.append(generic_config_info[0]) #ANOING             (1)
+        individual_info_std.append(2) #PINGR POR ENQUANTO SERA 2               (2)
+        individual_info_std.append(cat_info[1]) #DANOCAT = ANOCATALOGO         (3)
+        individual_info_std.append(cat_info[0]) #numero do CURSO               (4)
+        individual_info_std.append(generic_config_info[0]) #ANOING             (5)
+        individual_info_std.append(cat_info[1]) #ANO_CATALOGO = ANOCATALOGO    (6)
+        individual_info_std.append(0) #CR - VAI SER CALCULADO DEPOIS           (7)
+        individual_info_std.append(0) #CP - VAI SER CALCULADO DEPOIS           (8)
+        individual_info_std.append(0) #CP FUTURO - VAI SER CALCULADO DEPOIS    (9)
+        individual_info_std.append(0) #POSICAO_ALUNO_NA_TURMA CALCULADO DEPOIS (10)
+        individual_info_std.append(0) #CR PADRAO - VAI SER CALCULADO DEPOIS    (11)
+        individual_info_std.append(0) #CR MEDIO - VAI SER CALCULADO DEPOIS    (12)
+        individual_info_std.append(0) #DESVIO_PADRAO_TURMA                     (13)
+        individual_info_std.append(len(students))  #TOTAL_ALUNOS_TURMA         (14)
+        while(j<len(students_data[l])):
+            if students_data[l][j+1] >= 5 and students_data[l][j+2] >= 65:
+                creditos_cursados = creditos_cursados + students_data[l][j+4]
+            j = j+5
+        individual_info_std[8] = round(creditos_cursados/total_creditos_curso,3)
+        individual_info_std[9] = round(creditos_cursados/total_creditos_curso,3)
+        info_std.append(individual_info_std)
+        l = l+1
+
+    return info_std, students_data
 
 def calc_desvio_padrao():
     return desvio_padrao
@@ -339,6 +420,40 @@ def ask_for_input_to_Continue():
         pass
     return
 
+def get_students_records(students_data):
+    #EXPORT STUDENTS RECORDS
+    all_records = []
+    individual_grade_on_record = []
+    j = 0
+    while(j< len(students_data)):
+      m = 2
+      while(m<len(students_data[j])):
+        individual_grade_on_record = []
+        individual_grade_on_record.append(students_data[j][0]) #0
+        individual_grade_on_record.append(int(generic_config_info[0]+(students_data[j][m+3]/2))) #1
+        individual_grade_on_record.append(students_data[j][m+3])#2
+        individual_grade_on_record.append(students_data[j][m])#3
+        individual_grade_on_record.append(students_data[j][m+1])#4
+        individual_grade_on_record.append(students_data[j][m+2])#5
+        if students_data[j][m+1] >= 5 and students_data[j][m+2] >= 65:
+            individual_grade_on_record.append(4)#6
+        if students_data[j][m+1] < 5 and students_data[j][m+2] >= 65:
+            individual_grade_on_record.append(5)#6
+        if students_data[j][m+2] < 65:
+            individual_grade_on_record.append(6)#6
+        if individual_grade_on_record[6] == 4:
+            individual_grade_on_record.append("APROVADO POR NOTA/CONCEITO E FREQ")
+        if individual_grade_on_record[6] == 5:
+            individual_grade_on_record.append("REPROVADO POR NOTA/CONCEITO")
+        if individual_grade_on_record[6] == 6:
+            individual_grade_on_record.append("REPROVADO POR FREQUENCIA")
+        individual_grade_on_record.append(1)
+        individual_grade_on_record.append(students_data[j][m+4])
+        individual_grade_on_record.append('REGULAR')
+        all_records.append(individual_grade_on_record)
+        m = m+5
+      j = j+1
+    return all_records
 
 
 #counters and variable for grades creation
@@ -403,6 +518,7 @@ def sort_sab_rec(students):
     return sorted_sab_rec
 
 def new_simulation():
+    ja_simulou = 1
     arrange_semesters(subjects, semoffers, even_semester, odd_semester)
     max_years = 6
 #intercalando semestres pra criar grade de ofertas
@@ -527,8 +643,8 @@ def new_simulation():
 
 
 
+
     meuteste1 = sorteio_de_turmas_dificeis_e_faceis(subjects, tempo_max_integralizacao, even_semester, odd_semester)
-    print(meuteste1)
 
     aui = 2
     while(aui < len(params_sort)):
@@ -632,10 +748,9 @@ def new_simulation():
                         if semestre_atual[cont_sub] in hard_passes:
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] - random.uniform(0,factors[1]),2)
                         if semestre_atual[cont_sub] in easy_passes:
-                            semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] + random.uniform(0,factors[1]),2)
+                            semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] + random.uniform(0,factors[0]),2)
 
                         #turmas dificeis esporadicas
-
                         #ESSE TRECHO VAI PEGAR O VETOR [DISCIPLINA, SEMESTRE, DISCIPLINA, SEMESTRE E alterar a nota em um range de 1 à 3]
                         ## CASOS ESPORADICOS USANDO FUNCAO sorteio_de_turmas_dificeis_e_faceis()
                         if semestre_atual[cont_sub] in meuteste1: #[EB101,1, 0, EB101, 3, 1]
@@ -659,14 +774,9 @@ def new_simulation():
                         if semestre_atual[cont_sub+2] >= 5:
                             already_passed.append(semestre_atual[cont_sub])
                             semestre_atual[cont_sub+5] = 0
-
-
-
-                        #ra_somacreditos_disc.append(semestre_atual[cont_sub+2])
                     cont_sub = cont_sub + 8
 
                 count_line = 0
-                    #print(ra_somacreditos_disc)
                 while (count_line<len(semestre_atual)):
                     line.append(semestre_atual[count_line + 1])
                     alldata.append(semestre_atual[count_line + 1])
@@ -675,11 +785,10 @@ def new_simulation():
                     line.append(semestre_atual[count_line+6])
                     count_line = count_line + 8
 
-
                 contador_de_semestre = contador_de_semestre + 1
-            ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
-
             l = l+1
+
+        ## PEGAR PENDENTES E DEVOLVER PRAS NOTAS NORMAIS
         maluco = 0
         while(maluco<len(line)):
             tpds.append(line[maluco])
@@ -704,230 +813,121 @@ def new_simulation():
         grade[l] = tpds[position:position+len(subss)]
         position = position + lensub
         l = l+1
-    students_data = []
-    ind_student_data = []
-    l = 0
-    # while (l<len(students)):
-    #     c = 1
-    #     ind_student_data = []
-    #     ind_student_data.append(students[l])
-    #     ind_student_data.append(0)
-    #     while (c<len(subss)):
-    #         if grade[l][c] != '--':
-    #             ind_student_data.append(subss[c])
-    #             ind_student_data.append(grade[l][c])
-    #         c = c +3
-    #     students_data.append(ind_student_data)
-    #     #print(ind_student_data)
-    #     l = l +1
-    # #print(students_data)
-
 
     simulation = pd.DataFrame (scrambled(grade),index=students, columns=subss)
+    ja_simulou = 1
     simulation_array = simulation.values.tolist()
-    while (l<len(students)):
-        c = 1
-        ind_student_data = []
-        ind_student_data.append(students[l])
-        ind_student_data.append(0)
-        novo_index_inicial_do_semestre = 0
-        novo_index_final_do_semestre = -1
-        novo_contador_de_semestre = 1
-        inicio_semestre = 0
-        fim_semestre = 0
-        while (novo_contador_de_semestre<=tempo_max_integralizacao):
-            novo_index_inicial_do_semestre = novo_index_final_do_semestre + 1
-            if novo_contador_de_semestre % 2 == 0:
-                novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_par * 3) #3 = TURMA, NOTA, FREQ
-            if novo_contador_de_semestre % 2 != 0:
-                novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_impar * 3)
-            inicio_semestre = novo_index_inicial_do_semestre
-            fim_semestre = novo_index_final_do_semestre
-            while (inicio_semestre <= fim_semestre ):
-                if simulation_array[l][inicio_semestre] != '--':
-                    ind_student_data.append(subss[inicio_semestre+1])
-                    ind_student_data.append(simulation_array[l][inicio_semestre+1])
-                    ind_student_data.append(simulation_array[l][inicio_semestre+2])
-                    ind_student_data.append(novo_contador_de_semestre)
-                    ind_student_data.append(credits[subjects.index(subss[inicio_semestre+1])])
-                inicio_semestre = inicio_semestre + 3
-            novo_contador_de_semestre = novo_contador_de_semestre + 1
-        students_data.append(ind_student_data)
-        l = l +1
 
+    print('-------------------------------------------------------------------')
+    print('- Quantidade de alunos simulados: '+str(len(students))+'.')
+    print('- Tempo máximo de integralização: '+ str(tempo_max_integralizacao)+'.')
+    print('- Máximo de créditos por semestre: '+ str(max_creditos)+'.')
+    print('-------------------------------------------------------------------')
+    if importou_config == 1:
+        print('Disciplinas de baixa dificuldade (acréscimo na nota da turma):\n')
+        j = 0
+        while(j<len(easy_passes)):
+            print('- '+easy_passes[j])
+            j = j+1
 
-        #EXPORT STUDENT INFO
-        #RA, ANOING, PINGR (2), DANOCAT, CURSO, ANO_INGRESSO, ANO_CATALOGO, CR, CP, CP_FUTURO, POSICAO_ALUNO_NA_TURMA, COEFICIENTE_RENDIMENTO_PADRAO, COEFICIENTE_RENDIMENTO_MEDIO, DESVIO_PADRAO_TURMA, TOTAL_ALUNOS_TURMA
-    #print(students_data)
-    info_std = []
-    individual_info_std = []
-    l = 0
-    while(l<len(students_data)):
-        creditos_cursados = 0
-        individual_info_std = []
-        m = 0
-        total_creditos_curso = 0
-        while (m<len(credits)):
-            total_creditos_curso = total_creditos_curso + credits[m]
-            m = m +1
-        j = 2
-        individual_info_std.append(students_data[l][j-2]) #RA                  (0)
-        individual_info_std.append(generic_config_info[0]) #ANOING             (1)
-        individual_info_std.append(2) #PINGR POR ENQUANTO SERA 2               (2)
-        individual_info_std.append(cat_info[1]) #DANOCAT = ANOCATALOGO         (3)
-        individual_info_std.append(cat_info[0]) #numero do CURSO               (4)
-        individual_info_std.append(generic_config_info[0]) #ANOING             (5)
-        individual_info_std.append(cat_info[1]) #ANO_CATALOGO = ANOCATALOGO    (6)
-        individual_info_std.append(0) #CR - VAI SER CALCULADO DEPOIS           (7)
-        individual_info_std.append(0) #CP - VAI SER CALCULADO DEPOIS           (8)
-        individual_info_std.append(0) #CP FUTURO - VAI SER CALCULADO DEPOIS    (9)
-        individual_info_std.append(0) #POSICAO_ALUNO_NA_TURMA CALCULADO DEPOIS (10)
-        individual_info_std.append(0) #CR PADRAO - VAI SER CALCULADO DEPOIS    (11)
-        individual_info_std.append(0) #CR MEDIO - VAI SER CALCULADO DEPOIS    (12)
-        individual_info_std.append(0) #DESVIO_PADRAO_TURMA                     (13)
-        individual_info_std.append(len(students))  #TOTAL_ALUNOS_TURMA         (14)
-        while(j<len(students_data[l])):
-            if students_data[l][j+1] >= 5 and students_data[l][j+2] >= 65:
-                creditos_cursados = creditos_cursados + students_data[l][j+4]
-            j = j+5
-        individual_info_std[8] = round(creditos_cursados/total_creditos_curso,3)
-        individual_info_std[9] = round(creditos_cursados/total_creditos_curso,3)
-        info_std.append(individual_info_std)
-        l = l+1
-    std_info_export = pd.DataFrame (info_std,index=students, columns=['RA', 'ANOING', 'PINGR', 'DANOCAT', 'CURSO', 'ANO_INGRESSO', 'ANO_CATALOGO', 'CR', 'CP', 'CP_FUTURO', 'POSICAO_ALUNO_NA_TURMA', 'COEFICIENTE_RENDIMENTO_PADRAO', 'COEFICIENTE_RENDIMENTO_MEDIO', 'DESVIO_PADRAO_TURMA', 'TOTAL_ALUNOS_TURMA'])
-    try:
-        f = open("std_info_export.csv")
-        os.remove("std_info_export.csv")
-    except IOError:
-        f = open("std_info_export.csv", "+w")
-    finally:
-        f.close()
-        std_info_export.to_csv(r'std_info_export.csv')
-        std_info_export.to_html(r'std_info_export.html',index = False)
-
-
-    #EXPORT STUDENTS RECORDS
-    all_records = []
-    individual_grade_on_record = []
+        print('\nFator : + (0.0 à '+str(factors[0])+')')
+        print('-------------------------------------------------------------------')
+        print('Disciplinas de alta dificuldade (decréscimo na nota da turma):\n')
+        j = 0
+        while(j<len(hard_passes)):
+            print('- '+hard_passes[j])
+            j = j+1
+        print('\nFator : - (0.0 à '+str(factors[0])+')')
+        print('-------------------------------------------------------------------')
+    print('Disciplinas sorteadas para haver alteração abrupta na nota da turma:')
     j = 0
-    while(j< len(students_data)):
-      m = 2
-      while(m<len(students_data[j])):
-        individual_grade_on_record = []
-        individual_grade_on_record.append(students_data[j][0]) #0
-        individual_grade_on_record.append(int(generic_config_info[0]+(students_data[j][m+3]/2))) #1
-        individual_grade_on_record.append(students_data[j][m+3])#2
-        individual_grade_on_record.append(students_data[j][m])#3
-        individual_grade_on_record.append(students_data[j][m+1])#4
-        individual_grade_on_record.append(students_data[j][m+2])#5
-        if students_data[j][m+1] >= 5 and students_data[j][m+2] >= 65:
-            individual_grade_on_record.append(4)#6
-        if students_data[j][m+1] < 5 and students_data[j][m+2] >= 65:
-            individual_grade_on_record.append(5)#6
-        if students_data[j][m+2] < 65:
-            individual_grade_on_record.append(6)#6
-        if individual_grade_on_record[6] == 4:
-            individual_grade_on_record.append("APROVADO POR NOTA/CONCEITO E FREQ")
-        if individual_grade_on_record[6] == 5:
-            individual_grade_on_record.append("REPROVADO POR NOTA/CONCEITO")
-        if individual_grade_on_record[6] == 6:
-            individual_grade_on_record.append("REPROVADO POR FREQUENCIA")
-        individual_grade_on_record.append(1)
-        individual_grade_on_record.append(students_data[j][m+4])
-        individual_grade_on_record.append('REGULAR')
-        all_records.append(individual_grade_on_record)
-        m = m+5
-      j = j+1
+    while(j<len(meuteste1)):
+        if meuteste1[j+2] == 0:
+            impacto = 'positivo.'
+        else:
+            impacto = 'negativo.'
+        print('\n- Disciplina: ' + str(meuteste1[j])+';\n- Semestre sorteado: ' + str(meuteste1[j+1]) + ';\n- Impacto: '+impacto)
+        j = j+3
+    print('-------------------------------------------------------------------')
 
-    std_records = pd.DataFrame (all_records, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO', 'DESCRICAO_SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA'])
-
-    now = datetime.datetime.now()
-    #print(now.minute)
-
-    try:
-        f = open("std_records.csv")
-        os.remove("std_records.csv")
-    except IOError:
-        f = open("std_records", "+w")
-    finally:
-        f.close()
-        std_records.to_csv(r'std_records.csv')
-        std_records.to_html(r'std_records.html', index = False)
-
-
-    prereqs_report_export = pd.DataFrame(prereq_report, columns = ['TIPO_NIVEL_ATIVIDADE_MAE', "DISCIPLINA", "ANO_INICIO", "ANO_FIM", "NO_CADEIA_PRE_REQUISITO", "TIPO_PRE_REQUISITO", "DISCIPLINA_EXIGIDA", "TIPO_NIVEL_ATIVIDADE_EXIGIDA"])
-    try:
-        f = open("prereq_report.csv")
-        os.remove("prereq_report.csv")
-    except IOError:
-        f = open("prereq_report", "+w")
-    finally:
-        f.close()
-        prereqs_report_export.to_csv(r'prereq_report.csv')
-        prereqs_report_export.to_html(r'prereq_report.html', index = False)
-
-    timestr = time.strftime('%Y%m%d-%H%M%S')
-    simulationcsv = timestr+'.csv'
-    simulationhtml = timestr+'.csv'
-    try:
-        f = open("simulacao.csv")
-        os.remove("simulacao.csv")
-    except IOError:
-        f = open("simulacao.csv", "+w")
-    finally:
-        f.close()
-        simulation.to_csv(r'simulacao.csv')
-        simulation.to_html(r'simulacao.html')
+    return simulation, simulation_array, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, subss, students_data
 
 #TODO: PREVENT USER INPUT ERRORS TO ALL ITEMS
 while(menu_keep == 0):
     cls()
-    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Configurar parametros\n 3. Configurar disciplinas \n 4. Importar catalogo\n 5. Importar configuracoes adicionais\n 6. Sair\n\nEntrada do usuário: ")
-    check_input_in_scope(1,6,menu1)
+    menu1 = input("Selecione uma opção: \n 1. Nova simulação \n 2. Importar catálogo/configurações adicionais. \n 3. Configurar disciplinas \n 4. Configurar parametros\n 5. Exportar relatórios\n 6. Ajuda\n 7. Sair\n\nEntrada do usuário: ")
+    check_input_in_scope(1,7,menu1)
     if menu1 == '1':
         cls()
         #os.remove("test.csv")
-        new_simulation()
-        try:
-            input("Simulação exportada como 'simulacao.csv' e 'simulacao.html'. Pressione qualquer tecla para continuar.")
-        except SyntaxError:
-            menu_keep = menu_keep + 1
-            pass
+        if ja_importou == 1:
+            simulation, simulation_array, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, subss, students_data = new_simulation()
+            try:
+                f = open("simulacao.csv")
+                os.remove("simulacao.csv")
+                ja_simulou = 1
+            except IOError:
+                f = open("simulacao.csv", "+w")
+            finally:
+                f.close()
+                simulation.to_csv(r'simulacao.csv')
+                simulation.to_html(r'simulacao.html')
+            try:
+                input("\nSIMULAÇÃO EXPORTADA COMO 'simulacao.csv' E 'simulacao.html'.\n\nPressione qualquer tecla para continuar.")
+            except SyntaxError:
+                menu_keep = menu_keep + 1
+                pass
+        else:
+            try:
+                input("Nenhuma configuração de catálogo encontrada. Importe um catálogo ao e tente novamente. \nPressione qualquer tecla para continuar.")
+            except SyntaxError:
+                menu_keep = menu_keep + 1
+                pass
     #sessao para configuração de parametros
     elif menu1 == '2':
         cls()
-        menu2 = input("1. Listar parametros atuais \n2. Configuração de parametros\n3. Fazer upload de parametros\n4. Voltar\n\nEntrada do usuário: ")
-        check_input_in_scope(1,4,menu2)
-        if menu2 == '1':
-            cls()
-            listar_parametros()
-            ask_for_input_to_Continue()
-        elif menu2 == '2':
-            cls()
-            param_to_config = input("1. Adicionar parâmetro\n2. Remover parâmetro\n3. Alterar parâmetro\n\nEntrada do usuário: ")
-            check_input_in_scope(1,3,param_to_config)
-            if param_to_config == '1':
-                cls()
-                listar_parametros()
-                params = set_new_parameter(params)
-                listar_parametros()
-                ask_for_input_to_Continue()
-            elif param_to_config == '2':
-                cls()
-                listar_parametros()
-                params = del_parameter(params)
-                listar_parametros()
-                ask_for_input_to_Continue()
-            elif param_to_config == '3':
-                cls()
-                listar_parametros()
-                params = change_parameter(params)
-                listar_parametros()
-                ask_for_input_to_Continue()
-        elif menu2 == '3':
-             params = getting_params_config_from_file()
-             print("\nImportação realizada com sucesso. Os parâmetros foram atualizados.")
-             ask_for_input_to_Continue()
+        filename = input("Insira o nome do arquivo XML à importar catalogo ou ENTER para cancelar.\nEntrada do usuário: ")
+        if filename is not '':
+            try:
+                f=open(filename)
+                subjects = getting_subjects_config_from_file(filename)
+                turmas = getting_turmas_config_from_file(filename)
+                prereqs = getting_prereqs_config_from_file(filename)
+                semoffers = getting_semoffer_config_from_file(filename)
+                credits = getting_credits_config_from_file(filename)
+                cat_info = getting_catalog_info_from_file(filename)
+                prereq_report = getting_prereq_report_from_file(filename)
+                ja_importou = 1
+            except SyntaxError:
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                pass
+            except IOError:
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                pass
+
+        else:
+            print("\nImportação de catálogo cancelada.")
+
+        filename1 = input("\nInsira o nome do arquivo XML à importar configurações adicionais ou ENTER para cancelar.\nEntrada do usuário: ")
+        if filename1 is not '':
+            try:
+                f=open(filename1)
+                params = getting_params_config_from_file(filename1)
+                factors = getting_factors_config_from_file(filename1)
+                hard_passes = getting_hard_pass_from_file(filename1)
+                easy_passes = getting_easy_pass_from_file(filename1)
+                generic_config_info = getting_generic_info_from_file(filename1)
+                importou_config = 1
+            except SyntaxError:
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                pass
+            except IOError:
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                pass
+        else:
+            print("\nImportação de parâmetros cancelada.")
+        ask_for_input_to_Continue()
+
     elif menu1 == '3':
         cls()
         menu2 = input("1. Listar disicplinas\n2. Adicionar disciplinas\n3. Remover disciplinas\n4. Alterar turmas\n5. Listar Pré-Requisitos\n6. Adicionar Pré-Requisito\n7. Remover Pré-Requisito\n8. Exportar disciplinas \n9. Voltar\n\nEntrada do usuário: ")
@@ -998,52 +998,87 @@ while(menu_keep == 0):
               export.to_html(r'export_disciplinas.html',index=False)
     elif menu1 == '4':
         cls()
-        filename = input("Insira o nome do arquivo XML à importar catalogo ou ENTER para cancelar.\nEntrada do usuário: ")
-        if filename is not '':
-            try:
-                f=open(filename)
-                subjects = getting_subjects_config_from_file(filename)
-                turmas = getting_turmas_config_from_file(filename)
-                prereqs = getting_prereqs_config_from_file(filename)
-                semoffers = getting_semoffer_config_from_file(filename)
-                credits = getting_credits_config_from_file(filename)
-                cat_info = getting_catalog_info_from_file(filename)
-                prereq_report = getting_prereq_report_from_file(filename)
-                cls()
-            except SyntaxError:
-                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
-                pass
-            except IOError:
-                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
-                pass
-
-        else:
+        menu2 = input("1. Listar parametros atuais \n2. Configuração de parametros\n3. Voltar\n\nEntrada do usuário: ")
+        check_input_in_scope(1,4,menu2)
+        if menu2 == '1':
             cls()
-            print("Operação cancelada.")
-        ask_for_input_to_Continue()
+            listar_parametros()
+            ask_for_input_to_Continue()
+        elif menu2 == '2':
+            cls()
+            param_to_config = input("1. Adicionar parâmetro\n2. Remover parâmetro\n3. Alterar parâmetro\n4. Voltar\n\nEntrada do usuário: ")
+            check_input_in_scope(1,3,param_to_config)
+            if param_to_config == '1':
+                cls()
+                listar_parametros()
+                params = set_new_parameter(params)
+                listar_parametros()
+                ask_for_input_to_Continue()
+            elif param_to_config == '2':
+                cls()
+                listar_parametros()
+                params = del_parameter(params)
+                listar_parametros()
+                ask_for_input_to_Continue()
+            elif param_to_config == '3':
+                cls()
+                listar_parametros()
+                params = change_parameter(params)
+                listar_parametros()
+                ask_for_input_to_Continue()
     elif menu1 == '5':
-        cls()
-        filename1 = input("Insira o nome do arquivo XML à importar configurações adicionais ou ENTER para cancelar.\nEntrada do usuário: ")
-        if filename1 is not '':
+        if ja_simulou == 1:
+            oteste, students_data = export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, simulation_array, subss)
+            osrecords = get_students_records(students_data)
+
+            prereqs_report_export = pd.DataFrame(prereq_report, columns = ['TIPO_NIVEL_ATIVIDADE_MAE', "DISCIPLINA", "ANO_INICIO", "ANO_FIM", "NO_CADEIA_PRE_REQUISITO", "TIPO_PRE_REQUISITO", "DISCIPLINA_EXIGIDA", "TIPO_NIVEL_ATIVIDADE_EXIGIDA"])
             try:
-                f=open(filename1)
-                params = getting_params_config_from_file(filename1)
-                factors = getting_factors_config_from_file(filename1)
-                hard_passes = getting_hard_pass_from_file(filename1)
-                easy_passes = getting_easy_pass_from_file(filename1)
-                generic_config_info = getting_generic_info_from_file(filename1)
-
-                cls()
-            except SyntaxError:
-                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
-                pass
+                f = open("exports/prereq_report.csv")
+                os.remove("exports/prereq_report.csv")
             except IOError:
-                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                f = open("exports/prereq_report", "+w")
+            finally:
+                f.close()
+                prereqs_report_export.to_csv(r'exports/prereq_report.csv')
+                prereqs_report_export.to_html(r'exports/prereq_report.html', index = False)
+
+            std_records = pd.DataFrame (osrecords, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO', 'DESCRICAO_SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA'])
+            try:
+                f = open("exports/std_records.csv")
+                os.remove("exports/std_records.csv")
+            except IOError:
+                f = open("exports/std_records", "+w")
+            finally:
+                f.close()
+                std_records.to_csv(r'exports/std_records.csv')
+                std_records.to_html(r'exports/std_records.html', index = False)
+
+            std_info_export = pd.DataFrame (oteste,index=students, columns=['RA', 'ANOING', 'PINGR', 'DANOCAT', 'CURSO', 'ANO_INGRESSO', 'ANO_CATALOGO', 'CR', 'CP', 'CP_FUTURO', 'POSICAO_ALUNO_NA_TURMA', 'COEFICIENTE_RENDIMENTO_PADRAO', 'COEFICIENTE_RENDIMENTO_MEDIO', 'DESVIO_PADRAO_TURMA', 'TOTAL_ALUNOS_TURMA'])
+            try:
+                f = open("exports/std_info_export.csv")
+                os.remove("exports/std_info_export.csv")
+            except IOError:
+                f = open("exports/std_info_export.csv", "+w")
+            finally:
+                f.close()
+                std_info_export.to_csv(r'exports/std_info_export.csv')
+                std_info_export.to_html(r'exports/std_info_export.html',index = False)
+
+            try:
+                cls()
+                input("Relatórios exportados com sucesso.\n\n - Histórico de alunos exportados como 'std_records.csv' e 'std_records.html'.\n - Dados dos alunos exportados como 'std_info_export.csv' e 'std_info_export.html'.\n - Pre-requisitos exportados como 'prereq_report.csv' e 'prereq_report.html'.\n - Disciplinas exportadas como 'export_disciplinas.csv' e 'export_disciplinas.html'.\n\nPressione qualquer tecla para continuar.")
+            except SyntaxError:
+                menu_keep = menu_keep + 1
+                pass
+        else:
+            try:
+                cls()
+                input("Não há simulação criada para exportação de relatórios.\n\nPressione qualquer tecla para continuar.")
+            except SyntaxError:
+                menu_keep = menu_keep + 1
                 pass
 
-        else:
-            cls()
-            print("Operação cancelada.")
-        ask_for_input_to_Continue()
     elif menu1 == '6':
+        webbrowser.open('https://github.com/gatihe/simulador')
+    elif menu1 == '7':
         menu_keep = menu_keep + 1
