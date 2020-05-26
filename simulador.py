@@ -1115,7 +1115,7 @@ while(menu_keep == 0):
                 listar_parametros()
                 ask_for_input_to_Continue()
     elif menu1 == '5':
-        if ja_simulou == 1:
+        if len(simulation)>0:
             oteste, students_data = export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, simulation_array, subss)
             osrecords = get_students_records(students_data)
             real_final_tool_export, subs_final_export = exporting_to_tool(simulation_array, qtde_de_disciplinas_semestre_par,qtde_de_disciplinas_semestre_impar, subss)
