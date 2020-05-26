@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import random
 import os
 import time
@@ -43,6 +44,9 @@ outra_turma = 'Fez em outra turma'
 ja_simulou = 0
 ja_importou = 0
 importou_config = 0
+real_final_tool_export = []
+subs_final_export = []
+export_to_tool = []
 
 
 #Defining Subjects
@@ -64,6 +68,86 @@ def scrambled(orig):
     dest = orig[:]
     random.shuffle(dest)
     return dest
+
+
+def exporting_to_tool(simulation_array, qtde_de_disciplinas_semestre_par,qtde_de_disciplinas_semestre_impar, subss):
+    tool_export_line = []
+    tool_export_full = []
+    subs_export_line = []
+    real_final_tool_export = []
+    #getting all subjects
+    novo_contador_de_semestre = 1
+    novo_index_inicial_do_semestre = 0
+    novo_index_final_do_semestre = -1
+    novo_contador_de_semestre = 1
+    inicio_semestre = 0
+    fim_semestre = 0
+
+    while (novo_contador_de_semestre<=tempo_max_integralizacao):
+        novo_index_inicial_do_semestre = novo_index_final_do_semestre + 1
+        if novo_contador_de_semestre % 2 == 0:
+            novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_par * 3) #3 = APENAS NOTA POR ISSO 1
+        if novo_contador_de_semestre % 2 != 0:
+            novo_index_final_do_semestre = novo_index_final_do_semestre + (qtde_de_disciplinas_semestre_impar * 3)
+        inicio_semestre = novo_index_inicial_do_semestre
+        fim_semestre = novo_index_final_do_semestre
+        while (inicio_semestre <= fim_semestre ):
+            subs_export_line.append(subss[inicio_semestre+1]+"_"+str(novo_contador_de_semestre))
+            inicio_semestre = inicio_semestre + 3
+        novo_contador_de_semestre = novo_contador_de_semestre + 1
+
+    #passing all grades to array
+    l = 0
+    c = 1
+    while (l < len(students)):
+        c = 1
+        tool_export_line = []
+        while(c<len(subss)):
+            tool_export_line.append(simulation_array[l][c])
+            c = c + 3
+        tool_export_full.append(tool_export_line)
+        l = l+1
+    #cleaning subs with no students:
+    final_tool_export = np.array(tool_export_full)
+    column_to_check = []
+    c = 0
+    l = 0
+    no_students = 0
+    columns_to_delete = []
+    by_columns = []
+    while(c<len(tool_export_full[0])):
+        l = 0
+        column_to_check = []
+        while(l<len(students)):
+            column_to_check.append(tool_export_full[l][c])
+            l = l+1
+        by_columns.append(column_to_check)
+        c = c +1
+
+    subs_as_np = np.array(subs_export_line)
+    l = 0
+    c = 0
+
+    while(l<len(by_columns)):
+        if all(isinstance(item, str) for item in by_columns[l]) is True and by_columns[l][0] == '--':
+            columns_to_delete.append(l)
+        l = l+1
+    subs_final_export = np.delete(subs_as_np, columns_to_delete)
+    real_final_tool_export = np.delete(final_tool_export, columns_to_delete, 1)
+    l = 0
+    c = 0
+    while(l<len(students)):
+        c = 0
+        while(c<len(subs_final_export)):
+            if real_final_tool_export[l][c] == '--':
+                real_final_tool_export[l][c] = ''
+            else:
+                real_final_tool_export[l][c] = float(real_final_tool_export[l][c])
+            c = c+1
+        l = l+1
+
+    return real_final_tool_export, subs_final_export
+
 
 def sorteio_de_turmas_dificeis_e_faceis(subjects, tempo_max_integralizacao, even_semester, odd_semester):
     #define how many subjects
@@ -817,6 +901,10 @@ def new_simulation():
     simulation = pd.DataFrame (scrambled(grade),index=students, columns=subss)
     ja_simulou = 1
     simulation_array = simulation.values.tolist()
+    test = np.array(simulation_array)
+
+
+
 
     print('-------------------------------------------------------------------')
     print('- Quantidade de alunos simulados: '+str(len(students))+'.')
@@ -1030,6 +1118,7 @@ while(menu_keep == 0):
         if ja_simulou == 1:
             oteste, students_data = export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, simulation_array, subss)
             osrecords = get_students_records(students_data)
+            real_final_tool_export, subs_final_export = exporting_to_tool(simulation_array, qtde_de_disciplinas_semestre_par,qtde_de_disciplinas_semestre_impar, subss)
 
             prereqs_report_export = pd.DataFrame(prereq_report, columns = ['TIPO_NIVEL_ATIVIDADE_MAE', "DISCIPLINA", "ANO_INICIO", "ANO_FIM", "NO_CADEIA_PRE_REQUISITO", "TIPO_PRE_REQUISITO", "DISCIPLINA_EXIGIDA", "TIPO_NIVEL_ATIVIDADE_EXIGIDA"])
             try:
@@ -1064,9 +1153,25 @@ while(menu_keep == 0):
                 std_info_export.to_csv(r'exports/std_info_export.csv')
                 std_info_export.to_html(r'exports/std_info_export.html',index = False)
 
+
+            export_to_tool = pd.DataFrame (real_final_tool_export,index=students, columns=subs_final_export)
+            export_to_tool.index.name = 'RA'
+            export_to_tool.insert(0,'CLASS',generic_config_info[0])
+            try:
+                f = open("exports/export_visualizacao.csv")
+                os.remove("exports/export_visualizacao.csv")
+            except IOError:
+                f = open("exports/export_visualizacao.csv", "+w")
+            finally:
+                f.close()
+                export_to_tool.to_csv(r'exports/export_visualizacao.csv', sep=';')
+                export_to_tool.to_html(r'exports/export_visualizacao.html')
+            with open('exports/export_visualizacao.csv', 'r') as original: data = original.read()
+            with open('exports/export_visualizacao.csv', 'w') as modified: modified.write(";\n2\nCLASS\n" + data)
+
             try:
                 cls()
-                input("Relatórios exportados com sucesso.\n\n - Histórico de alunos exportados como 'std_records.csv' e 'std_records.html'.\n - Dados dos alunos exportados como 'std_info_export.csv' e 'std_info_export.html'.\n - Pre-requisitos exportados como 'prereq_report.csv' e 'prereq_report.html'.\n - Disciplinas exportadas como 'export_disciplinas.csv' e 'export_disciplinas.html'.\n\nPressione qualquer tecla para continuar.")
+                input("Relatórios exportados com sucesso.\n\n - Histórico de alunos exportados como 'std_records.csv' e 'std_records.html'.\n - Dados dos alunos exportados como 'std_info_export.csv' e 'std_info_export.html'.\n - Pre-requisitos exportados como 'prereq_report.csv' e 'prereq_report.html'.\n - Disciplinas exportadas como 'export_disciplinas.csv' e 'export_disciplinas.html'.\n - CSV para aplicação em outra ferramenta de visualização 'export_visualizacao.csv' e 'export_visualizacao.html'.\n\nPressione qualquer tecla para continuar.")
             except SyntaxError:
                 menu_keep = menu_keep + 1
                 pass
