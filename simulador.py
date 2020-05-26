@@ -23,6 +23,7 @@ class bcolors:
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
+simulation = []
 #defining parameters
 bast_param = [0,5] #ba prefix for below average student
 avst_param = [5,7] #av prefix for average student
