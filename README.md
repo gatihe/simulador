@@ -43,5 +43,12 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 <all_configs>
 ```
 - `<cat_info>`: Agrupa informações referentes ao catálogo;
-- `<course_id>`: Identificador único do curso à ser simulado;
-- `<year>`: Ano do catálogo;
+- `<course_id>`: Identificador único do curso à ser simulado (int);
+- `<year>`: Ano do catálogo (int);
+- `<max_years>`: Tempo máximo que os alunos tem para concluir o curso (int);
+- `<subjects>`:  Agrupa todas as disciplinas;
+- `<subject>`: Agrupa informações referentes à uma disciplina;
+- `<id>`: Identificador único da disciplina a ser simulada (int);
+- `<subject_name>`: Nome da disciplina (string)
+- `<credits>`: Quantidade de créditos referentes à disciplina (int).
+- `<sem_offer>`: Semestre em que a disciplina é ofertada aos alunos (int).
