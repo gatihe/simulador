@@ -59,4 +59,8 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 - `<ano_fim>`: Ano em que se encerrou a vigência do pré-requisito em questão ('0' caso vigência do pré-requisito ainda não tenha encerrado). Mesmo que não haja algum pré-requisito, é necessário ao menos uma instância dessa tag por disciplina (int ou vazio caso não haja);
 - `<no_cadeia_pre_requisito>`: Identificador único da cadeia de requisitos à qual este pré-requisito pertence (int);
 - `<tipo_pre_requisito>`: O tipo de pré-requisito definirá se para cursar a disciplina, o aluno deve ter passado no pré-requisito ou ao menos cursado ('FORTE' para disciplinas que exigem aprovação no pré-requisito, 'FRACO' para disciplinas que exigem somente matrícula anterior na disciplina);
-- `<tipo_nivel_atividade_exigida>`: Natureza do pré-requisito, pode ser 'G' para se referir à graduação, 'P' para pós-graduação ou qualquer outro valor desejado (chr);
+- `<tipo_nivel_atividade_exigida>`: Natureza do pré-requisito, pode ser 'G' para se referir à graduação, 'P' para pós-graduação ou qualquer outro valor desejado (chr).
+
+#### Configurações adicionais (.xml):
+
+É possível adicionar configurações adicionais para adaptar o comportamento do simulador. Segue estrutura de um arquivo de configurações adicionais: 
