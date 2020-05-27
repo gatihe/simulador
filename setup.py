@@ -11,7 +11,7 @@ setuptools.setup(
     description="A small example package",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/pypa/sampleproject",
+    url="https://guiati9.dev",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -20,5 +20,5 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'pandas', 'numpy']
+        'pandas', 'numpy', 'xml.dom', 'xml.etree.ElementTree', 'webbrowser']
 )
