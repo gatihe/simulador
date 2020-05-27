@@ -42,3 +42,6 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 		</subject>
 <all_configs>
 ```
+- `<cat_info>`: Agrupa informações referentes ao catálogo;
+- `<course_id>`: Identificador único do curso à ser simulado;
+- `<year>`: Ano do catálogo;
