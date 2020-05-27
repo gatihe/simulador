@@ -8,7 +8,6 @@ Esses conjuntos devem ter características programáveis, como por exemplo padr�
 - Mineração de dados educacionais
 
 ---
-## Instalação
 #### Requisitos:
 - [Python 3.x](https://www.python.org/download/releases/3.0/)
 - [Pandas](https://pandas.pydata.org/)
