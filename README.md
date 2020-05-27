@@ -54,7 +54,7 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 - `<sem_offer>`: Semestre em que a disciplina é ofertada aos alunos (int);
 - `<classes_no>`: Quantidade de turmas em paralelo na oferta (int);
 - `<tipo_nivel_atividade_mae>`: Natureza da disciplina, pode ser 'G' para se referir à graduação, 'P' para pós-graduação ou qualquer outro valor desejado (chr);
-- `<pre_reqs>`: Identificador único da disciplina que seja pré-requisito da disciplina em questão. Mesmo que não haja algum pré-requisito, é necessário ao menos uma instância dessa tag por disciplina (string ou vazio caso não haja). Para disciplinas com mais de um requisito, repetir em ordem correta esta tag e as tags abaixo;
+- `<pre_reqs>`: Identificador único da disciplina que seja pré-requisito da disciplina em questão. Mesmo que não haja algum pré-requisito, é necessário ao menos uma instância dessa tag por disciplina (string ou vazio caso não haja). Para disciplinas com mais de um pré-requisito, repetir em ordem correta esta tag e as tags abaixo;
 - `<ano_inicio>`: Ano em que se iniciou a vigência do pré-requisito em questão. Mesmo que não haja algum pré-requisito, é necessário ao menos uma instância dessa tag por disciplina (int ou vazio caso não haja);
 - `<ano_fim>`: Ano em que se encerrou a vigência do pré-requisito em questão ('0' caso vigência do pré-requisito ainda não tenha encerrado). Mesmo que não haja algum pré-requisito, é necessário ao menos uma instância dessa tag por disciplina (int ou vazio caso não haja);
 - `<no_cadeia_pre_requisito>`: Identificador único da cadeia de requisitos à qual este pré-requisito pertence (int);
