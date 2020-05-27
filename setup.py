@@ -20,5 +20,5 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'pandas', 'numpy', 'xml.dom', 'xml.etree.ElementTree', 'webbrowser']
+        'pandas', 'numpy', 'dom', 'etree']
 )
