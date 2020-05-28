@@ -110,4 +110,8 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 - `<subj_dificulty>`: Agrupa os grupos de disciplinas que sofrerão alteração na nota;
 - `<hard_pass>`: Agrupa disciplinas que sofrerão impacto negativo na nota;
 - `<easy_pass>`: Agrupa disciplinas que sofrerão impacto positivo na nota;
-- `<sub_id>`: Identificador da disciplina a ser incluída em um dos grupos (string).
+- `<sub_id>`: Identificador único da disciplina a ser incluída em um dos grupos (string).
+
+#### Contato:
+
+Entre em contato através do [e-mail](mailto:atihe.guilherme@gmail.com) para tirar dúvidas. Caso encontre algum bug ou mal-funcionamento, por favor abrir um [issue](https://github.com/gatihe/simulador/issues)
