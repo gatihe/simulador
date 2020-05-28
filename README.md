@@ -95,19 +95,19 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
   </subj_dificulty>
 </all_configs>
 ```
-- `<all_configs>`: Agrupa todas informações referentes à configurações adicionais do sistema.
-- `<generic_info>`: Agrupa informações gerais da turma à ser simulada.
-- `<ano_ingresso>`: Ano de ingresso da turma à ser simulada (int).
-- `<parameters>`: Agrupa todos os parâmetros à serem adotados durante a simulação. Deve haver pelo menos um parâmetro populado.
-- `<parameter>`: Agrupa informações de uma instância de parâmetro.
-- `<parameter_name>`: Identificador único do parâmetro (string)
-- `<min_grade>`: Nota mínima à ser sorteada pelo parâmetro. Pode sofrer redução devido a configuração de outros fatores (float).
-- `<max_grade>`: Nota máxima à ser sorteada pelo parâmetro. Pode sofrer redução devido a configuração de outros fatores (float).
-- `<qtde>`: Quantidade de alunos à serem sorteados neste parâmetro (int).
-- `<factors>`: Agrupa configurações dos fatores que irão impactar positivamente e negativamente as notas simuladas.
-- `<easy_pass_factor>`: Aponta o máximo que a nota do aluno poderá variar negativamente (0 à easy_pass_factor) caso a disciplina cursada esteja listada em `<easy_pass>`.
-- `<hard_pass_factor>`: Aponta o máximo que a nota do aluno poderá variar positivamente (0 à easy_pass_factor) caso a disciplina cursada esteja listada em `<easy_pass>`.
-- `<subj_dificulty>`: Agrupa os grupos de disciplinas que sofrerão alteração na nota.
-- `<hard_pass>`: Agrupa disciplinas que sofrerão impacto negativo na nota.
-- `<easy_pass>`: Agrupa disciplinas que sofrerão impacto positivo na nota.
-- `<sub_id>`: Identificador da disciplina a ser incluída em um dos grupos.
+- `<all_configs>`: Agrupa todas informações referentes à configurações adicionais do sistema;
+- `<generic_info>`: Agrupa informações gerais da turma à ser simulada;
+- `<ano_ingresso>`: Ano de ingresso da turma à ser simulada (int);
+- `<parameters>`: Agrupa todos os parâmetros à serem adotados durante a simulação. Deve haver pelo menos um parâmetro populado;
+- `<parameter>`: Agrupa informações de uma instância de parâmetro;
+- `<parameter_name>`: Identificador único do parâmetro (string);
+- `<min_grade>`: Nota mínima à ser sorteada pelo parâmetro. Pode sofrer redução devido a configuração de outros fatores (float);
+- `<max_grade>`: Nota máxima à ser sorteada pelo parâmetro. Pode sofrer redução devido a configuração de outros fatores (float);
+- `<qtde>`: Quantidade de alunos à serem sorteados neste parâmetro (int);
+- `<factors>`: Agrupa configurações dos fatores que irão impactar positivamente e negativamente as notas simuladas;
+- `<easy_pass_factor>`: Aponta o máximo que a nota do aluno poderá variar positivamente (0 à easy_pass_factor) caso a disciplina cursada esteja listada em `<easy_pass>` (int);
+- `<hard_pass_factor>`: Aponta o máximo que a nota do aluno poderá variar negativamente (0 à easy_pass_factor) caso a disciplina cursada esteja listada em `<easy_pass>` (int);
+- `<subj_dificulty>`: Agrupa os grupos de disciplinas que sofrerão alteração na nota;
+- `<hard_pass>`: Agrupa disciplinas que sofrerão impacto negativo na nota;
+- `<easy_pass>`: Agrupa disciplinas que sofrerão impacto positivo na nota;
+- `<sub_id>`: Identificador da disciplina a ser incluída em um dos grupos (string).
