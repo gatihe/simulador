@@ -3,3 +3,5 @@
 *.csv
 *.html
 *.java
+*.DS_Store
+.DS_Store
