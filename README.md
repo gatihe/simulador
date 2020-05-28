@@ -67,3 +67,32 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 #### Configurações adicionais (.xml):
 
 É possível adicionar configurações adicionais para adaptar o comportamento do simulador. Segue estrutura de um arquivo de configurações adicionais:
+
+```
+<all_configs>
+  <generic_info>
+    <ano_ingresso>ANO_DE_INGRESSO</ano_ingresso>
+  </generic_info>
+  <parameters>
+    <parameter>
+      <parameter_name>Average</parameter_name>
+      <min_grade>6</min_grade>
+      <max_grade>8</max_grade>
+      <qtde>5</qtde>
+    </parameter>
+  </parameters>
+  <factors>
+    <easy_pass_factor>2</easy_pass_factor>
+    <hard_pass_factor>2</hard_pass_factor>
+  </factors>
+  <subj_dificulty>
+    <hard_pass>
+      <sub_id>SI120</sub_id>
+    </hard_pass>
+    <easy_pass>
+      <sub_id>SI101</sub_id>
+      <sub_id>SI701</sub_id>
+    </easy_pass>
+  </subj_dificulty>
+</all_configs>
+```
