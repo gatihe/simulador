@@ -114,4 +114,4 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 
 #### Contato:
 
-Entre em contato através do [e-mail](mailto:atihe.guilherme@gmail.com) para tirar dúvidas. Caso encontre algum bug ou mal-funcionamento, por favor abrir um [issue](https://github.com/gatihe/simulador/issues)
+Entre em contato através do [e-mail](mailto:atihe.guilherme@gmail.com) para tirar dúvidas à respeito da aplicação. Caso encontre algum bug ou mal-funcionamento, por favor criar um [issue](https://github.com/gatihe/simulador/issues).
