@@ -13,6 +13,9 @@ Esses conjuntos devem ter características programáveis, como por exemplo padr�
 #### Instruções:
 - Faça o download e extração do repositório
 - Na raiz do diretório extraído, execute o arquivo `simulador.py`
+- Importe um catálogo e, se necessário, configurações adicionais.
+- Faça uma simulaçao,
+- Exporte os relatórios.
 ---
 #### Catálogos:
 
@@ -63,4 +66,4 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 
 #### Configurações adicionais (.xml):
 
-É possível adicionar configurações adicionais para adaptar o comportamento do simulador. Segue estrutura de um arquivo de configurações adicionais: 
+É possível adicionar configurações adicionais para adaptar o comportamento do simulador. Segue estrutura de um arquivo de configurações adicionais:
