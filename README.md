@@ -19,7 +19,8 @@ Esses conjuntos devem ter características programáveis, como por exemplo padr�
 ---
 #### Catálogos (.xml):
 
-Entre as configurações que dão suporte à simulação de dados educacionais estão os catálogos de curso. Este arquivo tem como utilidade especificar as características do curso à ser simulado. Conta com a seguinte estrutura:
+Entre as configurações que dão suporte à simulação de dados educacionais estão os catálogos de curso. Este arquivo tem como utilidade especificar as características do curso à ser simulado. Devem ser inseridos em `imports/catalogos/`. Um catálogo deve contar com a seguinte estrutura:
+
 
 ```
 <all_configs>
@@ -66,7 +67,7 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 
 #### Configurações adicionais (.xml):
 
-É possível adicionar configurações adicionais para adaptar o comportamento do simulador. Segue estrutura de um arquivo de configurações adicionais:
+É possível adicionar configurações adicionais para adaptar o comportamento do simulador. Devem ser inseridos em `imports/configs/`.Segue estrutura de um arquivo de configurações adicionais:
 
 ```
 <all_configs>
@@ -112,6 +113,7 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
 - `<easy_pass>`: Agrupa disciplinas que sofrerão impacto positivo na nota;
 - `<sub_id>`: Identificador único da disciplina a ser incluída em um dos grupos (string).
 
+---
 #### Contato:
 
 Entre em contato através do [e-mail](mailto:atihe.guilherme@gmail.com) para tirar dúvidas à respeito da aplicação. Caso encontre algum bug ou mal-funcionamento, por favor criar um [issue](https://github.com/gatihe/simulador/issues).

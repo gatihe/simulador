@@ -10,19 +10,9 @@ from input_handling import *
 import webbrowser
 
 
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-
-
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
+
 simulation = []
 #defining parameters
 bast_param = [0,5] #ba prefix for below average student
@@ -41,7 +31,6 @@ params_total = len(params)/4
 factors = []
 students_data = []
 tempo_max_integralizacao = 12
-outra_turma = 'Fez em outra turma'
 ja_simulou = 0
 ja_importou = 0
 importou_config = 0
@@ -978,14 +967,14 @@ while(menu_keep == 0):
         filename = input("Insira o nome do arquivo XML à importar catalogo ou ENTER para cancelar.\nEntrada do usuário: ")
         if filename is not '':
             try:
-                f=open(filename)
-                subjects = getting_subjects_config_from_file(filename)
-                turmas = getting_turmas_config_from_file(filename)
-                prereqs = getting_prereqs_config_from_file(filename)
-                semoffers = getting_semoffer_config_from_file(filename)
-                credits = getting_credits_config_from_file(filename)
-                cat_info = getting_catalog_info_from_file(filename)
-                prereq_report = getting_prereq_report_from_file(filename)
+                f=open('imports/catalogos/'+filename)
+                subjects = getting_subjects_config_from_file('imports/catalogos/'+filename)
+                turmas = getting_turmas_config_from_file('imports/catalogos/'+filename)
+                prereqs = getting_prereqs_config_from_file('imports/catalogos/'+filename)
+                semoffers = getting_semoffer_config_from_file('imports/catalogos/'+filename)
+                credits = getting_credits_config_from_file('imports/catalogos/'+filename)
+                cat_info = getting_catalog_info_from_file('imports/catalogos/'+filename)
+                prereq_report = getting_prereq_report_from_file('imports/catalogos/'+filename)
                 ja_importou = 1
             except SyntaxError:
                 print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
@@ -1000,18 +989,18 @@ while(menu_keep == 0):
         filename1 = input("\nInsira o nome do arquivo XML à importar configurações adicionais ou ENTER para cancelar.\nEntrada do usuário: ")
         if filename1 is not '':
             try:
-                f=open(filename1)
-                params = getting_params_config_from_file(filename1)
-                factors = getting_factors_config_from_file(filename1)
-                hard_passes = getting_hard_pass_from_file(filename1)
-                easy_passes = getting_easy_pass_from_file(filename1)
-                generic_config_info = getting_generic_info_from_file(filename1)
+                f=open('imports/configs/'+filename1)
+                params = getting_params_config_from_file('imports/configs/'+filename1)
+                factors = getting_factors_config_from_file('imports/configs/'+filename1)
+                hard_passes = getting_hard_pass_from_file('imports/configs/'+filename1)
+                easy_passes = getting_easy_pass_from_file('imports/configs/'+filename1)
+                generic_config_info = getting_generic_info_from_file('imports/configs/'+filename1)
                 importou_config = 1
             except SyntaxError:
-                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename1+".")
                 pass
             except IOError:
-                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename+".")
+                print("\nProblema identificado ao importar. Verifique seu arquivo "+filename1+".")
                 pass
         else:
             print("\nImportação de parâmetros cancelada.")
