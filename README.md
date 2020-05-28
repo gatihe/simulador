@@ -75,24 +75,39 @@ Entre as configurações que dão suporte à simulação de dados educacionais e
   </generic_info>
   <parameters>
     <parameter>
-      <parameter_name>Average</parameter_name>
-      <min_grade>6</min_grade>
-      <max_grade>8</max_grade>
-      <qtde>5</qtde>
+      <parameter_name>NOME_PARAMETRO</parameter_name>
+      <min_grade>NOTA_MINIMA</min_grade>
+      <max_grade>NOTA_MAXIMA</max_grade>
+      <qtde>QTDE_ALUNOS</qtde>
     </parameter>
   </parameters>
   <factors>
-    <easy_pass_factor>2</easy_pass_factor>
-    <hard_pass_factor>2</hard_pass_factor>
+    <easy_pass_factor>FATOR_FACILITADOR</easy_pass_factor>
+    <hard_pass_factor>FATOR_DESFAVORÁVEL</hard_pass_factor>
   </factors>
   <subj_dificulty>
     <hard_pass>
-      <sub_id>SI120</sub_id>
+      <sub_id>ID_DISCIPLINA</sub_id>
     </hard_pass>
     <easy_pass>
-      <sub_id>SI101</sub_id>
-      <sub_id>SI701</sub_id>
+      <sub_id>ID_DISCIPLINA</sub_id>
     </easy_pass>
   </subj_dificulty>
 </all_configs>
 ```
+- `<all_configs>`:
+- `<generic_info>`:
+- `<ano_ingresso>`:
+- `<parameters>`:
+- `<parameter>`:
+- `<parameter_name>`:
+- `<min_grade>`:
+- `<max_grade>`:
+- `<qtde>`:
+- `<factors>`:
+- `<easy_pass_factor>`:
+- `<hard_pass_factor>`:
+- `<subj_dificulty>`:
+- `<hard_pass>`:
+- `<easy_pass>`:
+- `<sub_id>`:
