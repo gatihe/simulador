@@ -11,10 +11,10 @@ Esses conjuntos devem ter características programáveis, como por exemplo padr�
 - [Python 3.x](https://www.python.org/download/releases/3.0/)
 - [Pandas](https://pandas.pydata.org/)
 #### Instruções:
-- Faça o download e extração do repositório
-- Na raiz do diretório extraído, execute o arquivo `simulador.py`
-- Importe um catálogo e, se necessário, configurações adicionais.
-- Faça uma simulaçao,
+- Faça o download e extração do repositório;
+- Na raiz do diretório extraído, execute o arquivo `simulador.py`;
+- Importe um catálogo e, se necessário, configurações adicionais;
+- Faça uma simulaçao;
 - Exporte os relatórios.
 ---
 #### Catálogos:
