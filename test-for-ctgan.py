@@ -168,22 +168,6 @@ def sorteio_de_turmas_dificeis_e_faceis(subjects, tempo_max_integralizacao, even
     #turmas_sorteadas = ['EB101', 1, 1, 'EB101', 3, 0, 'EB102', 2, 1]
     return vetor_a_ser_retornado
 
-def sorteio_altera_desempenho(students):
-    alunos_alteracao_desempenho = []
-    #sortear um numero de alunos < students
-    #sortear um semestre de inicio e um semestre de fim para a melhora do desempenho
-    #buscar alunos
-    qtde_students = random.randint(0, len(students))
-    affected_students = random.sample(students, qtde_students)
-
-    alunos_alteracao_desempenho.append(qtde_students)
-    for student in affected_students:
-        alunos_alteracao_desempenho.append(student)
-        alunos_alteracao_desempenho.append(random.randint(0,1))
-        alunos_alteracao_desempenho.append(random.randint(2,6))
-
-    return alunos_alteracao_desempenho
-
 def getting_subjects_config_from_file(filename):
     parsed_subjects = []
     tree = ET.parse(filename)
@@ -222,6 +206,18 @@ def export_subjects(subjects,credits, cat_info):
         j = j+1
     return tpds
 
+def export_subjects(subjects,credits, cat_info):
+    tpds = []
+    j = 0
+    while(j<len(subjects)):
+        info_line = []
+        tpds.append(info_line)
+        info_line.append(subjects[j])
+        info_line.append(cat_info[1])
+        info_line.append(credits[j])
+        info_line.append('N')
+        j = j+1
+    return tpds
 
 def export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, simulation_array, subss):
     l = 0
@@ -297,13 +293,8 @@ def export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_
 def calc_desvio_padrao():
     return desvio_padrao
 
-
-
-
-def calc_cr(std_data):
-    teste = get_students_records(students_data)
-    print(teste)
-    return teste
+def calc_cr():
+    return cr
 
 def calc_stdinfo(subjects, students, gradeslc, subss):
     j = 0
@@ -522,47 +513,20 @@ def get_students_records(students_data):
             individual_grade_on_record.append(5)#6
         if students_data[j][m+2] < 65:
             individual_grade_on_record.append(6)#6
+        individual_grade_on_record.append(1)
+        individual_grade_on_record.append(students_data[j][m+4])
+        individual_grade_on_record.append('REGULAR')
         if individual_grade_on_record[6] == 4:
             individual_grade_on_record.append("APROVADO POR NOTA/CONCEITO E FREQ")
         if individual_grade_on_record[6] == 5:
             individual_grade_on_record.append("REPROVADO POR NOTA/CONCEITO")
         if individual_grade_on_record[6] == 6:
             individual_grade_on_record.append("REPROVADO POR FREQUENCIA")
-        individual_grade_on_record.append(1)
-        individual_grade_on_record.append(students_data[j][m+4])
-        individual_grade_on_record.append('REGULAR')
+
         all_records.append(individual_grade_on_record)
         m = m+5
       j = j+1
     return all_records
-
-def calc_individual_cr(students,std_data, credits, subjects):
-    l = 0
-    std_total_credits = 0
-    std_total_grades = 0
-    nici = 0
-    contador = 0
-    std_crs = []
-    while(l<len(std_data)):
-        print(std_data[l][0])
-        c = 2
-        while(c<len(std_data[l])):
-            individual_nici = 0
-            std_total_credits = std_total_credits + std_data[l][c+4]
-            std_total_grades = std_total_grades + std_data[l][c+1]
-            individual_nici = std_data[l][c+1] * std_data[l][c+4]
-            contador = contador + 1
-            nici = nici + individual_nici
-            c = c+5
-
-        cr = round(nici/(10*std_total_credits),2)
-        print(nici)
-        print(std_total_credits)
-        print(cr)
-        std_crs.append(std_data[l][0])
-        std_crs.append(cr)
-        l = l+1
-    return std_crs
 
 
 #counters and variable for grades creation
@@ -755,8 +719,6 @@ def new_simulation():
 
     meuteste1 = sorteio_de_turmas_dificeis_e_faceis(subjects, tempo_max_integralizacao, even_semester, odd_semester)
 
-    meuteste2 = sorteio_altera_desempenho(students)
-
     aui = 2
     while(aui < len(params_sort)):
         aue = 0
@@ -768,9 +730,6 @@ def new_simulation():
 
     contest = 0
     #ra_somacreditos_disc = []
-
-
-
     while(contest<len(outrovetordeteste)):
         l = 0
         while(l<len(students)):
@@ -864,7 +823,6 @@ def new_simulation():
                         if semestre_atual[cont_sub] in easy_passes:
                             semestre_atual[cont_sub+2] = round(semestre_atual[cont_sub+2] + random.uniform(0,factors[0]),2)
 
-
                         #turmas dificeis esporadicas
                         #ESSE TRECHO VAI PEGAR O VETOR [DISCIPLINA, SEMESTRE, DISCIPLINA, SEMESTRE E alterar a nota em um range de 1 à 3]
                         ## CASOS ESPORADICOS USANDO FUNCAO sorteio_de_turmas_dificeis_e_faceis()
@@ -879,22 +837,17 @@ def new_simulation():
                                         semestre_atual[cont_sub +2] = round(semestre_atual[cont_sub + 2] + random.uniform(1,3),2)
                                 new_counter = new_counter+1
 
-                        ## se for um aluno sorteado pra ter alteração no desempenho, zerar nota nos semestres sorteados
-
-
                         if freq_instance < 65:
                             semestre_atual[cont_sub+2] = 0
                         #treating < 0 and > 10
                         if semestre_atual[cont_sub+2] < 0:
-                            semestre_atual[cont_sub+2] = -1
+                            semestre_atual[cont_sub+2] = 0
                         if semestre_atual[cont_sub+2] > 10:
                             semestre_atual[cont_sub+2] = 10
                         if semestre_atual[cont_sub+2] >= 5:
                             already_passed.append(semestre_atual[cont_sub])
                             semestre_atual[cont_sub+5] = 0
-
                     cont_sub = cont_sub + 8
-
 
                 count_line = 0
                 while (count_line<len(semestre_atual)):
@@ -1155,6 +1108,7 @@ while(menu_keep == 0):
             oteste, students_data = export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, simulation_array, subss)
             osrecords = get_students_records(students_data)
             real_final_tool_export, subs_final_export = exporting_to_tool(simulation_array, qtde_de_disciplinas_semestre_par,qtde_de_disciplinas_semestre_impar, subss)
+
             prereqs_report_export = pd.DataFrame(prereq_report, columns = ['TIPO_NIVEL_ATIVIDADE_MAE', "DISCIPLINA", "ANO_INICIO", "ANO_FIM", "NO_CADEIA_PRE_REQUISITO", "TIPO_PRE_REQUISITO", "DISCIPLINA_EXIGIDA", "TIPO_NIVEL_ATIVIDADE_EXIGIDA"])
             try:
                 f = open("exports/prereq_report.csv")
@@ -1166,14 +1120,7 @@ while(menu_keep == 0):
                 prereqs_report_export.to_csv(r'exports/prereq_report.csv')
                 prereqs_report_export.to_html(r'exports/prereq_report.html', index = False)
 
-            std_records = pd.DataFrame (osrecords, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO', 'DESCRICAO_SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA'])
-
-
-            oplesss = calc_individual_cr(students,students_data, credits, subjects)
-            print(oplesss)
-            ask_for_input_to_Continue()
-
-
+            std_records = pd.DataFrame (osrecords, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA', 'DESCRICAO_SITUACAO'])
             try:
                 f = open("exports/std_records.csv")
                 os.remove("exports/std_records.csv")
@@ -1181,7 +1128,7 @@ while(menu_keep == 0):
                 f = open("exports/std_records", "+w")
             finally:
                 f.close()
-                std_records.to_csv(r'exports/std_records.csv')
+                std_records.to_csv(r'exports/std_records.csv', index=False)
                 std_records.to_html(r'exports/std_records.html', index = False)
 
             std_info_export = pd.DataFrame (oteste,index=students, columns=['RA', 'ANOING', 'PINGR', 'DANOCAT', 'CURSO', 'ANO_INGRESSO', 'ANO_CATALOGO', 'CR', 'CP', 'CP_FUTURO', 'POSICAO_ALUNO_NA_TURMA', 'COEFICIENTE_RENDIMENTO_PADRAO', 'COEFICIENTE_RENDIMENTO_MEDIO', 'DESVIO_PADRAO_TURMA', 'TOTAL_ALUNOS_TURMA'])
