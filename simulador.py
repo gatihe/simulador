@@ -222,6 +222,12 @@ def export_subjects(subjects,credits, cat_info):
         j = j+1
     return tpds
 
+def Convert(lst):
+    res_dct = {lst[i]: lst[i + 1] for i in range(0, len(lst), 2)}
+    return res_dct
+
+def rank_students(crs_list):
+    return positions
 
 def export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_semestre_impar, qtde_de_disciplinas_semestre_par, simulation_array, subss):
     l = 0
@@ -255,6 +261,7 @@ def export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_
             novo_contador_de_semestre = novo_contador_de_semestre + 1
         students_data.append(ind_student_data)
         l = l +1
+    crs, med_crs, desv_padrao = calc_std_crs(students_data)
 
     info_std = []
     individual_info_std = []
@@ -268,6 +275,13 @@ def export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_
             total_creditos_curso = total_creditos_curso + credits[m]
             m = m +1
         j = 2
+
+
+        #crp
+        individual_cr = crs[crs.index(students_data[l][j-2])+1]
+        individual_crp = ((individual_cr - med_crs)/desv_padrao)
+
+
         individual_info_std.append(students_data[l][j-2]) #RA                  (0)
         individual_info_std.append(generic_config_info[0]) #ANOING             (1)
         individual_info_std.append(2) #PINGR POR ENQUANTO SERA 2               (2)
@@ -275,13 +289,13 @@ def export_student_data(students, tempo_max_integralizacao, qtde_de_disciplinas_
         individual_info_std.append(cat_info[0]) #numero do CURSO               (4)
         individual_info_std.append(generic_config_info[0]) #ANOING             (5)
         individual_info_std.append(cat_info[1]) #ANO_CATALOGO = ANOCATALOGO    (6)
-        individual_info_std.append(0) #CR - VAI SER CALCULADO DEPOIS           (7)
-        individual_info_std.append(0) #CP - VAI SER CALCULADO DEPOIS           (8)
-        individual_info_std.append(0) #CP FUTURO - VAI SER CALCULADO DEPOIS    (9)
-        individual_info_std.append(0) #POSICAO_ALUNO_NA_TURMA CALCULADO DEPOIS (10)
-        individual_info_std.append(0) #CR PADRAO - VAI SER CALCULADO DEPOIS    (11)
-        individual_info_std.append(0) #CR MEDIO - VAI SER CALCULADO DEPOIS    (12)
-        individual_info_std.append(0) #DESVIO_PADRAO_TURMA                     (13)
+        individual_info_std.append(round(crs[crs.index(students_data[l][j-2])+1],3)) #CR - VAI SER CALCULADO DEPOIS           (7)
+        individual_info_std.append(0) #CP -           (8)
+        individual_info_std.append(0) #CP FUTURO  (9)
+        individual_info_std.append(crs[crs.index(students_data[l][j-2])-1]) #POSICAO_ALUNO_NA_TURMA(10)
+        individual_info_std.append(round(individual_crp,3)) #CR PADRAO - VAI SER CALCULADO DEPOIS    (11)
+        individual_info_std.append(round(med_crs,3)) #CR MEDIO - VAI SER CALCULADO DEPOIS    (12)
+        individual_info_std.append(round(desv_padrao,3)) #DESVIO_PADRAO_TURMA                     (13)
         individual_info_std.append(len(students))  #TOTAL_ALUNOS_TURMA         (14)
         while(j<len(students_data[l])):
             if students_data[l][j+1] >= 5 and students_data[l][j+2] >= 65:
@@ -536,15 +550,15 @@ def get_students_records(students_data):
       j = j+1
     return all_records
 
-def calc_individual_cr(students,std_data, credits, subjects):
+def calc_std_crs(std_data):
     l = 0
     std_total_credits = 0
     std_total_grades = 0
     nici = 0
     contador = 0
     std_crs = []
+    pure_crs = [] #somente crs para poder calclar o desvio padrao da turma
     while(l<len(std_data)):
-        print(std_data[l][0])
         c = 2
         while(c<len(std_data[l])):
             individual_nici = 0
@@ -555,14 +569,48 @@ def calc_individual_cr(students,std_data, credits, subjects):
             nici = nici + individual_nici
             c = c+5
 
-        cr = round(nici/(10*std_total_credits),2)
-        print(nici)
-        print(std_total_credits)
-        print(cr)
+        cr = round(nici/(10*std_total_credits),3)
         std_crs.append(std_data[l][0])
         std_crs.append(cr)
+        pure_crs.append(cr)
         l = l+1
-    return std_crs
+
+
+    to_rank = std_crs
+    positions = []
+    counter = 1
+    while (len(to_rank)>1):
+        c = 1
+        stored_highest_value = 0
+        stored_highest_index = 0
+        while (c<len(to_rank)):
+            if stored_highest_value < to_rank[c]:
+                stored_highest_value = to_rank[c]
+                stored_highest_index = c
+            c = c +2
+        positions.append(counter)
+        positions.append(std_crs[stored_highest_index-1])
+        positions.append(stored_highest_value)
+        to_rank.pop(stored_highest_index)
+        to_rank.pop(stored_highest_index-1)
+        counter = counter+1
+
+#cr medio da turma
+    m = 2
+    crs_sum = 0
+    instances = 0
+    while(m<len(positions)):
+        crs_sum = crs_sum+positions[m]
+        instances = instances+1
+        m = m+3
+
+    med_crs = crs_sum/instances
+
+    desv_padrao = np.std(pure_crs)
+    desv_padrao = desv_padrao
+    print(desv_padrao)
+    ask_for_input_to_Continue()
+    return positions, med_crs, desv_padrao
 
 
 #counters and variable for grades creation
@@ -1167,11 +1215,6 @@ while(menu_keep == 0):
                 prereqs_report_export.to_html(r'exports/prereq_report.html', index = False)
 
             std_records = pd.DataFrame (osrecords, columns=['RA', 'ANO', 'PERIODO', 'DISCIPLINA', 'NOTA', 'FREQUENCIA', 'SITUACAO', 'DESCRICAO_SITUACAO','CURRICULARIDADE', "CREDITO_DISCIPLINA", 'COMO_FOI_CURSADA'])
-
-
-            oplesss = calc_individual_cr(students,students_data, credits, subjects)
-            print(oplesss)
-            ask_for_input_to_Continue()
 
 
             try:
